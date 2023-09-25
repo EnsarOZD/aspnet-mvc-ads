@@ -1,49 +1,54 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- SITE TITTLE -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewData["Title"] - Ads.Web.Mvc</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Ads.Web.Mvc.styles.css" asp-append-version="true" />
+
+    <!-- FAVICON -->
+    <link href="img/favicon.png" rel="shortcut icon">
+    <!-- PLUGINS CSS STYLE -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="~/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/plugins/bootstrap/css/bootstrap-slider.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/plugins/font-awesome/css/font-awesome.min.css">
+    <!-- Owl Carousel -->
+    <link rel="stylesheet" href="~/plugins/slick-carousel/slick/slick.css">
+    <link rel="stylesheet" href="~/plugins/slick-carousel/slick/slick-theme.css">
+    <!-- Fancy Box -->
+    <link rel="stylesheet" href="~/plugins/fancybox/jquery.fancybox.pack.css">
+    <link rel="stylesheet" href="~/plugins/jquery-nice-select/css/nice-select.css">
+    <!-- CUSTOM CSS -->
+    <link href="~/css/style.css" rel="stylesheet" asp-append-version="true">
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Ads.Web.Mvc</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - Ads.Web.Mvc - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await Html.PartialAsync("_Navbar")
+
+	@RenderBody()
+
+    @await Html.PartialAsync("_Footer")
+
+    <!-- JAVASCRIPTS -->
+    <script src="~/plugins/jQuery/jquery.min.js"></script>
+    <script src="~/plugins/bootstrap/js/popper.min.js"></script>
+    <script src="~/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/plugins/bootstrap/js/bootstrap-slider.js"></script>
+    <!-- tether js -->
+    <script src="~/plugins/tether/js/tether.min.js"></script>
+    <script src="~/plugins/raty/jquery.raty-fa.js"></script>
+    <script src="~/plugins/slick-carousel/slick/slick.min.js"></script>
+    <script src="~/plugins/jquery-nice-select/js/jquery.nice-select.min.js"></script>
+    <script src="~/plugins/fancybox/jquery.fancybox.pack.js"></script>
+    <script src="~/plugins/smoothscroll/SmoothScroll.min.js"></script>
+    <!-- google map -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU&libraries=places"></script>
+    <script src="~/plugins/google-map/gmap.js"></script>
+    <script src="~/js/script.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
