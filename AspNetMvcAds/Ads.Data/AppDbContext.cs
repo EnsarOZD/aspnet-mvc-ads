@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ads.Data
 {
-    internal class AppDbContext:DbContext
+    public class AppDbContext:DbContext
     {
         public DbSet<AdvertCommentEntity> AdvertCommentEntities { get; set; }
         public DbSet<AdvertEntity> AdvertEntities { get; set; }
