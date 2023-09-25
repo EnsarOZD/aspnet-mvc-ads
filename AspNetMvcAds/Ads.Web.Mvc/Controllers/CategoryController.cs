@@ -8,6 +8,7 @@ namespace Ads.Web.Mvc.Controllers
         [Route("/category/{category-slug}")]
         public IActionResult Index(int id, int page)
         {
+            ViewData["ListPartialTitle"] = "Electronics";
             return View();
         }
     }

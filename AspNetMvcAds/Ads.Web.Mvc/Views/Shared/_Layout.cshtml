@@ -23,14 +23,16 @@
     <link rel="stylesheet" href="~/plugins/jquery-nice-select/css/nice-select.css">
     <!-- CUSTOM CSS -->
     <link href="~/css/style.css" rel="stylesheet" asp-append-version="true">
+    
+    @await RenderSectionAsync("Styles", required: false)
 </head>
-<body>
+<body class="body-wrapper">
 
-    @await Html.PartialAsync("_Navbar")
+    @await Html.PartialAsync("_NavbarPartial")
 
 	@RenderBody()
 
-    @await Html.PartialAsync("_Footer")
+    @await Html.PartialAsync("_FooterPartial")
 
     <!-- JAVASCRIPTS -->
     <script src="~/plugins/jQuery/jquery.min.js"></script>
