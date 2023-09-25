@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ads.Data.Entities
 {
-    internal class UserEntity
+    public class UserEntity
     {
     }
 }
