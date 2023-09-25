@@ -11,7 +11,7 @@ namespace Ads.Web.Mvc.Controllers
 
         public IActionResult Login(string redirectUrl)
         {
-            return Redirect(redirectUrl);
+            return View();
         }
 
         public IActionResult ForgotPassword()
