@@ -20,8 +20,10 @@ namespace Ads.Data.Entities
         [Required, Column(TypeName = "ntext")]
         public string Description { get; set; } = string.Empty;
 
-        [ForeignKey(nameof(Id))]
-        public UserEntity UserId { get; set; }= null!;
+        public int UserId { get; set; }
+
+        [ForeignKey(nameof(UserId))]
+        public UserEntity User { get; set; }= null!;
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
