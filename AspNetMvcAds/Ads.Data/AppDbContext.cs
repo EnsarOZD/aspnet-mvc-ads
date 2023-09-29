@@ -20,10 +20,10 @@ namespace Ads.Data
         public DbSet<UserEntity> UserEntities { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
         }
+       
     }
 }
