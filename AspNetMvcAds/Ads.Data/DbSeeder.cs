@@ -93,6 +93,56 @@ namespace Ads.Data
 
                 context.AdvertImageEntities.AddRange(image1, image2);
                 context.SaveChanges();
+                
+                 if (!context.CategoryEntities.Any())
+                    {
+                        var user = context.UserEntities.First();
+
+                        var Category1 = new CategoryEntity
+                        {
+                            Name = "job",
+                            Description = "Looking for job",
+                        };
+                        var Category2 = new CategoryEntity
+                        {
+                            Name = "Sale",
+                            Description = "Whole Sale",
+                        };
+                        var Catagory3 = new CategoryEntity
+                        {
+                            Name = "Second Hand",
+                            Description = "Second hand products"
+                        };
+                        context.CategoryEntities.AddRange(Category1, Category2, Catagory3);
+                        context.SaveChanges();
+
+
+                    }
+                    if (!context.CategoryAdvertEntities.Any())
+                    {
+                        var user = context.UserEntities.First();
+
+                        var CategoryAd1 = new CategoryAdvertEntity
+                        {
+                            CategoryId = 1,
+                            AdvertId = 1
+                        };
+                        var CategoryAd2 = new CategoryAdvertEntity
+                        {
+                            CategoryId = 2,
+                            AdvertId = 2,
+                        };
+                        var CatagoryAd3 = new CategoryAdvertEntity
+                        {
+                            CategoryId = 3,
+                            AdvertId = 3
+                        };
+                        context.CategoryAdvertEntities.AddRange(CategoryAd1, CategoryAd2, CatagoryAd3);
+                        context.SaveChanges();
+
+
+                    }
+                
 
             }
         }
