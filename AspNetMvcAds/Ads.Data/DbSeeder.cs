@@ -25,7 +25,7 @@ namespace Ads.Data
 
             context.UserEntities.Add(user1);
             context.SaveChanges();
-            
+
 
             if (!context.AdvertEntities.Any())
             {
@@ -94,7 +94,89 @@ namespace Ads.Data
                 context.AdvertImageEntities.AddRange(image1, image2);
                 context.SaveChanges();
 
+                // AdvertCommentEntity Seedleri
+                if (!context.AdvertCommentEntities.Any())
+                {
+                    var user = context.UserEntities.First();
+
+                    var advertComment1 = new AdvertCommentEntity
+                    {
+                        Comment = "Bu bir yorumdur.",
+                        IsActive = true,
+                        AdvertId = 1,
+                        UserId = 1,
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now
+                    };
+
+                    var advertComment2 = new AdvertCommentEntity
+                    {
+                        Comment = "Başka bir yorum.",
+                        IsActive = false,
+                        AdvertId = 2,
+                        UserId = 2,
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now
+                    };
+
+                    var advertComment3 = new AdvertCommentEntity
+                    {
+                        Comment = "Bu bir yorumdur.",
+                        IsActive = true,
+                        AdvertId = 3,
+                        UserId = 3,
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now
+                    };
+
+                    context.AdvertCommentEntities.AddRange(advertComment1, advertComment2, advertComment3);
+                    context.SaveChanges();
+                }
+
+
+                // SettingEntity Seedleri
+                if (!context.SettingEntities.Any())
+                {
+                    var user = context.UserEntities.First();
+
+                    var setting1 = new SettingEntity
+                    {
+                        Name = "Setting1",
+                        Value = "Value1",
+                        UserId = user1.Id, // Doğru kullanıcının Id değeri burada kullanılmalı
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now,
+                        DeletedAt = DateTime.MinValue
+                    };
+
+
+                    var setting2 = new SettingEntity
+                    {
+                        Name = "Setting2",
+                        Value = "Value2",
+                        UserId = user1.Id, // Doğru kullanıcının Id değeri burada kullanılmalı
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now,
+                        DeletedAt = DateTime.MinValue
+                    };
+
+                    var setting3 = new SettingEntity
+                    {
+                        Name = "Setting3",
+                        Value = "Value3",
+                        UserId = user1.Id, // Doğru kullanıcının Id değeri burada kullanılmalı
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now,
+                        DeletedAt = DateTime.MinValue
+                    };
+
+
+                    context.SettingEntities.AddRange(setting1, setting2, setting3);
+                    context.SaveChanges();
+                }
+
             }
         }
     }
 }
+
