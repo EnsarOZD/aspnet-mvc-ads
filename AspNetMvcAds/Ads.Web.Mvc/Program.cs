@@ -12,17 +12,27 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 var app = builder.Build();
+bool databaseCreated = false;
 
-
-using(var scope=app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
-    var services=scope.ServiceProvider;
-    var context=services.GetRequiredService<AppDbContext>();
-    context.Database.EnsureCreated();
-
-    DbSeeder.Seed(context);
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+    if (!context.Database.CanConnect())
+    {
+        context.Database.EnsureCreated();
+        databaseCreated = true;
+    }
 }
-
+if (databaseCreated)
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var context = services.GetRequiredService<AppDbContext>();
+        DbSeeder.Seed(context);
+    }
+}
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
