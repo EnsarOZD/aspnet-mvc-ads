@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ads.Data
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext : DbContext
     {
         public DbSet<AdvertCommentEntity> AdvertCommentEntities { get; set; }
         public DbSet<AdvertEntity> AdvertEntities { get; set; }
@@ -20,10 +20,12 @@ namespace Ads.Data
         public DbSet<UserEntity> UserEntities { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
         }
-       
+
     }
 }
