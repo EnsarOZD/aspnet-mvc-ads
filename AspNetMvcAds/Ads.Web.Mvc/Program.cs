@@ -16,8 +16,8 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
-    context.Database.EnsureCreated();
-    if (context.Database.EnsureCreated())
+    bool isDatabaseCrated=context.Database.EnsureCreated();
+    if (isDatabaseCrated)
     {
         DbSeeder.Seed(context);
     }
