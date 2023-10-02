@@ -194,6 +194,84 @@ namespace Ads.Data
 
 
                 }
+                // AdvertCommentEntity Seedleri
+                if (!dbcontext.AdvertCommentEntities.Any())
+                {
+                    var user = dbcontext.UserEntities.First();
+
+                    var advertComment1 = new AdvertCommentEntity
+                    {
+                        Comment = "Bu bir yorumdur.",
+                        IsActive = true,
+                        AdvertId = 1,
+                        UserId = 1,
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now
+                    };
+
+                    var advertComment2 = new AdvertCommentEntity
+                    {
+                        Comment = "Başka bir yorum.",
+                        IsActive = false,
+                        AdvertId = 2,
+                        UserId = 2,
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now
+                    };
+
+                    var advertComment3 = new AdvertCommentEntity
+                    {
+                        Comment = "Bu bir yorumdur.",
+                        IsActive = true,
+                        AdvertId = 3,
+                        UserId = 3,
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now
+                    };
+
+                    dbcontext.AdvertCommentEntities.AddRange(advertComment1, advertComment2, advertComment3);
+                    dbcontext.SaveChanges();
+                }
+
+
+                // SettingEntity Seedleri
+                if (!dbcontext.SettingEntities.Any())
+                {
+                    var user = dbcontext.UserEntities.First();
+
+                    var setting1 = new SettingEntity
+                    {
+                        Name = "Setting1",
+                        Value = "Value1",
+                        UserId = user.Id,
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now,
+                    };
+
+
+                    var setting2 = new SettingEntity
+                    {
+                        Name = "Setting2",
+                        Value = "Value2",
+                        UserId = user.Id,
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now,
+                    };
+
+                    var setting3 = new SettingEntity
+                    {
+                        Name = "Setting3",
+                        Value = "Value3",
+                        UserId = user.Id,
+                        CreatedAt = DateTime.Now,
+                        UpdatedAt = DateTime.Now,
+                    };
+
+
+                    dbcontext.SettingEntities.AddRange(setting1, setting2, setting3);
+                    dbcontext.SaveChanges();
+                }
+
 
 
             }
