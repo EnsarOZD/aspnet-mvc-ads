@@ -1,0 +1,18 @@
+﻿@using Ads.Data.Entities
+
+@model List<CategoryEntity>
+
+<div class="short-popular-category-list text-center">
+	<h2>Popular Category</h2>
+
+
+	<ul class="list-inline">
+		@foreach (var item in Model)
+		{
+			<li class="list-inline-item">
+				<a href="category.html"><i class="fa fa-bed"></i>@item.Name</a>
+			</li>
+		}
+	</ul>
+
+</div>
