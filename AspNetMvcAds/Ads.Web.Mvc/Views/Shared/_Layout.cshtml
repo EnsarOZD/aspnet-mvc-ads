@@ -28,7 +28,7 @@
 </head>
 <body class="body-wrapper">
 
-    @await Html.PartialAsync("_NavbarPartial")
+    @await Component.InvokeAsync("Navbar")
 
 	@RenderBody()
 
