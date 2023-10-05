@@ -28,6 +28,10 @@ namespace Ads.Data.Entities
 
         [Required, MaxLength(20)]
         public string Phone { get; set; } = string.Empty;
+        public bool IsEmailConfirmed { get; set; }
+        public string Roles { get; set; } = string.Empty;
+        public string? EmailConfirmationToken { get; set; } = string.Empty;
+        public string? PasswordResetToken { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
