@@ -1,5 +1,5 @@
 using Ads.Data;
-using Ads.Services;
+using Ads.Services.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +27,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<TokenUsageService>();
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())

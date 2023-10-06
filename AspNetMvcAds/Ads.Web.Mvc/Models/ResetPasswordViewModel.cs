@@ -4,9 +4,12 @@ namespace Ads.Web.Mvc.Models
 {
     public class ResetPasswordViewModel
     {
+        //[Required, EmailAddress]
+        //public string Email { get; set; } = string.Empty;
+
         [Required]
-        [EmailAddress]
-        public string Email { get; set; } = string.Empty;
+        public string Token { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "Yeni şifre alanı zorunludur.")]
         [DataType(DataType.Password)]
         [Display(Name = "Yeni Şifre")]

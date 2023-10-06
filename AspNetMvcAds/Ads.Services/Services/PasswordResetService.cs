@@ -1,4 +1,4 @@
-﻿namespace Ads.Services
+﻿namespace Ads.Services.Services
 {
     public class PasswordResetService
     {
@@ -17,6 +17,6 @@
 
             await _emailService.SendEmailAsync(userEmail, subject, message);
         }
-   
+
     }
-    }
+}

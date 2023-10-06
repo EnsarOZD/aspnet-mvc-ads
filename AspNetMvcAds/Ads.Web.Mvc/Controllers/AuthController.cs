@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Ads.Data.Entities;
-using Ads.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
+using Azure.Core;
+using Ads.Services.Services;
 
 namespace Ads.Web.Mvc.Controllers
 {
@@ -17,12 +19,15 @@ namespace Ads.Web.Mvc.Controllers
     {
         private readonly AppDbContext DbContext;
         private readonly EmailService _emailService;
+        private readonly TokenUsageService _tokenUsageService;
 
-        public AuthController(AppDbContext dbContext, EmailService emailService)
+        public AuthController(AppDbContext dbContext, EmailService emailService, TokenUsageService tokenUsageService)
         {
             DbContext = dbContext;
             _emailService = emailService;
+            _tokenUsageService = tokenUsageService; // TokenUsageService'ı enjekte edin
         }
+
 
         [HttpGet("register")]
         public IActionResult Register()
@@ -194,12 +199,15 @@ namespace Ads.Web.Mvc.Controllers
 
             if (user != null)
             {
-                string resetToken = Guid.NewGuid().ToString(); 
-                user.PasswordResetToken = resetToken; 
+               
+                user.PasswordResetToken = _tokenUsageService.CreateRandomToken();
+                TempData["PasswordResetTokenforGetMethod"] = user.PasswordResetToken;
+                TempData["PasswordResetTokenforPostMethod"] = user.PasswordResetToken;
+                user.ResetTokenExpires = DateTime.Now.AddDays(1);
                 DbContext.SaveChanges();
 
                 PasswordResetService resetService = new PasswordResetService(_emailService);
-                resetService.SendPasswordResetEmail(user.Email, resetToken);
+                resetService.SendPasswordResetEmail(user.Email, user.PasswordResetToken);
 
                 TempData["Message"] = "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.";
                 return RedirectToAction("Login");
@@ -211,32 +219,47 @@ namespace Ads.Web.Mvc.Controllers
 
             return View(model);
         }
+
         [HttpGet]
-        public IActionResult ResetPassword(string token)
+        public IActionResult ResetPassword(ResetPasswordViewModel request, [FromRoute] string id)
         {
+
+            request.Token = TempData["PasswordResetTokenforGetMethod"] as string;
+            var user = DbContext.UserEntities.FirstOrDefault(u => u.PasswordResetToken == request.Token);
+
+            if (id != request.Token)
+            {
+
+                return BadRequest("Invalid Token.");
+            }
             return View();
         }
+   
 
-        [HttpPost]
-        public IActionResult ResetPassword(string token, ResetPasswordViewModel model)
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel request)
         {
-            string email = model.Email;
-            var user = DbContext.UserEntities.FirstOrDefault(u => u.Email == email);
+            request.Token = TempData["PasswordResetTokenforPostMethod"] as string;
 
-            if (user == null)
+            var user = await DbContext.UserEntities.FirstOrDefaultAsync(u => u.PasswordResetToken == request.Token);
+            if (user == null || user.ResetTokenExpires < DateTime.Now || user.PasswordResetToken != request.Token)
             {
-                TempData["Error"] = "Geçersiz e-posta adresi.";
-                return RedirectToAction("Login");
+                return BadRequest("Invalid Token.");
             }
 
-            user.Password = model.NewPassword;
+            _tokenUsageService.CreatePasswordHash(request.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
 
-            DbContext.SaveChanges();
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+            user.Password = request.NewPassword;
+            user.PasswordResetToken = null;
+            user.ResetTokenExpires = null;
 
-            TempData["Message"] = "Şifre başarıyla sıfırlandı. Yeni şifrenizle giriş yapabilirsiniz.";
-            return RedirectToAction("Login");
+            await DbContext.SaveChangesAsync();
+
+            return Ok("Password successfully reset.");
         }
 
-
+      
     }
 }
