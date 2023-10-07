@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Azure.Core;
 using Ads.Services.Services;
+using NuGet.Protocol;
 
 namespace Ads.Web.Mvc.Controllers
 {
@@ -38,21 +39,22 @@ namespace Ads.Web.Mvc.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (!ModelState.IsValid)
+            var existingUser = await DbContext.UserEntities.FirstOrDefaultAsync(u => u.Email == model.Email);
+            if (existingUser == null)
             {
-                ViewBag.ErrorMessage = "Girdiğiniz değerleri kontrol ediniz";
+               
                 return View();
             }
-            var existingUser = await DbContext.UserEntities.FirstOrDefaultAsync(u => u.Email == model.Email);
-            if (existingUser != null)
+            var mailIsTaken = await DbContext.UserEntities.AnyAsync(u => u.Email == model.Email);
+            if (mailIsTaken)
             {
-                ModelState.AddModelError(string.Empty, "Bu e-posta adresi zaten kullanımda.");
-                return View(model);
+                ViewBag.Error = "Enter a valid Email.";
+                return View();
             }
 
             if (model.Password != model.PasswordVerify)
             {
-                ViewBag.Error = "Şifreler uyuşmuyor";
+                ViewBag.Error = "Passwords does not match!";
                 return View(model);
             }
 
@@ -94,14 +96,14 @@ namespace Ads.Web.Mvc.Controllers
             if (user.IsEmailConfirmed)
             {
                 ViewBag.HasMessage = true;
-                ViewBag.Error = "Hesap zaten onaylanmış";
+                ViewBag.Error = "Account is already verified!";
                 return View();
             }
 
             if (user.EmailConfirmationToken != verificationCode)
             {
                 ViewBag.HasMessage = true;
-                ViewBag.Error = "Onay kodu hatalı";
+                ViewBag.Error = "Verification code is wrong!";
                 return View();
             }
 
@@ -127,7 +129,9 @@ namespace Ads.Web.Mvc.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                ViewBag.Error = "Fill required sections.";
+                return View();
+                //return BadRequest(ModelState);
             }
 
             var user = await DbContext.UserEntities.SingleOrDefaultAsync(x => x.Email == login.Email
@@ -212,12 +216,12 @@ namespace Ads.Web.Mvc.Controllers
                 PasswordResetService resetService = new PasswordResetService(_emailService);
                 resetService.SendPasswordResetEmail(user.Email, user.PasswordResetToken);
 
-                ViewBag.Message = "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.";
+                ViewBag.Message = "Password reset link has sent your Email.";
                 return View();
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Bu e-posta adresi kayıtlı değil.");
+                ModelState.AddModelError(string.Empty, "This email is not registered");
             }
 
             return View(model);
@@ -232,7 +236,8 @@ namespace Ads.Web.Mvc.Controllers
 
             if (id != request.Token)
             {
-                return BadRequest("Invalid Token.");
+                ViewBag.InvalidToken = "The token is not valid anymore!";
+                //return BadRequest("Invalid Token.");
             }
             return View();
         }
@@ -243,7 +248,7 @@ namespace Ads.Web.Mvc.Controllers
         {
             //if (!ModelState.IsValid)
             //{
-            //    ViewBag.Error = "Girdiğiniz şifreleri kontrol ediniz";
+            //    ViewBag.Error = "Please fill required input sections!";
             //    return View();
             //}
             request.Token = TempData["PasswordResetTokenforPostMethod"] as string;
@@ -251,11 +256,17 @@ namespace Ads.Web.Mvc.Controllers
             var user = await DbContext.UserEntities.FirstOrDefaultAsync(u => u.PasswordResetToken == request.Token);
             if (user == null || user.ResetTokenExpires < DateTime.Now || user.PasswordResetToken != request.Token)
             {
-                return BadRequest("Invalid Token.");
+                ViewBag.ErrorToken = "The token that given to you is not valid anymore please make a new password reset request ";
+                return View();
+                //return BadRequest("Invalid Token.");
             }
 
+            if (request.NewPassword is null && request.ConfirmNewPassword is null)
+            {
+                ViewBag.Error = "Please fill required input sections!";
+                return View();
+            }
             _tokenUsageService.CreatePasswordHash(request.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
-
             if (request.NewPassword == request.ConfirmNewPassword)
             {
 
@@ -271,8 +282,9 @@ namespace Ads.Web.Mvc.Controllers
             }
             else
             {
-                ViewBag.Error = "Passwords does not match! Please request a new password link!";
+                ViewBag.Error = "Passwords does not match!";
             }
+
 
             return View();
         }
