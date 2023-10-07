@@ -25,7 +25,7 @@ namespace Ads.Web.Mvc.Controllers
         {
             DbContext = dbContext;
             _emailService = emailService;
-            _tokenUsageService = tokenUsageService; // TokenUsageService'ı enjekte edin
+            _tokenUsageService = tokenUsageService;
         }
 
 
@@ -38,6 +38,11 @@ namespace Ads.Web.Mvc.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ErrorMessage = "Girdiğiniz değerleri kontrol ediniz";
+                return View();
+            }
             var existingUser = await DbContext.UserEntities.FirstOrDefaultAsync(u => u.Email == model.Email);
             if (existingUser != null)
             {
@@ -63,13 +68,11 @@ namespace Ads.Web.Mvc.Controllers
             DbContext.UserEntities.Add(user);
             await DbContext.SaveChangesAsync();
 
-            string mailMessage = $"Your verification code is: <strong>{user.EmailConfirmationToken}</strong>";
+            string mailMessage = $" Thank you for registration to our website.  Here your verification code is: <strong>{user.EmailConfirmationToken}</strong>";
 
             await _emailService.SendEmailAsync(model.Email, "User Verification", mailMessage);
 
-            ViewBag.Message = "Onay mail'i gönderildi.";
             ModelState.Clear();
-
             return View("~/Views/Auth/VerifyAccount.cshtml", user.Id);
         }
 
@@ -192,25 +195,25 @@ namespace Ads.Web.Mvc.Controllers
         }
 
         [HttpPost("forgot-password")]
-        public IActionResult ForgotPassword(ForgotPasswordViewModel model)
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            string email = model.Email;
-            var user = DbContext.UserEntities.FirstOrDefault(u => u.Email == email);
+            string? email = model.Email;
+            var user = await DbContext.UserEntities.FirstOrDefaultAsync(u => u.Email == email);
 
             if (user != null)
             {
-               
+
                 user.PasswordResetToken = _tokenUsageService.CreateRandomToken();
                 TempData["PasswordResetTokenforGetMethod"] = user.PasswordResetToken;
                 TempData["PasswordResetTokenforPostMethod"] = user.PasswordResetToken;
                 user.ResetTokenExpires = DateTime.Now.AddDays(1);
-                DbContext.SaveChanges();
+                await DbContext.SaveChangesAsync();
 
                 PasswordResetService resetService = new PasswordResetService(_emailService);
                 resetService.SendPasswordResetEmail(user.Email, user.PasswordResetToken);
 
-                TempData["Message"] = "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.";
-                return RedirectToAction("Login");
+                ViewBag.Message = "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.";
+                return View();
             }
             else
             {
@@ -221,7 +224,7 @@ namespace Ads.Web.Mvc.Controllers
         }
 
         [HttpGet]
-        public IActionResult ResetPassword(ResetPasswordViewModel request, [FromRoute] string id)
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel request, [FromRoute] string id)
         {
 
             request.Token = TempData["PasswordResetTokenforGetMethod"] as string;
@@ -229,16 +232,20 @@ namespace Ads.Web.Mvc.Controllers
 
             if (id != request.Token)
             {
-
                 return BadRequest("Invalid Token.");
             }
             return View();
         }
-   
+
 
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel request)
         {
+            //if (!ModelState.IsValid)
+            //{
+            //    ViewBag.Error = "Girdiğiniz şifreleri kontrol ediniz";
+            //    return View();
+            //}
             request.Token = TempData["PasswordResetTokenforPostMethod"] as string;
 
             var user = await DbContext.UserEntities.FirstOrDefaultAsync(u => u.PasswordResetToken == request.Token);
@@ -249,17 +256,27 @@ namespace Ads.Web.Mvc.Controllers
 
             _tokenUsageService.CreatePasswordHash(request.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
 
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
-            user.Password = request.NewPassword;
-            user.PasswordResetToken = null;
-            user.ResetTokenExpires = null;
+            if (request.NewPassword == request.ConfirmNewPassword)
+            {
 
-            await DbContext.SaveChangesAsync();
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+                user.Password = request.NewPassword;
+                user.PasswordResetToken = null;
+                user.ResetTokenExpires = null;
+                await DbContext.SaveChangesAsync();
+                ViewBag.Success = "Your password changed succesfully!";
+                return View();
 
-            return Ok("Password successfully reset.");
+            }
+            else
+            {
+                ViewBag.Error = "Passwords does not match! Please request a new password link!";
+            }
+
+            return View();
         }
 
-      
+
     }
 }

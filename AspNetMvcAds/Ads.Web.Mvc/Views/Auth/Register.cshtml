@@ -2,6 +2,10 @@
 @{
     ViewData["Title"] = "User Register";
 }
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
 <section class="login py-5 border-top-1">
     <div class="container">
         <div class="row justify-content-center">
@@ -29,6 +33,10 @@
                         </fieldset>
                     </form>
                 </div>
+                @if (!string.IsNullOrEmpty(ViewBag.Error))
+                {
+                    <div class="alert alert-danger">@ViewBag.Error</div>
+                }
             </div>
         </div>
     </div>

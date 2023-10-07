@@ -10,15 +10,15 @@ namespace Ads.Web.Mvc.Models
         [Required]
         public string Token { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Yeni şifre alanı zorunludur.")]
+        [Required(ErrorMessage = "New Password area is required.")]
         [DataType(DataType.Password)]
-        [Display(Name = "Yeni Şifre")]
+        [Display(Name = "New Password")]
         public string NewPassword { get; set; }=string.Empty;
 
-        [Required(ErrorMessage = "Yeni şifreyi doğrulama alanı zorunludur.")]
-        [Compare("NewPassword", ErrorMessage = "Yeni şifre ile doğrulama şifresi uyuşmuyor.")]
+        [Required(ErrorMessage = "Confirm New Password area is required.")]
+        [Compare("NewPassword", ErrorMessage = "Passwords does not match")]
         [DataType(DataType.Password)]
-        [Display(Name = "Yeni Şifre Doğrulama")]
+        [Display(Name = "Confirm New Password")]
         public string ConfirmNewPassword { get; set; } = string.Empty;
     }
 }

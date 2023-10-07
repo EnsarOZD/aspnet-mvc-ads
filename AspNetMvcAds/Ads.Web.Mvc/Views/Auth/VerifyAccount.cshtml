@@ -21,8 +21,8 @@ else if (Model <= 0)
 else
 {
 
-        <div class="alert alert-warning mb-4 mt-3" style="max-width:500px; margin-left:350px;">
-            E-mail adresinize gönderilen kodu giriniz.
+        <div class="alert alert-success mb-4 mt-3" style="max-width:500px; margin-left:350px;">
+        You have successfully registered!  Now check your e-mail inbox for validation code.
         </div>
 
         <form asp-action="VerifyAccount" asp-controller="Auth" asp-route-id="@Model" method="post">
