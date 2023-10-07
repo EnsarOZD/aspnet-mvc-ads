@@ -39,44 +39,47 @@ namespace Ads.Web.Mvc.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+           
             var existingUser = await DbContext.UserEntities.FirstOrDefaultAsync(u => u.Email == model.Email);
-            if (existingUser == null)
+            if (existingUser != null)
             {
-               
+                ViewBag.Error = "Please enter a valid Email";
                 return View();
             }
-            var mailIsTaken = await DbContext.UserEntities.AnyAsync(u => u.Email == model.Email);
-            if (mailIsTaken)
-            {
-                ViewBag.Error = "Enter a valid Email.";
-                return View();
-            }
-
             if (model.Password != model.PasswordVerify)
             {
-                ViewBag.Error = "Passwords does not match!";
+                ViewBag.Error = "Passwords does not a match!";
                 return View(model);
             }
-
-            UserEntity user = new()
+         
+            if (ModelState.IsValid)
             {
-                Email = model.Email,
-                Password = model.Password,
-                Roles = "User",
-                IsEmailConfirmed = false,
-                EmailConfirmationToken = Guid.NewGuid().ToString("n").Substring(0, 6).ToUpper()
-            };
+              
+                UserEntity user = new()
+                {
+                    Email = model.Email,
+                    Password = model.Password,
+                    Roles = "User",
+                    IsEmailConfirmed = false,
+                    EmailConfirmationToken = Guid.NewGuid().ToString("n").Substring(0, 6).ToUpper()
+                };
 
-            DbContext.UserEntities.Add(user);
-            await DbContext.SaveChangesAsync();
+                DbContext.UserEntities.Add(user);
+                await DbContext.SaveChangesAsync();
 
-            string mailMessage = $" Thank you for registration to our website.  Here your verification code is: <strong>{user.EmailConfirmationToken}</strong>";
+              
+                string mailMessage = $" Thank you for registration to our website.  Here your verification code is: <strong>{user.EmailConfirmationToken}</strong>";
+                await _emailService.SendEmailAsync(model.Email, "User Verification", mailMessage);
 
-            await _emailService.SendEmailAsync(model.Email, "User Verification", mailMessage);
+              
+                ModelState.Clear();
+                return View("~/Views/Auth/VerifyAccount.cshtml", user.Id);
+            }
 
-            ModelState.Clear();
-            return View("~/Views/Auth/VerifyAccount.cshtml", user.Id);
+         
+            return View();
         }
+
 
         [HttpGet]
         public IActionResult VerifyAccount()
