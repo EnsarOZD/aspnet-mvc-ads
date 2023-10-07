@@ -19,6 +19,9 @@ namespace Ads.Data.Entities
 
         [Required, DataType(DataType.Password), MaxLength(100)]
         public string Password { get; set; } = string.Empty;
+        public byte[] PasswordHash { get; set; } = new byte[32];
+        public byte[] PasswordSalt { get; set; } = new byte[32];
+        public DateTime? ResetTokenExpires { get; set; }
 
         [Required, MaxLength(100)]
         public string Name { get; set; } = string.Empty;
@@ -28,6 +31,10 @@ namespace Ads.Data.Entities
 
         [Required, MaxLength(20)]
         public string Phone { get; set; } = string.Empty;
+        public bool IsEmailConfirmed { get; set; }
+        public string Roles { get; set; } = string.Empty;
+        public string? EmailConfirmationToken { get; set; } = string.Empty;
+        public string? PasswordResetToken { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

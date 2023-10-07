@@ -1,0 +1,36 @@
+﻿@model int
+@if (ViewBag.HasMessage == true)
+{
+    if (!string.IsNullOrWhiteSpace(ViewBag.Error))
+    {
+        <div class="alert alert-success">@ViewBag.Error</div>
+    }
+    if (!string.IsNullOrWhiteSpace(ViewBag.Success))
+    {
+        <div class="alert alert-success">
+            @ViewBag.Success
+            <br />
+            <a asp-action="Login" asp-controller="Auth">Login'e git >></a>
+        </div>
+    }
+}
+else if (Model <= 0)
+{
+    throw new InvalidOperationException("User id should have been provided");
+}
+else
+{
+
+        <div class="alert alert-success mb-4 mt-3" style="max-width:500px; margin-left:350px;">
+        You have successfully registered!  Now check your e-mail inbox for validation code.
+        </div>
+
+        <form asp-action="VerifyAccount" asp-controller="Auth" asp-route-id="@Model" method="post">
+        <div class="d-flex mb-5 align-items-center">
+        <input type="text" style="max-width:450px;margin-left:350px;" class="form-control" name="verificationCode" placeholder="Onay kodu..." minlength="6" maxlength="6" required />
+        <button type="submit" class="btn btn-success " style=" margin-left:25px; margin-top:7px; padding: 6px 10px; ">Onayla</button>
+        </div>
+        </form>
+   
+    
+}

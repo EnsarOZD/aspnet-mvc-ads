@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Ads.Web.Mvc.Controllers
 {
+
     public class CategoryController : Controller
     {
         [Route("/category/")]
