@@ -1,4 +1,4 @@
-﻿using Ads.Data;
+using Ads.Data;
 using Ads.Web.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
 

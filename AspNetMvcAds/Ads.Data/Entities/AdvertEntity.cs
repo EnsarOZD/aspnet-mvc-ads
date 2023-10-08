@@ -20,6 +20,8 @@ namespace Ads.Data.Entities
         [Required, Column(TypeName = "ntext")]
         public string Description { get; set; } = string.Empty;
 
+        public int AdvertClickCount { get; set; }
+
         public int UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
