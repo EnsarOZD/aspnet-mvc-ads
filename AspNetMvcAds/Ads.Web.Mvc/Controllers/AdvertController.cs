@@ -6,11 +6,11 @@ namespace Ads.Web.Mvc.Controllers
 {
     public class AdvertController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _db;
 
-        public AdvertController(AppDbContext context)
+        public AdvertController(AppDbContext db)
         {
-            _context = context;
+            _db = db;
         }
 
         [Route("/advert/search")]
@@ -23,15 +23,15 @@ namespace Ads.Web.Mvc.Controllers
         [Route("/advert/detail/{id}")]
         public IActionResult Detail(int id)
         {
-            var advertEntity = _context.AdvertEntities.FirstOrDefault(x => x.Id == id);
+            var advertEntity = _db.AdvertEntities.FirstOrDefault(x => x.Id == id);
             if (advertEntity != null)
             {
-                var categoryId = _context.CategoryAdvertEntities.FirstOrDefault(x => x.AdvertId == id)?.CategoryId ?? 0;
-                var category = _context.CategoryEntities.FirstOrDefault(x => x.Id == categoryId);
+                var categoryId = _db.CategoryAdvertEntities.FirstOrDefault(x => x.AdvertId == id)?.CategoryId ?? 0;
+                var category = _db.CategoryEntities.FirstOrDefault(x => x.Id == categoryId);
 
-                var user = _context.UserEntities.FirstOrDefault(x => x.Id == advertEntity.UserId);
+                var user = _db.UserEntities.FirstOrDefault(x => x.Id == advertEntity.UserId);
 
-                var imagePaths = _context.AdvertImageEntities.Where(x => x.AdvertId == id).Select(x => x.ImagePath).ToList();
+                var imagePaths = _db.AdvertImageEntities.Where(x => x.AdvertId == id).Select(x => x.ImagePath).ToList();
 
                 var advertModel = new AdvertDetailViewModel
                 {
