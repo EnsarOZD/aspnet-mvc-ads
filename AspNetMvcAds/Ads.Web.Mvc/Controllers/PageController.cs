@@ -10,5 +10,10 @@ namespace Ads.Web.Mvc.Controllers
         {
             return View();
         }
+        [HttpGet("/page/SingleDetail")]
+        public IActionResult SingleDetail()
+        {
+            return View();
+        }
     }
 }
