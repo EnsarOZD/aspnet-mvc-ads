@@ -1,11 +1,11 @@
 ﻿@model AdvertDetailViewModel
 @{
-    ViewData["Title"] = "Advert Detail";
+	ViewData["Title"] = "Advert Detail";
 }
 
 @await Html.PartialAsync("_SearchPartial")
 
-@if(Model == null)
+@if (Model == null)
 {
 	<p> Product is not found !! </p>
 }

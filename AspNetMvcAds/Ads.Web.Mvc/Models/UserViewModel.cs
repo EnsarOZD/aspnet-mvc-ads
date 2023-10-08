@@ -1,5 +1,6 @@
 namespace Ads.Web.Mvc.Models
 {
+
     public class UserViewModel
     {
         public int Id { get; set; }
@@ -13,4 +14,5 @@ namespace Ads.Web.Mvc.Models
 
         public string Phone { get; set; } = string.Empty;
     }
+
 }
