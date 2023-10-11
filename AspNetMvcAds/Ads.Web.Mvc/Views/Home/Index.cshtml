@@ -1,5 +1,4 @@
-﻿@model HomeViewModel
-@{
+﻿@{
     ViewData["Title"] = "Home";
 }
 
@@ -7,6 +6,6 @@
 
 @await Html.PartialAsync("_PopularDealsPartial")
 
-@await Html.PartialAsync("_CategoriesPartial", Model.Categories)
+@await Html.PartialAsync("_CategoriesPartial")
 
 @await Html.PartialAsync("_CallToActionPartial")
