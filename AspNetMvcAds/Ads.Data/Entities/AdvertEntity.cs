@@ -26,9 +26,8 @@ namespace Ads.Data.Entities
 
         [ForeignKey(nameof(UserId))]
         public UserEntity User { get; set; }= null!;
-		
 
-		public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public DateTimeOffset DeletedAt { get; set; }
     }
