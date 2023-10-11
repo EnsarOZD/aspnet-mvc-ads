@@ -12,159 +12,160 @@ namespace Ads.Data
     {
         public static void Seed(AppDbContext dbcontext)
         {
-                 var fakeuser = new Faker<UserEntity>()
-				.RuleFor(u => u.Email, f => f.Internet.Email())
-                .RuleFor(u => u.Password, f => f.Internet.Password())
-                .RuleFor(u => u.Name, f => f.Name.FirstName())
-                .RuleFor(u => u.Address, f => f.Address.FullAddress())
-                .RuleFor(u => u.Phone, f => {
-                    var phone = f.Phone.PhoneNumber();
-                    return phone.Length >= 20 ? phone.Substring(0, 20) : phone;
-                });
+            var fakeuser = new Faker<UserEntity>()
+           .RuleFor(u => u.Email, f => f.Internet.Email())
+           .RuleFor(u => u.Password, f => f.Internet.Password())
+           .RuleFor(u => u.Name, f => f.Name.FirstName())
+           .RuleFor(u => u.Address, f => f.Address.FullAddress())
+           .RuleFor(u => u.Phone, f =>
+           {
+               var phone = f.Phone.PhoneNumber();
+               return phone.Length >= 20 ? phone.Substring(0, 20) : phone;
+           });
             var users = fakeuser.Generate(100);
-			dbcontext.UserEntities.AddRange(users);
-			dbcontext.SaveChanges();
+            dbcontext.UserEntities.AddRange(users);
+            dbcontext.SaveChanges();
 
 
-			var pageFaker = new Faker<PageEntity>()
-		.RuleFor(p => p.Title, f =>
-		{
-			var sentence = f.Lorem.Sentence(5);
-			return sentence.Substring(0, Math.Min(200, sentence.Length));
-		})
-		.RuleFor(p => p.Content, f => f.Lorem.Paragraphs())
-		.RuleFor(p => p.IsActive, f => f.Random.Bool())
-		.RuleFor(p => p.CreatedAt, f => f.Date.Past(2))
-		.RuleFor(p => p.UpdatedAt, (f, p) => f.Date.Between(p.CreatedAt, DateTime.Now));
+            var pageFaker = new Faker<PageEntity>()
+        .RuleFor(p => p.Title, f =>
+        {
+            var sentence = f.Lorem.Sentence(5);
+            return sentence.Substring(0, Math.Min(200, sentence.Length));
+        })
+        .RuleFor(p => p.Content, f => f.Lorem.Paragraphs())
+        .RuleFor(p => p.IsActive, f => f.Random.Bool())
+        .RuleFor(p => p.CreatedAt, f => f.Date.Past(2))
+        .RuleFor(p => p.UpdatedAt, (f, p) => f.Date.Between(p.CreatedAt, DateTime.Now));
 
-			var pages = pageFaker.Generate(10);
-			dbcontext.PageEntities.AddRange(pages);
-			dbcontext.SaveChanges();
+            var pages = pageFaker.Generate(10);
+            dbcontext.PageEntities.AddRange(pages);
+            dbcontext.SaveChanges();
 
-			//var pages = new List<PageEntity>
-			//         {
-			//              new PageEntity
-			//              {
-			//                  Title = "About Us",
-			//                  Content = "This is the About Us page content.",
-			//                  IsActive = true,
-			//                  CreatedAt = DateTime.Now,
-			//                  UpdatedAt = DateTime.Now,
-			//              },
-			//              new PageEntity
-			//              {
-			//                 Title = "Contact Us",
-			//                 Content = "You can reach us at contact@example.com.",
-			//                 IsActive = true,
-			//                 CreatedAt = DateTime.Now,
-			//                 UpdatedAt = DateTime.Now,
-			//              },
-			//              new PageEntity
-			//              {
-			//                  Title = "Privacy Policy",
-			//                  Content = "This is the Privacy Policy page content.",
-			//                  IsActive = true,
-			//                  CreatedAt = DateTime.Now,
-			//                  UpdatedAt = DateTime.Now,
-			//              }
-			//         };
-			//         dbcontext.PageEntities.AddRange(pages);
-			//         dbcontext.SaveChanges();
+            //var pages = new List<PageEntity>
+            //         {
+            //              new PageEntity
+            //              {
+            //                  Title = "About Us",
+            //                  Content = "This is the About Us page content.",
+            //                  IsActive = true,
+            //                  CreatedAt = DateTime.Now,
+            //                  UpdatedAt = DateTime.Now,
+            //              },
+            //              new PageEntity
+            //              {
+            //                 Title = "Contact Us",
+            //                 Content = "You can reach us at contact@example.com.",
+            //                 IsActive = true,
+            //                 CreatedAt = DateTime.Now,
+            //                 UpdatedAt = DateTime.Now,
+            //              },
+            //              new PageEntity
+            //              {
+            //                  Title = "Privacy Policy",
+            //                  Content = "This is the Privacy Policy page content.",
+            //                  IsActive = true,
+            //                  CreatedAt = DateTime.Now,
+            //                  UpdatedAt = DateTime.Now,
+            //              }
+            //         };
+            //         dbcontext.PageEntities.AddRange(pages);
+            //         dbcontext.SaveChanges();
 
-			var advertFaker = new Faker<AdvertEntity>()
-			.RuleFor(a => a.Title, f => f.Lorem.Sentence(5))
-			.RuleFor(a => a.Description, f => f.Lorem.Paragraphs())
-			.RuleFor(a => a.AdvertClickCount, f => f.Random.Number(0, 1000))
-			.RuleFor(a => a.UserId, f => f.Random.Number(1, 100)) // Örnek olarak 1-100 arasında rastgele bir değer.
-			.RuleFor(a => a.CreatedAt, f => f.Date.Past(2))
-			.RuleFor(a => a.UpdatedAt, (f, a) => f.Date.Between(a.CreatedAt, DateTime.Now));
-            var advert=advertFaker.Generate(50);
+            var advertFaker = new Faker<AdvertEntity>()
+            .RuleFor(a => a.Title, f => f.Lorem.Sentence(5))
+            .RuleFor(a => a.Description, f => f.Lorem.Paragraphs())
+            .RuleFor(a => a.AdvertClickCount, f => f.Random.Number(0, 1000))
+            .RuleFor(a => a.UserId, f => f.Random.Number(1, 100)) // Örnek olarak 1-100 arasında rastgele bir değer.
+            .RuleFor(a => a.CreatedAt, f => f.Date.Past(2))
+            .RuleFor(a => a.UpdatedAt, (f, a) => f.Date.Between(a.CreatedAt, DateTime.Now));
+            var advert = advertFaker.Generate(50);
             dbcontext.AdvertEntities.AddRange(advert);
             dbcontext.SaveChanges();
 
 
-			//if (!dbcontext.AdvertEntities.Any())
-   //         {
-   //             var user = dbcontext.UserEntities.First();
-   //             var advert1 = new AdvertEntity
-   //             {
+            //if (!dbcontext.AdvertEntities.Any())
+            //         {
+            //             var user = dbcontext.UserEntities.First();
+            //             var advert1 = new AdvertEntity
+            //             {
 
-   //                 Title = "Monitor",
-   //                 Description = "Monitor",
-   //                 UserId = user.Id,
-   //                 AdvertClickCount = 1,
-   //                 CreatedAt = DateTime.Now,
-   //                 UpdatedAt = DateTime.Now,
-   //             };
+            //                 Title = "Monitor",
+            //                 Description = "Monitor",
+            //                 UserId = user.Id,
+            //                 AdvertClickCount = 1,
+            //                 CreatedAt = DateTime.Now,
+            //                 UpdatedAt = DateTime.Now,
+            //             };
 
-   //             var advert2 = new AdvertEntity
-   //             {
+            //             var advert2 = new AdvertEntity
+            //             {
 
-   //                 Title = "11inch Macbook Air",
-   //                 Description = "Macbook",
-   //                 UserId = user.Id,
-   //                 AdvertClickCount=100,
-   //                 CreatedAt = DateTime.Now,
-   //                 UpdatedAt = DateTime.Now,
-   //             };
+            //                 Title = "11inch Macbook Air",
+            //                 Description = "Macbook",
+            //                 UserId = user.Id,
+            //                 AdvertClickCount=100,
+            //                 CreatedAt = DateTime.Now,
+            //                 UpdatedAt = DateTime.Now,
+            //             };
 
-   //             var advert3 = new AdvertEntity
-   //             {
+            //             var advert3 = new AdvertEntity
+            //             {
 
-   //                 Title = "Study Table Combo",
-   //                 Description = "Table",
-   //                 UserId = user.Id,
-			//		AdvertClickCount = 3,
-			//		CreatedAt = DateTime.Now,
-   //                 UpdatedAt = DateTime.Now,
-   //             };
+            //                 Title = "Study Table Combo",
+            //                 Description = "Table",
+            //                 UserId = user.Id,
+            //		AdvertClickCount = 3,
+            //		CreatedAt = DateTime.Now,
+            //                 UpdatedAt = DateTime.Now,
+            //             };
 
-   //             var advert4 = new AdvertEntity
-   //             {
+            //             var advert4 = new AdvertEntity
+            //             {
 
-   //                 Title = "advert4",
-   //                 Description = "advert4",
-   //                 UserId = user.Id,
-   //                 AdvertClickCount = 75,
-   //                 CreatedAt = DateTime.Now,
-   //                 UpdatedAt = DateTime.Now,
-   //             };
+            //                 Title = "advert4",
+            //                 Description = "advert4",
+            //                 UserId = user.Id,
+            //                 AdvertClickCount = 75,
+            //                 CreatedAt = DateTime.Now,
+            //                 UpdatedAt = DateTime.Now,
+            //             };
 
-   //             var advert5 = new AdvertEntity
-   //             {
+            //             var advert5 = new AdvertEntity
+            //             {
 
-   //                 Title = "advert5",
-   //                 Description = "advert5",
-   //                 UserId = user.Id,
-   //                 AdvertClickCount = 3,
-   //                 CreatedAt = DateTime.Now,
-   //                 UpdatedAt = DateTime.Now,
-   //             };
+            //                 Title = "advert5",
+            //                 Description = "advert5",
+            //                 UserId = user.Id,
+            //                 AdvertClickCount = 3,
+            //                 CreatedAt = DateTime.Now,
+            //                 UpdatedAt = DateTime.Now,
+            //             };
 
-   //             var advert6 = new AdvertEntity
-   //             {
+            //             var advert6 = new AdvertEntity
+            //             {
 
-   //                 Title = "advert6",
-   //                 Description = "advert6",
-   //                 UserId = user.Id,
-   //                 AdvertClickCount = 3,
-   //                 CreatedAt = DateTime.Now,
-   //                 UpdatedAt = DateTime.Now,
-   //             };
+            //                 Title = "advert6",
+            //                 Description = "advert6",
+            //                 UserId = user.Id,
+            //                 AdvertClickCount = 3,
+            //                 CreatedAt = DateTime.Now,
+            //                 UpdatedAt = DateTime.Now,
+            //             };
 
-   //             var advert7 = new AdvertEntity
-   //             {
+            //             var advert7 = new AdvertEntity
+            //             {
 
-   //                 Title = "advert7",
-   //                 Description = "advert7",
-   //                 UserId = user.Id,
-   //                 AdvertClickCount = 3,
-   //                 CreatedAt = DateTime.Now,
-   //                 UpdatedAt = DateTime.Now,
-   //             };
+            //                 Title = "advert7",
+            //                 Description = "advert7",
+            //                 UserId = user.Id,
+            //                 AdvertClickCount = 3,
+            //                 CreatedAt = DateTime.Now,
+            //                 UpdatedAt = DateTime.Now,
+            //             };
 
-   //             dbcontext.AdvertEntities.AddRange(advert1, advert2, advert3, advert4, advert5, advert6, advert7);
-   //             dbcontext.SaveChanges();
+            //             dbcontext.AdvertEntities.AddRange(advert1, advert2, advert3, advert4, advert5, advert6, advert7);
+            //             dbcontext.SaveChanges();
 
             //}
 
@@ -213,42 +214,42 @@ namespace Ads.Data
                         Name = "Sale",
                         Description = "Whole Sale",
                     };
-                    var Catagory3 = new CategoryEntity
+                    var Category3 = new CategoryEntity
                     {
                         Name = "Second Hand",
                         Description = "Second hand products"
                     };
-					var Catagory4 = new CategoryEntity
-					{
-						Name = "Hotel",
-						Description = "Rezervation For Hotel"
-					};
-					var Catagory5 = new CategoryEntity
-					{
-						Name = "Elektronic",
-						Description = "Electronic products"
-					};
-					var Catagory6 = new CategoryEntity
-					{
-						Name = "Fitness",
-						Description = "For healty"
-					};
-					var Catagory7 = new CategoryEntity
-					{
-						Name = "Cars",
-						Description = "Cars"
-					};
-					var Catagory8 = new CategoryEntity
-					{
-						Name = "Restourants",
-						Description = "Eating for Food"
-					};
-					var Catagory9 = new CategoryEntity
-					{
-						Name = "Cafe",
-						Description = "For have a good time"
-					};
-					dbcontext.CategoryEntities.AddRange(Category1, Category2, Catagory3, Catagory4, Catagory5, Catagory6, Catagory7, Catagory8, Catagory9);
+                    var Category4 = new CategoryEntity
+                    {
+                        Name = "Hotel",
+                        Description = "Rezervation For Hotel"
+                    };
+                    var Category5 = new CategoryEntity
+                    {
+                        Name = "Elektronic",
+                        Description = "Electronic products"
+                    };
+                    var Category6 = new CategoryEntity
+                    {
+                        Name = "Fitness",
+                        Description = "For healty"
+                    };
+                    var Category7 = new CategoryEntity
+                    {
+                        Name = "Cars",
+                        Description = "Cars"
+                    };
+                    var Category8 = new CategoryEntity
+                    {
+                        Name = "Restourants",
+                        Description = "Eating for Food"
+                    };
+                    var Category9 = new CategoryEntity
+                    {
+                        Name = "Cafe",
+                        Description = "For have a good time"
+                    };
+                    dbcontext.CategoryEntities.AddRange(Category1, Category2, Category3, Category4, Category5, Category6, Category7, Category8, Category9);
                     dbcontext.SaveChanges();
 
 
@@ -267,27 +268,42 @@ namespace Ads.Data
                         CategoryId = 2,
                         AdvertId = 2,
                     };
-                    var CatagoryAd3 = new CategoryAdvertEntity
+                    var CategoryAd3 = new CategoryAdvertEntity
                     {
                         CategoryId = 3,
                         AdvertId = 3
                     };
-                    var CatagoryAd4 = new CategoryAdvertEntity
+                    var CategoryAd4 = new CategoryAdvertEntity
                     {
                         CategoryId = 4,
                         AdvertId = 4
                     };
-                    var CatagoryAd5 = new CategoryAdvertEntity
+                    var CategoryAd5 = new CategoryAdvertEntity
                     {
                         CategoryId = 5,
                         AdvertId = 5
                     };
-                    var CatagoryAd6 = new CategoryAdvertEntity
+                    var CategoryAd6 = new CategoryAdvertEntity
                     {
                         CategoryId = 3,
                         AdvertId = 7
                     };
-                    dbcontext.CategoryAdvertEntities.AddRange(CategoryAd1, CategoryAd2, CatagoryAd3, CatagoryAd4, CatagoryAd5, CatagoryAd6);
+                    var CategoryAd7 = new CategoryAdvertEntity
+                    {
+                        CategoryId = 7,
+                        AdvertId = 7
+                    };
+                    var CategoryAd8 = new CategoryAdvertEntity
+                    {
+                        CategoryId = 8,
+                        AdvertId = 8
+                    };
+                    var CategoryAd9 = new CategoryAdvertEntity
+                    {
+                        CategoryId = 9,
+                        AdvertId = 9
+                    };
+                    dbcontext.CategoryAdvertEntities.AddRange(CategoryAd1, CategoryAd2, CategoryAd3, CategoryAd4, CategoryAd5, CategoryAd6, CategoryAd7, CategoryAd8, CategoryAd9);
                     dbcontext.SaveChanges();
 
 
