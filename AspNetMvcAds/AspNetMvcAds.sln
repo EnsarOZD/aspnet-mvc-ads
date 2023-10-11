@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ads.Data", "Ads.Data\Ads.Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ads.Services", "Ads.Services\Ads.Services.csproj", "{904D7B23-AB90-407B-964F-BFEE7F6BE0C2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ads.Web.Mvc", "..\..\..\..\..\Desktop\AspNetMvcAds\Ads.Web.Mvc\Ads.Web.Mvc.csproj", "{73A94FCF-BF0C-4F06-BA0B-EC6977907628}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ads.Web.Mvc", "Ads.Web.Mvc\Ads.Web.Mvc.csproj", "{6ABEEF71-25A2-4672-839C-F67799825720}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{904D7B23-AB90-407B-964F-BFEE7F6BE0C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{904D7B23-AB90-407B-964F-BFEE7F6BE0C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{904D7B23-AB90-407B-964F-BFEE7F6BE0C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{73A94FCF-BF0C-4F06-BA0B-EC6977907628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{73A94FCF-BF0C-4F06-BA0B-EC6977907628}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{73A94FCF-BF0C-4F06-BA0B-EC6977907628}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{73A94FCF-BF0C-4F06-BA0B-EC6977907628}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ABEEF71-25A2-4672-839C-F67799825720}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ABEEF71-25A2-4672-839C-F67799825720}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ABEEF71-25A2-4672-839C-F67799825720}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ABEEF71-25A2-4672-839C-F67799825720}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
