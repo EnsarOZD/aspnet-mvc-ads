@@ -5,7 +5,7 @@
 
 <section class="bg-gray py-5">
     <div class="container">
-        <form>
+        <form method="post" asp-action="Add" asp-controller="AddListing">
             <!-- Post Your ad start -->
             <fieldset class="border border-gary p-4 mb-5">
                 <div class="row">
@@ -14,50 +14,46 @@
                     </div>
                     <div class="col-lg-6">
                         <h6 class="font-weight-bold pt-4 pb-1">Title Of Ad:</h6>
-                        <input type="text" class="border w-100 p-2 bg-white text-capitalize" placeholder="Ad title go There">
+                        <input asp-for=Title type="text" class="border w-100 p-2 bg-white text-capitalize" placeholder="Ad title go There">
                         <h6 class="font-weight-bold pt-4 pb-1">Ad Type:</h6>
                         <div class="row px-3">
                             <div class="col-lg-4 mr-lg-4 my-2 rounded bg-white">
-                                <input type="radio" name="itemName" value="personal" id="personal">
-                                <label for="personal" class="py-2">Personal</label>
+                                <input asp-for=AdType type="radio" value="personal">
+                                <label asp-for=AdType class="py-2">Personal</label>
                             </div>
                             <div class="col-lg-4 mr-lg-4 my-2 rounded bg-white ">
-                                <input type="radio" name="itemName" value="business" id="business">
-                                <label for="business" class="py-2">Business</label>
+                                <input asp-for=AdType type="radio" value="business">
+                                <label asp-for=AdType class="py-2">Business</label>
                             </div>
                         </div>
                         <h6 class="font-weight-bold pt-4 pb-1">Description:</h6>
-                        <textarea name="" id="" class="border p-3 w-100" rows="7" placeholder="Write details about your product"></textarea>
+                        <textarea asp-for=Description class="border p-3 w-100" rows="7" placeholder="Write details about your product"></textarea>
                     </div>
                     <div class="col-lg-6">
                         <h6 class="font-weight-bold pt-4 pb-1">Select Ad Category:</h6>
-                        <select name="" id="inputGroupSelect" class="w-100">
-                            <option value="1">Select category</option>
-                            <option value="2">Laptops</option>
-                            <option value="3">iphone</option>
-                            <option value="4">microsoft</option>
-                            <option value="5">monitors</option>
-                            <option value="6">11inch Macbook Air</option>
-                            <option value="7">Study Table Combo</option>
-                            <option value="8">11inch Macbook Air</option>
-                            <option value="9">Study Table Combo</option>
-                            <option value="10">11inch Macbook Air</option>
+                        <select asp-for="CategoryId" class="w-100">
+                            <option value="0">Select category</option>
+                            @* @foreach (var category in ViewData["Categories"])
+                            {
+                            <option value="@category.Value">@category.Text</option>
+                            } *@
+
                         </select>
                         <div class="price">
                             <h6 class="font-weight-bold pt-4 pb-1">Item Price ($ USD):</h6>
                             <div class="row px-3">
                                 <div class="col-lg-4 mr-lg-4 rounded bg-white my-2 ">
-                                    <input type="text" name="price" class="border-0 py-2 w-100 price" placeholder="Price"
+                                    <input asp-for="Price" type="text" name="price" class="border-0 py-2 w-100 price" placeholder="Price"
                                            id="price">
                                 </div>
                                 <div class="col-lg-4 mrx-4 rounded bg-white my-2 ">
-                                    <input type="checkbox" value="Negotiable" id="Negotiable">
-                                    <label for="Negotiable" class="py-2">Negotiable</label>
+                                    <input asp-for=IsPriceNegotiable type="checkbox" value="true">
+                                    <label asp-for="IsPriceNegotiable" class="py-2">Negotiable</label>
                                 </div>
                             </div>
                         </div>
                         <div class="choose-file text-center my-4 py-4 rounded">
-                            <label for="file-upload">
+                            <label asp-for=File for="file-upload">
                                 <span class="d-block font-weight-bold text-dark">Drop files anywhere to upload</span>
                                 <span class="d-block">or</span>
                                 <span class="d-block btn bg-primary text-white my-3 select-files">Select files</span>
@@ -77,15 +73,15 @@
                     </div>
                     <div class="col-lg-6">
                         <h6 class="font-weight-bold pt-4 pb-1">Contact Name:</h6>
-                        <input type="text" placeholder="Contact name" class="border w-100 p-2">
+                        <input asp-for="ContactName" type="text" placeholder="Contact name" class="border w-100 p-2">
                         <h6 class="font-weight-bold pt-4 pb-1">Contact Number:</h6>
-                        <input type="text" placeholder="Contact Number" class="border w-100 p-2">
+                        <input asp-for=ContactNumber type="text" placeholder="Contact Number" class="border w-100 p-2">
                     </div>
                     <div class="col-lg-6">
                         <h6 class="font-weight-bold pt-4 pb-1">Contact Email:</h6>
-                        <input type="email" placeholder="name@yourmail.com" class="border w-100 p-2">
+                        <input asp-for="ContactEmail" type="email" placeholder="name@yourmail.com" class="border w-100 p-2">
                         <h6 class="font-weight-bold pt-4 pb-1">Contact Address:</h6>
-                        <input type="text" placeholder="Your address" class="border w-100 p-2">
+                        <input asp-for=ContactAddress type="text" placeholder="Your address" class="border w-100 p-2">
                     </div>
                 </div>
             </fieldset>
@@ -110,18 +106,15 @@
                         <span class="mb-3 d-block">Premium Ad Options:</span>
                         <ul>
                             <li>
-                                <input type="radio" id="regular-ad" name="adfeature">
-                                <label for="regular-ad" class="font-weight-bold text-dark py-1">Regular Ad</label>
+                                <label asp-for="AddFeature" for="regular-ad" class="font-weight-bold text-dark py-1">Regular Ad</label>
                                 <span>$00.00</span>
                             </li>
                             <li>
-                                <input type="radio" id="Featured-Ads" name="adfeature">
-                                <label for="Featured-Ads" class="font-weight-bold text-dark py-1">Top Featured Ads</label>
+                                <label asp-for="AddFeature" for="Featured-Ads" class="font-weight-bold text-dark py-1">Top Featured Ads</label>
                                 <span>$59.00</span>
                             </li>
                             <li>
-                                <input type="radio" id="urgent-Ads" name="adfeature">
-                                <label for="urgent-Ads" class="font-weight-bold text-dark py-1">Urgent Ads</label>
+                                <label asp-for="AddFeature" for="urgent-Ads" class="font-weight-bold text-dark py-1">Urgent Ads</label>
                                 <span>$79.00</span>
                             </li>
                         </ul>
@@ -130,16 +123,13 @@
                         <span class="mb-3 d-block">Please select the preferred payment method:</span>
                         <ul>
                             <li>
-                                <input type="radio" id="bank-transfer" name="adfeature">
-                                <label for="bank-transfer" class="font-weight-bold text-dark py-1">Direct Bank Transfer</label>
+                                <label asp-for="AddFeature" class="font-weight-bold text-dark py-1">Direct Bank Transfer</label>
                             </li>
                             <li>
-                                <input type="radio" id="Cheque-Payment" name="adfeature">
-                                <label for="Cheque-Payment" class="font-weight-bold text-dark py-1">Cheque Payment</label>
+                                <label asp-for="AddFeature" class="font-weight-bold text-dark py-1">Cheque Payment</label>
                             </li>
                             <li>
-                                <input type="radio" id="Credit-Card" name="adfeature">
-                                <label for="Credit-Card" class="font-weight-bold text-dark py-1">Credit Card</label>
+                                <label asp-for="AddFeature" class="font-weight-bold text-dark py-1">Credit Card</label>
                             </li>
                         </ul>
                     </div>
@@ -148,10 +138,10 @@
             <!-- ad-feature start -->
             <!-- submit button -->
             <div class="checkbox d-inline-flex">
-                <input type="checkbox" id="terms-&-condition" class="mt-1">
-                <label for="terms-&-condition" class="ml-2">
+                <input asp-for="AcceptTermsAndConditions" type="checkbox" id="terms-&-condition" class="mt-1">
+                <label asp-for="AcceptTermsAndConditions" for="terms-&-condition" class="ml-2">
                     By click you must agree with our
-                    <span> <a class="text-success" href="terms-condition.html">Terms & Condition and Posting Rules.</a></span>
+                    <span> <a class="text-success" asp-action="Index" asp-controller="Home">Terms & Condition and Posting Rules.</a></span>
                 </label>
             </div>
             <button type="submit" class="btn btn-primary d-block mt-2">Post Your Ad</button>
