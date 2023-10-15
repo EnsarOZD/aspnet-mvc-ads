@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ads.Data
 {
+
 	public class DbSeeder
 	{
 		public static void Seed(AppDbContext dbcontext)
@@ -51,11 +52,13 @@ namespace Ads.Data
 			.RuleFor(a => a.UserId, f => f.Random.Number(1, 100))
 			.RuleFor(a => a.CreatedAt, f => f.Date.Past(2));
 
+
 			var advert = advertFaker.Generate(50);
 			dbcontext.AdvertEntities.AddRange(advert);
 			dbcontext.SaveChanges();
 
 			var advertImagefaker = new Faker<AdvertImageEntity>()
+
 
 			.RuleFor(p => p.ImagePath, f => f.Image.PicsumUrl())
 			.RuleFor(p => p.CreatedAt, f => f.Date.PastOffset())
