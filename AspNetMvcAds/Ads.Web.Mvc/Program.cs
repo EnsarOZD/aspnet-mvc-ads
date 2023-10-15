@@ -34,6 +34,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
+    context.Database.EnsureDeleted();
     bool isDatabaseCreated = context.Database.EnsureCreated();
     if (isDatabaseCreated)
     {
@@ -41,17 +42,19 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// HTTP iste?i yürütme hatt?n? yap?land?r?n.
+// HTTP iste?i yÃ¼rÃ¼tme hatt?n? yap?land?r?n.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // Varsay?lan HSTS de?eri 30 gündür. Üretim senaryolar? için bunu de?i?tirebilirsiniz, bkz. https://aka.ms/aspnetcore-hsts.
+    // Varsay?lan HSTS de?eri 30 gÃ¼ndÃ¼r. Ãœretim senaryolar? iÃ§in bunu de?i?tirebilirsiniz, bkz. https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-//app.UseSession();
+
+
+
 app.UseRouting();
 
 app.UseAuthentication();

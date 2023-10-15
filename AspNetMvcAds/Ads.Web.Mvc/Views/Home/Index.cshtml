@@ -5,7 +5,7 @@
 
 @await Html.PartialAsync("_HeroAreaPartial")
 
-@await Html.PartialAsync("_PopularDealsPartial")
+@await Component.InvokeAsync("PopularDeal")
 
 @await Html.PartialAsync("_CategoriesPartial", Model.Categories)
 

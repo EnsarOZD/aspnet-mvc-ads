@@ -21,7 +21,7 @@ namespace Ads.Data.Entities
         public string Password { get; set; } = string.Empty;
         public byte[] PasswordHash { get; set; } = new byte[32];
         public byte[] PasswordSalt { get; set; } = new byte[32];
-        public DateTime? ResetTokenExpires { get; set; }
+        public DateTimeOffset? ResetTokenExpires { get; set; }
 
         [Required, MaxLength(100)]
         public string Name { get; set; } = string.Empty;
@@ -36,8 +36,8 @@ namespace Ads.Data.Entities
         public string? EmailConfirmationToken { get; set; } = string.Empty;
         public string? PasswordResetToken { get; set; } = string.Empty;
 
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public DateTime DeletedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
+        public DateTimeOffset DeletedAt { get; set; }
     }
 }

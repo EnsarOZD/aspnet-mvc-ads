@@ -213,7 +213,7 @@ namespace Ads.Web.Mvc.Controllers
                 user.PasswordResetToken = _tokenUsageService.CreateRandomToken();
                 TempData["PasswordResetTokenforGetMethod"] = user.PasswordResetToken;
                 TempData["PasswordResetTokenforPostMethod"] = user.PasswordResetToken;
-                user.ResetTokenExpires = DateTime.Now.AddDays(1);
+                user.ResetTokenExpires = DateTimeOffset.Now.AddDays(1);
                 await DbContext.SaveChangesAsync();
 
                 PasswordResetService resetService = new PasswordResetService(_emailService);
@@ -257,7 +257,7 @@ namespace Ads.Web.Mvc.Controllers
             request.Token = TempData["PasswordResetTokenforPostMethod"] as string;
 
             var user = await DbContext.UserEntities.FirstOrDefaultAsync(u => u.PasswordResetToken == request.Token);
-            if (user == null || user.ResetTokenExpires < DateTime.Now || user.PasswordResetToken != request.Token)
+            if (user == null || user.ResetTokenExpires < DateTimeOffset.Now || user.PasswordResetToken != request.Token)
             {
                 ViewBag.ErrorToken = "The token that given to you is not valid anymore please make a new password reset request ";
                 return View();
