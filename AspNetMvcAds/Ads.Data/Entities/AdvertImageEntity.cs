@@ -17,9 +17,11 @@ namespace Ads.Data.Entities
         public string ImagePath { get; set; } = string.Empty;
         public int AdvertId { get; set; }
         [ForeignKey(nameof(AdvertId))]
+        public int CoverImageInt { get; set; }
         public AdvertEntity Advert { get; set; } = null!;
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public DateTime DeletedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
+        public DateTimeOffset DeletedAt { get; set; }
+
     }
 }
