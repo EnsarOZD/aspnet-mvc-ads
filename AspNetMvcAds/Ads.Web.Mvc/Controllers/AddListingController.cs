@@ -15,20 +15,24 @@ namespace Ads.Web.Mvc.Controllers
         {
             _context = context;
         }
-        [HttpGet]
-        public IActionResult Index()
-        {
+       
+        //public IActionResult Index()
+        //{
 
-            ViewData["Categories"] = _context.CategoryEntities.ToList();
+        //    var categories = _context.CategoryEntities.ToList();
+        //    ViewData["Categories"] = new SelectList(categories, "Id", "Name");
 
-
-            var model = new AddListingViewModel();
-            return View(model);
-        }
+        //    var model = new AddListingViewModel();
+        //    return View(model);
+        //}
 
         public IActionResult Add()
         {
-            return View();
+            var categories = _context.CategoryEntities.ToList();
+            ViewData["Categories"] = new SelectList(categories, "Id", "Name");
+
+            var model = new AddListingViewModel();
+            return View(model);
         }
 
         [HttpPost]
@@ -36,11 +40,12 @@ namespace Ads.Web.Mvc.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var categories = _context.CategoryEntities.ToList();
+                ViewData["Categories"] = new SelectList(categories, "Id", "Name");
+                return View("Add", model); 
+
             }
-            var categories = _context.CategoryEntities.ToList();
-            var categoryList = new SelectList(categories, "Id", "Name");
-            ViewData["Categories"] = _context.CategoryEntities.ToList();
+            
 
             AddListingEntity add = new()
             {

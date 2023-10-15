@@ -19,11 +19,11 @@
                         <div class="row px-3">
                             <div class="col-lg-4 mr-lg-4 my-2 rounded bg-white">
                                 <input asp-for=AdType type="radio" value="personal">
-                                <label asp-for=AdType class="py-2">Personal</label>
+                                <label asp-for=AdType for="personal" class="py-2">Personal</label>
                             </div>
                             <div class="col-lg-4 mr-lg-4 my-2 rounded bg-white ">
                                 <input asp-for=AdType type="radio" value="business">
-                                <label asp-for=AdType class="py-2">Business</label>
+                                <label asp-for=AdType for="business" class="py-2">Business</label>
                             </div>
                         </div>
                         <h6 class="font-weight-bold pt-4 pb-1">Description:</h6>
@@ -33,10 +33,13 @@
                         <h6 class="font-weight-bold pt-4 pb-1">Select Ad Category:</h6>
                         <select asp-for="CategoryId" class="w-100">
                             <option value="0">Select category</option>
-                            @* @foreach (var category in ViewData["Categories"])
+                            @if (ViewData["Categories"] != null)
                             {
-                            <option value="@category.Value">@category.Text</option>
-                            } *@
+                                foreach (var category in (SelectList)ViewData["Categories"])
+                                {
+                                    <option value="@category.Value">@category.Text</option>
+                                }
+                            }
 
                         </select>
                         <div class="price">
