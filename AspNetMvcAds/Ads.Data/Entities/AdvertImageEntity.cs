@@ -18,6 +18,8 @@ namespace Ads.Data.Entities
         public int AdvertId { get; set; }
         [ForeignKey(nameof(AdvertId))]
         public int CoverImageInt { get; set; }
+
+        public int StarCount { get; set; }
         public AdvertEntity Advert { get; set; } = null!;
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }

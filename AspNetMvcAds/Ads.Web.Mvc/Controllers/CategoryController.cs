@@ -18,7 +18,12 @@ namespace Ads.Web.Mvc.Controllers
         public IActionResult Index(int id, int page)
         {
             ViewData["CategoryId"] = id;
+
             ViewData["Page"] = page;
+            if (page<=0)
+            {
+                page = 1;
+            }
 
             int skipCount = (page - 1) * 10;
 
@@ -53,9 +58,12 @@ namespace Ads.Web.Mvc.Controllers
                     return View(advertModelList);
                 }
             }
+           
+                return View(new List<AdvertViewModel>());
 
-            ViewData["ListPartialTitle"] = "No_Category";
-            return View();
+
+
+           
         }
     }
 }

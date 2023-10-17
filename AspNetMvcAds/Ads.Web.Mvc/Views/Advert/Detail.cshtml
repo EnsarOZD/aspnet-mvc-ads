@@ -72,21 +72,14 @@ else
 												<!-- Ratings -->
 												<div class="ratings">
 													<ul class="list-inline">
-														<li class="list-inline-item">
-															<i class="fa fa-star"></i>
-														</li>
-														<li class="list-inline-item">
-															<i class="fa fa-star"></i>
-														</li>
-														<li class="list-inline-item">
-															<i class="fa fa-star"></i>
-														</li>
-														<li class="list-inline-item">
-															<i class="fa fa-star"></i>
-														</li>
-														<li class="list-inline-item">
-															<i class="fa fa-star"></i>
-														</li>
+														@for (int i = 0; i < Model.StarCount; i++)
+														{
+															<li class="list-inline-item">
+																<i class="fa fa-star"></i>
+															</li>
+
+														}
+
 													</ul>
 												</div>
 												<div class="name">

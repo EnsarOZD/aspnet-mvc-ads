@@ -48,11 +48,22 @@
                                             <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, aliquam!</p>
                                             <div class="product-ratings">
                                                 <ul class="list-inline">
+                                                    @for (int i = 0; i < item.StarCount; i++)
+                                                    {
+                                                        <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+
+                                                    }
+                                                    @for (int i = 0; i < (5-item.StarCount); i++)
+                                                    {
+                                                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+
+                                                    }
+
+                                                    @*<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
                                                     <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
                                                     <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
                                                     <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-                                                    <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-                                                    <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                    <li class="list-inline-item"><i class="fa fa-star"></i></li>*@
                                                 </ul>
                                             </div>
                                         </div>
