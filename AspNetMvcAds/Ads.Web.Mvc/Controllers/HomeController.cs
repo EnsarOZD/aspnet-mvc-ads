@@ -1,6 +1,7 @@
 ﻿using Ads.Data;
 using Ads.Web.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace Ads.Web.Mvc.Controllers
@@ -28,11 +29,26 @@ namespace Ads.Web.Mvc.Controllers
 			{
 				Categories = categoryList,
 			};
-
 			return View(model);
 		}
+        
 
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public async Task<IActionResult> Search(string searchQuery)
+        //{
+        //    var articles = _context.AdvertEntities.AsQueryable();
+
+        //    if (!string.IsNullOrEmpty(searchQuery))
+        //    {
+        //        articles = articles.Where(a => a.Title.Contains(searchQuery));
+        //    }
+
+        //    return View(articles.ToList());
+
+
+        //}
+
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{
 			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
