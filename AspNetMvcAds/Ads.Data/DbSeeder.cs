@@ -28,13 +28,23 @@ namespace Ads.Data
 			dbcontext.SaveChanges();
 
 
-			var pageFaker = new Faker<PageEntity>()
-			.RuleFor(p => p.Title, f =>
+			var pageTitles = new string[]
 			{
-			var sentence = f.Lorem.Sentence(5);
-			return sentence.Substring(0, Math.Min(200, sentence.Length));
-			})
-			.RuleFor(p => p.Content, f => f.Lorem.Paragraphs())
+				"About Us",
+				"Contact Us",
+				"User Profile",
+				"404 Pages",
+				"Package",
+				"Single Page",
+				"Store Single",
+				"Single Post",
+				"Blog"
+
+			};
+
+			var pageFaker = new Faker<PageEntity>()
+            .RuleFor(p => p.Title, f => f.PickRandom(pageTitles))
+            .RuleFor(p => p.Content, f => f.Lorem.Paragraphs())
 			.RuleFor(p => p.IsActive, f => f.Random.Bool())
 			.RuleFor(p => p.CreatedAt, f => f.Date.Past(2));
 
@@ -47,7 +57,7 @@ namespace Ads.Data
 
 			var advertFaker = new Faker<AdvertEntity>()
 			.RuleFor(a => a.Title, f => f.Lorem.Sentence(5))
-			.RuleFor(a => a.Description, f => f.Lorem.Paragraphs())
+			.RuleFor(a => a.Description, f => f.Lorem.Sentence(10))
 			.RuleFor(a => a.AdvertClickCount, f => f.Random.Number(0, 1000))
 			.RuleFor(a => a.UserId, f => f.Random.Number(1, 100))
 			.RuleFor(a => a.CreatedAt, f => f.Date.Past(2));
@@ -64,7 +74,8 @@ namespace Ads.Data
 			.RuleFor(p => p.CreatedAt, f => f.Date.PastOffset())
 			.RuleFor(p => p.CoverImageInt, f => f.Random.Number(1, 1000))
 			.RuleFor(p => p.AdvertId, f => f.Random.Number(1, 50))
-			.RuleFor(p => p.UpdatedAt, f => f.Date.PastOffset());
+			.RuleFor(p => p.UpdatedAt, f => f.Date.PastOffset())
+			.RuleFor(p => p.StarCount, f => f.Random.Number(1, 5));
 			var advertImage = advertImagefaker.Generate(50);
 			dbcontext.AdvertImageEntities.AddRange(advertImage);
 			dbcontext.SaveChanges();
