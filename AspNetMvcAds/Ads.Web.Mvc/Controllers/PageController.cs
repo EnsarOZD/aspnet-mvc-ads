@@ -13,18 +13,22 @@ namespace Ads.Web.Mvc.Controllers
             _db = db;
         }
 
+
+
         [Route("/page")]
-        [Route("/page/{title-slug}")]
-        public IActionResult Detail(int id)
+        [Route("/page/{slug}")]
+        public IActionResult Detail(string slug)
         {
-            var page=_db.PageEntities.FirstOrDefault(x => x.Id == id);
+            var page=_db.PageEntities.FirstOrDefault(x => x.Slug == slug);
 
             if (page==null)
             {
                 return NotFound();
             }
            
-            return View(page);
+            return View(slug,page);
         }
+
+       
     }
 }

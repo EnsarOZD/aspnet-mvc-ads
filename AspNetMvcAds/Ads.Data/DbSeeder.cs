@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Ads.Data
@@ -42,18 +43,25 @@ namespace Ads.Data
 
 			};
 
-			var pageFaker = new Faker<PageEntity>()
-            .RuleFor(p => p.Title, f => f.PickRandom(pageTitles))
-            .RuleFor(p => p.Content, f => f.Lorem.Paragraphs())
-			.RuleFor(p => p.IsActive, f => f.Random.Bool())
-			.RuleFor(p => p.CreatedAt, f => f.Date.Past(2));
+            int currentIndex = 0;
 
+            var pageFaker = new Faker<PageEntity>()
+                .RuleFor(p => p.Title, f =>
+                {
+                    var title = pageTitles[currentIndex % pageTitles.Length];
+                    currentIndex++;
+                    return title;
+                })
+                .RuleFor(p => p.Slug, (f, p) => GenerateSlug(p.Title))
+                .RuleFor(p => p.Content, f => f.Lorem.Paragraphs())
+                .RuleFor(p => p.IsActive, f => f.Random.Bool())
+                .RuleFor(p => p.CreatedAt, f => f.Date.Past(2));
 
-			var pages = pageFaker.Generate(10);
-			dbcontext.PageEntities.AddRange(pages);
-			dbcontext.SaveChanges();
+            var pages = pageFaker.Generate(pageTitles.Length); 
+            dbcontext.PageEntities.AddRange(pages);
+            dbcontext.SaveChanges();
 
-			var categoryIds = dbcontext.CategoryEntities.Select(c => c.Id).ToList();
+            var categoryIds = dbcontext.CategoryEntities.Select(c => c.Id).ToList();
 
 			var advertFaker = new Faker<AdvertEntity>()
 			.RuleFor(a => a.Title, f => f.Lorem.Sentence(5))
@@ -116,8 +124,18 @@ namespace Ads.Data
 			dbcontext.SettingEntities.AddRange(setting);
 			dbcontext.SaveChanges();
 
+            
 
-		}
-	}
+
+        }
+        public static string GenerateSlug(string phrase)
+        {
+            string str = phrase.ToLower();
+            str = Regex.Replace(str, @"[^a-z0-9\s-]", "");  
+            str = Regex.Replace(str, @"\s+", "-").Trim();   
+            str = Regex.Replace(str, @"^-|-$", "");         
+            return str;
+        }
+    }
 }
 

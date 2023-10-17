@@ -17,6 +17,8 @@ namespace Ads.Data.Entities
         public string Title { get; set; } = string.Empty;
         [Required, Column(TypeName = "text")]
         public string Content { get; set; } = string.Empty;
+
+        public string Slug { get; set; }
         [Required]
         public bool IsActive { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
