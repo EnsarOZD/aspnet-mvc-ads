@@ -34,7 +34,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
-    context.Database.EnsureDeleted();
+    //context.Database.EnsureDeleted();
     bool isDatabaseCreated = context.Database.EnsureCreated();
     if (isDatabaseCreated)
     {

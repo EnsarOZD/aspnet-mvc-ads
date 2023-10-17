@@ -231,13 +231,12 @@ namespace Ads.Web.Mvc.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel request, [FromRoute] string id)
+        public async Task<IActionResult> ResetPassword( [FromRoute] string id)
         {
 
-            request.Token = TempData["PasswordResetTokenforGetMethod"] as string;
-            var user = DbContext.UserEntities.FirstOrDefault(u => u.PasswordResetToken == request.Token);
+            var user = DbContext.UserEntities.FirstOrDefault(u => u.PasswordResetToken == id);
 
-            if (id != request.Token)
+            if (user == null)
             {
                 ViewBag.InvalidToken = "The token is not valid anymore!";
                 //return BadRequest("Invalid Token.");
@@ -246,18 +245,18 @@ namespace Ads.Web.Mvc.Controllers
         }
 
 
-        [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel request)
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel request, [FromRoute] string id)
         {
             //if (!ModelState.IsValid)
             //{
             //    ViewBag.Error = "Please fill required input sections!";
             //    return View();
             //}
-            request.Token = TempData["PasswordResetTokenforPostMethod"] as string;
+            //request.Token = TempData["PasswordResetTokenforPostMethod"] as string;
 
-            var user = await DbContext.UserEntities.FirstOrDefaultAsync(u => u.PasswordResetToken == request.Token);
-            if (user == null || user.ResetTokenExpires < DateTimeOffset.Now || user.PasswordResetToken != request.Token)
+            var user = await DbContext.UserEntities.FirstOrDefaultAsync(u => u.PasswordResetToken == id);
+            if (user == null || user.ResetTokenExpires < DateTimeOffset.Now || user.PasswordResetToken != id)
             {
                 ViewBag.ErrorToken = "The token that given to you is not valid anymore please make a new password reset request ";
                 return View();

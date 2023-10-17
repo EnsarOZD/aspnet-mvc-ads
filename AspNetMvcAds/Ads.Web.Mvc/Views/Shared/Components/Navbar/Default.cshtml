@@ -26,11 +26,9 @@
 
 									@foreach (var pages in Model.Pages)
 									{
-										<a class="dropdown-item" asp-controller="Page" asp-action="Detail" asp-route-id="@pages.Id">@pages.Title</a>
+										<a class="dropdown-item" asp-controller="Page" asp-action="@pages.Slug" >@pages.Title</a>
 									}
 									
-								
-
 								</div>
 							</li>
 							<li class="nav-item dropdown dropdown-slide">

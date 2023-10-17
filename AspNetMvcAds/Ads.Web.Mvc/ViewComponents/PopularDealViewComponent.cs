@@ -22,7 +22,9 @@ namespace Ads.Web.Mvc.ViewComponents
             {
                 AdvertImageEntities = _db.AdvertImageEntities.ToList(),
                 AdvertEntities=_db.AdvertEntities.ToList(),
-                CategoryEntities = _db.CategoryEntities.ToList()
+                CategoryEntities = _db.CategoryEntities.ToList(),
+                CategoryAdvertEntities=_db.CategoryAdvertEntities.ToList()
+               
               
             };
 

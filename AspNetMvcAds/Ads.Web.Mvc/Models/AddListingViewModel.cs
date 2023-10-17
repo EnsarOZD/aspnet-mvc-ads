@@ -20,8 +20,8 @@ namespace Ads.Web.Mvc.Models
         public string PaymentMethod { get; set; } = string.Empty;
         public bool AcceptTermsAndConditions { get; set; }
         public AdvertEntity? Advert { get; set; }
-        [ForeignKey("AdType")]
-        public AdTypeEntity TypeEntity { get; set; }
+        //[ForeignKey("AdType")]
+        //public AdTypeEntity TypeEntity { get; set; }
         public List<AdvertImageEntity>? AdvertImages { get; set; }
         public UserEntity? User { get; set; }
         [ForeignKey("CategoryId")]

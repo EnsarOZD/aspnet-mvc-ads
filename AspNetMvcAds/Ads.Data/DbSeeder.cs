@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Ads.Data
@@ -28,26 +29,43 @@ namespace Ads.Data
 			dbcontext.SaveChanges();
 
 
-			var pageFaker = new Faker<PageEntity>()
-			.RuleFor(p => p.Title, f =>
+			var pageTitles = new string[]
 			{
-			var sentence = f.Lorem.Sentence(5);
-			return sentence.Substring(0, Math.Min(200, sentence.Length));
-			})
-			.RuleFor(p => p.Content, f => f.Lorem.Paragraphs())
-			.RuleFor(p => p.IsActive, f => f.Random.Bool())
-			.RuleFor(p => p.CreatedAt, f => f.Date.Past(2));
+				"About Us",
+				"Contact Us",
+				"User Profile",
+				"404 Pages",
+				"Package",
+				"Single Page",
+				"Store Single",
+				"Single Post",
+				"Blog"
 
+			};
 
-			var pages = pageFaker.Generate(10);
-			dbcontext.PageEntities.AddRange(pages);
-			dbcontext.SaveChanges();
+            int currentIndex = 0;
 
-			var categoryIds = dbcontext.CategoryEntities.Select(c => c.Id).ToList();
+            var pageFaker = new Faker<PageEntity>()
+                .RuleFor(p => p.Title, f =>
+                {
+                    var title = pageTitles[currentIndex % pageTitles.Length];
+                    currentIndex++;
+                    return title;
+                })
+                .RuleFor(p => p.Slug, (f, p) => GenerateSlug(p.Title))
+                .RuleFor(p => p.Content, f => f.Lorem.Paragraphs())
+                .RuleFor(p => p.IsActive, f => f.Random.Bool())
+                .RuleFor(p => p.CreatedAt, f => f.Date.Past(2));
+
+            var pages = pageFaker.Generate(pageTitles.Length); 
+            dbcontext.PageEntities.AddRange(pages);
+            dbcontext.SaveChanges();
+
+            var categoryIds = dbcontext.CategoryEntities.Select(c => c.Id).ToList();
 
 			var advertFaker = new Faker<AdvertEntity>()
 			.RuleFor(a => a.Title, f => f.Lorem.Sentence(5))
-			.RuleFor(a => a.Description, f => f.Lorem.Paragraphs())
+			.RuleFor(a => a.Description, f => f.Lorem.Sentence(10))
 			.RuleFor(a => a.AdvertClickCount, f => f.Random.Number(0, 1000))
 			.RuleFor(a => a.UserId, f => f.Random.Number(1, 100))
 			.RuleFor(a => a.CreatedAt, f => f.Date.Past(2));
@@ -64,7 +82,8 @@ namespace Ads.Data
 			.RuleFor(p => p.CreatedAt, f => f.Date.PastOffset())
 			.RuleFor(p => p.CoverImageInt, f => f.Random.Number(1, 1000))
 			.RuleFor(p => p.AdvertId, f => f.Random.Number(1, 50))
-			.RuleFor(p => p.UpdatedAt, f => f.Date.PastOffset());
+			.RuleFor(p => p.UpdatedAt, f => f.Date.PastOffset())
+			.RuleFor(p => p.StarCount, f => f.Random.Number(1, 5));
 			var advertImage = advertImagefaker.Generate(50);
 			dbcontext.AdvertImageEntities.AddRange(advertImage);
 			dbcontext.SaveChanges();
@@ -105,8 +124,18 @@ namespace Ads.Data
 			dbcontext.SettingEntities.AddRange(setting);
 			dbcontext.SaveChanges();
 
+            
 
-		}
-	}
+
+        }
+        public static string GenerateSlug(string phrase)
+        {
+            string str = phrase.ToLower();
+            str = Regex.Replace(str, @"[^a-z0-9\s-]", "");  
+            str = Regex.Replace(str, @"\s+", "-").Trim();   
+            str = Regex.Replace(str, @"^-|-$", "");         
+            return str;
+        }
+    }
 }
 

@@ -10,5 +10,6 @@
 		public string CategoryName { get; set; }
         public List<string> ImagePaths { get; set; }
         public UserViewModel User { get; set; }
+        public int StarCount { get; set; }
     }
 }
