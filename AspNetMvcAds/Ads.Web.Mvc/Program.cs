@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Servisleri konteynere ekleyin.
-builder.Services.AddControllersWithViews();
 
+builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -25,16 +26,16 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/access-denied";
     });
 
-
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<TokenUsageService>();
 
+// Uygulama inşa edilirken hizmetlerin oluşturulmasını ve veritabanının oluşturulup doldurulmasını sağlayın.
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
-    //context.Database.EnsureDeleted();
+    context.Database.EnsureDeleted();
     bool isDatabaseCreated = context.Database.EnsureCreated();
     if (isDatabaseCreated)
     {
@@ -42,23 +43,19 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// HTTP iste?i yürütme hatt?n? yap?land?r?n.
+// Ortamı yapılandırın ve HTTP isteğini işlemeye başlayın.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // Varsay?lan HSTS de?eri 30 gündür. Üretim senaryolar? için bunu de?i?tirebilirsiniz, bkz. https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
-
-
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",

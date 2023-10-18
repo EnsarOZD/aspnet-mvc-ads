@@ -11,7 +11,8 @@ namespace Ads.Web.Mvc.Models
         public decimal Price { get; set; }
         public bool IsPriceNegotiable { get; set; }
         public IFormFile? File { get; set; }
-        public int CategoryId { get; set; }
+        //public int CategoryId { get; set; }
+        public string CategoryName { get; set; }
         public string ContactName { get; set; } = string.Empty;
         public string ContactNumber { get; set; } = string.Empty;
         public string ContactEmail { get; set; } = string.Empty;
@@ -22,9 +23,10 @@ namespace Ads.Web.Mvc.Models
         public AdvertEntity? Advert { get; set; }
         //[ForeignKey("AdType")]
         //public AdTypeEntity TypeEntity { get; set; }
-        public List<AdvertImageEntity>? AdvertImages { get; set; }
+        //public List<AdvertImageEntity>? AdvertImages { get; set; }
         public UserEntity? User { get; set; }
-        [ForeignKey("CategoryId")]
+        //[ForeignKey("CategoryId")]
+        [ForeignKey("CategoryName")]
         public CategoryEntity? Category { get; set; }
     }
 }
