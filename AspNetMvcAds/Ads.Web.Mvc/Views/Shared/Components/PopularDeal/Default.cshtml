@@ -18,18 +18,15 @@
                     @foreach (var item in Model.AdvertImageEntities)
                     {
                         var advert = Model.AdvertEntities.FirstOrDefault(a => a.Id == item.AdvertId); // Eğer AdvertId diye bir özellik varsa
-                        
-                      @*  if (advert != null)
-                        {
-                            var categoryAdverts = Model.CategoryAdvertEntities.Where(ca => ca.AdvertId == advert.Id).ToList();
-                            var category = categoryAdverts.FirstOrDefault()?.Category; // Eğer birden fazla kategori varsa sadece ilki seçiliyor
-                        }
-                        
-                           *@
-                        
-                        
-                     
-                        
+
+                        @*  if (advert != null)
+                    {
+                    var categoryAdverts = Model.CategoryAdvertEntities.Where(ca => ca.AdvertId == advert.Id).ToList();
+                    var category = categoryAdverts.FirstOrDefault()?.Category; // Eğer birden fazla kategori varsa sadece ilki seçiliyor
+                    }
+
+                    *@
+
                         <div class="col-sm-12 col-lg-4">
                             <!-- product card -->
                             <div class="product-item bg-light">
@@ -46,16 +43,13 @@
                                             <ul class="list-inline product-meta">
                                                 <li class="list-inline-item">
                                                 <li class="list-inline-item">
-                                                    @*    @if (category != null)
-                                                        {
-                                                        <a href="single.html"><i class="fa fa-folder-open-o"></i>@category.Name</a>
-                                                        }
-                                                        else
-                                                        {
-                                                        <span>No Category</span>
-                                                        }*@
+
+                                                    {
+                                                    <a href="single.html"><i class="fa fa-folder-open-o"></i></a>
+
+
                                                 </li>
-                                                </li>
+
                                                 <li class="list-inline-item">
                                                     <a href="#"><i class="fa fa-calendar"></i>@item.CreatedAt.ToString("MM/dd/yyyy")</a>
                                                 </li>
@@ -68,7 +62,7 @@
                                                         <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
 
                                                     }
-                                                    @for (int i = 0; i < (5-item.StarCount); i++)
+                                                    @for (int i = 0; i < (5 - item.StarCount); i++)
                                                     {
                                                         <li class="list-inline-item"><i class="fa fa-star"></i></li>
 
