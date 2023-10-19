@@ -26,11 +26,12 @@ namespace Ads.Data.Entities
         public string PaymentMethod { get; set; } = string.Empty;
         public bool AcceptTermsAndConditions { get; set; }
         public AdvertEntity? Advert { get; set; }
-        public List<AdvertImageEntity>? AdvertImages { get; set; }
+        //public List<AdvertImageEntity>? AdvertImages { get; set; }
         public UserEntity? User { get; set; }
-        public int CategoryId { get; set; }
-        [ForeignKey("CategoryId")]
-        public CategoryEntity Category { get; set; }
+        //public int CategoryId { get; set; }
+        public string CategoryName { get; set; } = string.Empty;
+        //[ForeignKey("CategoryId")]
+        //public CategoryEntity Category { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public DateTimeOffset DeletedAt { get; set; }
