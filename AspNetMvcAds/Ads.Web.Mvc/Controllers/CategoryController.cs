@@ -20,7 +20,7 @@ namespace Ads.Web.Mvc.Controllers
             ViewData["CategoryId"] = id;
 
             ViewData["Page"] = page;
-            if (page<=0)
+            if (page <= 0)
             {
                 page = 1;
             }
@@ -58,12 +58,13 @@ namespace Ads.Web.Mvc.Controllers
                     return View(advertModelList);
                 }
             }
-           
-                return View(new List<AdvertViewModel>());
+
+            return View(new List<AdvertViewModel>());
 
 
 
-           
+
         }
+
     }
 }
