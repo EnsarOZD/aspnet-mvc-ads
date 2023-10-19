@@ -5,6 +5,7 @@ using Ads.Web.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Ads.Web.Mvc.Controllers
 {
@@ -17,8 +18,6 @@ namespace Ads.Web.Mvc.Controllers
             _fileService = fileService;
             _context = context;
         }
-
-
         public IActionResult Add()
         {
             var categories = _context.CategoryEntities.ToList();
@@ -28,13 +27,12 @@ namespace Ads.Web.Mvc.Controllers
             return View(model);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Add(AddListingViewModel model, [FromForm] IFormFile formFile)
         {
             if (formFile != null)
             {
-                if (formFile.Length > 2 * 1024 * 1024) 
+                if (formFile.Length > 2 * 1024 * 1024)
                 {
                     ModelState.AddModelError("File", "Dosya boyutu 2 MB'dan büyük olamaz.");
                     ViewBag.Error = "Dosya boyutu 2 MB'dan büyük olamaz.";
@@ -55,13 +53,22 @@ namespace Ads.Web.Mvc.Controllers
             }
             await _fileService.UploadFileAsync(formFile);
             ViewBag.SuccessMessage = "Uploaded Successfully";
-         
+
 
             var categories = _context.CategoryEntities.ToList();
             ViewData["Categories"] = new SelectList(categories, "Id", "Name");
 
+            var userIdString = User.FindFirst(ClaimTypes.PrimarySid)?.Value;
+            if (int.TryParse(userIdString, out int userId))
+            {
 
-            AddListingEntity add = new()
+            }
+            else
+            {
+
+            }
+
+            AdvertEntity add = new()
             {
                 ContactEmail = model.ContactEmail,
                 AdType = model.AdType,
@@ -69,7 +76,7 @@ namespace Ads.Web.Mvc.Controllers
                 AdFeature = model.AddFeature,
                 //AdvertImages = model.AdvertImages,
                 //CategoryId = model.CategoryId,
-                CategoryName=model.CategoryName,
+                CategoryName = model.CategoryName,
                 ContactAddress = model.ContactAddress,
                 ContactName = model.ContactName,
                 ContactNumber = model.ContactNumber,
@@ -82,13 +89,11 @@ namespace Ads.Web.Mvc.Controllers
                 Title = model.Title,
                 UpdatedAt = DateTime.Now,
                 User = model.User,
+                UserId = userId
                 //Advert = model.Advert,
             };
-            _context.AddListingEntities.Add(add);
+            _context.AdvertEntities.Add(add);
             await _context.SaveChangesAsync();
-
-
-
 
             return View("Add", model);
 

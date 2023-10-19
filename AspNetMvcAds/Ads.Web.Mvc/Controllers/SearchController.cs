@@ -16,19 +16,18 @@ namespace Ads.Web.Mvc.Controllers
         {
             var filteredTitle = from s in _context.AdvertEntities
                                 select s;
+            var filteredPosts = from s in _context.CategoryEntities
+                                select s;
             if (!string.IsNullOrEmpty(searchContent))
             {
                 filteredTitle = filteredTitle.Where(p => p.Title.Contains(searchContent));
-
             }
-            var filteredPosts = from s in _context.CategoryEntities
-                                select s;
             var titles = filteredTitle.ToList();
-            var categories= filteredPosts.ToList();
+            var categories = filteredPosts.ToList();
             var viewModel = new SearchViewModel
             {
                 Titles = titles,
-                //Categories = categories,
+                Categories = categories,
             };
             return View(viewModel);
         }

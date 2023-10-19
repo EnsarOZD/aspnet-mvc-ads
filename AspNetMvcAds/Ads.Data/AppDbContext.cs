@@ -11,7 +11,6 @@ namespace Ads.Data
     public class AppDbContext : DbContext
     {
         public DbSet<AdvertCommentEntity> AdvertCommentEntities { get; set; }
-        public DbSet<AddListingEntity> AddListingEntities { get; set; }
         public DbSet<AdTypeEntity> AddTypeEntities { get; set; }
         public DbSet<AdvertEntity> AdvertEntities { get; set; }
         public DbSet<AdvertImageEntity> AdvertImageEntities { get; set; }

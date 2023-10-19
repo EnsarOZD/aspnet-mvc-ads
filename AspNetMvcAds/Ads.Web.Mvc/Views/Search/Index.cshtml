@@ -2,8 +2,13 @@
 <h1 style="text-align:center;color:red">Search Results</h1>
 @* @foreach (var item in Model.Titles)
 {
-    <h2>@item.Title</h2> *@
-}@foreach (var item in Model.Categories)
+    <h2>@item.Title</h2>
+} *@
+@{
+    var categories = Model.Titles.Where(x => x.CategoryName == x.CategoryName);
+    //var advert = Model.AdvertEntities.FirstOrDefault(a => a.Id == item.AdvertId); // Eğer AdvertId diye bir özellik varsa
+}
+@foreach (var item in categories)
 {
-    <h2>@item.Description</h2>
+    <h2>@item.Title</h2>
 }
