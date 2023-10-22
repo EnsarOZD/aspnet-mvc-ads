@@ -52,7 +52,7 @@
                             }
 
                         </select> *@
-                        <select asp-for="CategoryName" class="w-100">
+                        <select asp-for="CategoryId" class="w-100">
                             <option value="0">Select category</option>
                             @if (ViewData["Categories"] != null)
                             {
@@ -77,12 +77,12 @@
                             </div>
                         </div>
                         <div class="choose-file text-center my-4 py-4 rounded">
-                            <label asp-for="File" >
+                            <label  >
                                 <span class="d-block font-weight-bold text-dark">Drop files anywhere to upload</span>
                                 <span class="d-block">or</span>
                                 <span class="d-block btn bg-primary text-white my-3 select-files">Select files</span>
                                 <span class="d-block">Maximum upload file size: 2 MB</span>
-                                <input type="file" name="formFile" class="form-control" asp-for="File" />
+                                <input type="file" name="formFile" class="form-control"  />
 
                             </label>
                         </div>
@@ -131,17 +131,17 @@
                         <span class="mb-3 d-block">Premium Ad Options:</span>
                         <ul>
                             <li>
-                                <input type="radio" asp-for="AddFeature" value="Regular Ad">
+                                <input type="radio" asp-for="AdFeature" value="Regular Ad">
                                 <label class="font-weight-bold text-dark py-1">Regular Ad</label>
                                 <span>$00.00</span>
                             </li>
                             <li>
-                                <input type="radio" asp-for="AddFeature" value="Top Featured Ads">
+                                <input type="radio" asp-for="AdFeature" value="Top Featured Ads">
                                 <label class="font-weight-bold text-dark py-1">Top Featured Ads</label>
                                 <span>$59.00</span>
                             </li>
                             <li>
-                                <input type="radio" asp-for="AddFeature" value="Urgent Ads">
+                                <input type="radio" asp-for="AdFeature" value="Urgent Ads">
                                 <label class="font-weight-bold text-dark py-1">Urgent Ads</label>
                                 <span>$79.00</span>
                             </li>

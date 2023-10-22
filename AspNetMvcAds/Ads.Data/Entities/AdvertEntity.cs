@@ -13,8 +13,10 @@ namespace Ads.Data.Entities
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
         [Required, MaxLength(200)]
         public string Title { get; set; } = string.Empty;
+
         [Required, Column(TypeName = "ntext")]
         public string Description { get; set; } = string.Empty;
         public string AdType { get; set; } = string.Empty;
@@ -27,9 +29,10 @@ namespace Ads.Data.Entities
         public string AdFeature { get; set; } = string.Empty;
         public string PaymentMethod { get; set; } = string.Empty;
         public bool AcceptTermsAndConditions { get; set; }
-        public string CategoryName { get; set; } = string.Empty;
+        public int StarCount { get; set; }
         public int AdvertClickCount { get; set; }
         public int UserId { get; set; }
+
         [ForeignKey(nameof(UserId))]
         public UserEntity User { get; set; } = null!;
         public DateTimeOffset CreatedAt { get; set; }

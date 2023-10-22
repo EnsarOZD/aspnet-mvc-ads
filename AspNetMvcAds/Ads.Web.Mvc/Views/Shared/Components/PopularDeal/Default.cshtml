@@ -18,6 +18,7 @@
                     @foreach (var item in Model.AdvertImageEntities)
                     {
                         var advert = Model.AdvertEntities.FirstOrDefault(a => a.Id == item.AdvertId); // Eğer AdvertId diye bir özellik varsa
+                        var category = Model.CategoryEntities.ToList();
 
                         @*  if (advert != null)
                     {
@@ -44,8 +45,11 @@
                                                 <li class="list-inline-item">
                                                 <li class="list-inline-item">
 
-                                                    {
-                                                    <a href="single.html"><i class="fa fa-folder-open-o"></i></a>
+                                                    @foreach (var list in category)
+                                                        {
+                                                            
+                                                    <a href="single.html"><i class="fa fa-folder-open-o"></i>@list.Name</a>
+                                                        }
 
 
                                                 </li>
@@ -57,12 +61,12 @@
                                             <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, aliquam!</p>
                                             <div class="product-ratings">
                                                 <ul class="list-inline">
-                                                    @for (int i = 0; i < item.StarCount; i++)
+                                                    @for (int i = 0; i < item.Advert.StarCount; i++)
                                                     {
                                                         <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
 
                                                     }
-                                                    @for (int i = 0; i < (5 - item.StarCount); i++)
+                                                    @for (int i = 0; i < (5 - item.Advert.StarCount); i++)
                                                     {
                                                         <li class="list-inline-item"><i class="fa fa-star"></i></li>
 

@@ -21,8 +21,7 @@ namespace Ads.Web.Mvc.Controllers
         public IActionResult Add()
         {
             var categories = _context.CategoryEntities.ToList();
-            //ViewData["Categories"] = new SelectList(categories, "Id", "Name");
-            ViewData["Categories"] = new SelectList(categories, "Name", "Name");
+            ViewData["Categories"] = new SelectList(categories, nameof(CategoryEntity.Id), nameof(CategoryEntity.Name));
             var model = new AddListingViewModel();
             return View(model);
         }
@@ -56,27 +55,20 @@ namespace Ads.Web.Mvc.Controllers
 
 
             var categories = _context.CategoryEntities.ToList();
-            ViewData["Categories"] = new SelectList(categories, "Id", "Name");
+            ViewData["Categories"] = new SelectList(categories, nameof(CategoryEntity.Id), nameof(CategoryEntity.Name));
 
-            var userIdString = User.FindFirst(ClaimTypes.PrimarySid)?.Value;
-            if (int.TryParse(userIdString, out int userId))
+            if (!int.TryParse(User.FindFirstValue(ClaimTypes.PrimarySid), out int userId))
             {
-
-            }
-            else
-            {
-
+                return BadRequest();
             }
 
-            AdvertEntity add = new()
+            AdvertEntity newAdvert = new()
             {
-                ContactEmail = model.ContactEmail,
                 AdType = model.AdType,
                 AcceptTermsAndConditions = model.AcceptTermsAndConditions,
-                AdFeature = model.AddFeature,
-                //AdvertImages = model.AdvertImages,
-                //CategoryId = model.CategoryId,
-                CategoryName = model.CategoryName,
+                AdFeature = model.AdFeature,
+                AdvertClickCount = 0,
+                ContactEmail = model.ContactEmail,
                 ContactAddress = model.ContactAddress,
                 ContactName = model.ContactName,
                 ContactNumber = model.ContactNumber,
@@ -88,11 +80,34 @@ namespace Ads.Web.Mvc.Controllers
                 Price = model.Price,
                 Title = model.Title,
                 UpdatedAt = DateTime.Now,
-                User = model.User,
-                UserId = userId
-                //Advert = model.Advert,
+                UserId = userId,
             };
-            _context.AdvertEntities.Add(add);
+            _context.AdvertEntities.Add(newAdvert);
+            await _context.SaveChangesAsync();
+            string imageName = formFile.FileName;
+            string imagePath = $"~/uploads/{imageName}";
+            AdvertImageEntity advImage = new()
+            {
+                AdvertId = newAdvert.Id,
+                Advert = newAdvert,
+                ImagePath = imagePath,
+                
+
+
+                // TODO: doldur burayı
+            };
+            _context.AdvertImageEntities.Add(advImage);
+            await _context.SaveChangesAsync();
+
+            var selectedCategory = model.CategoryId;
+            // TODO: newAdvert için CategoryAdvertEntity ekle, neden eklediğimizi tartış
+            CategoryAdvertEntity categoryAdvert = new()
+            {
+                CategoryId = selectedCategory,
+                AdvertId = newAdvert.Id,
+
+            };
+            _context.CategoryAdvertEntities.Add(categoryAdvert);
             await _context.SaveChangesAsync();
 
             return View("Add", model);
