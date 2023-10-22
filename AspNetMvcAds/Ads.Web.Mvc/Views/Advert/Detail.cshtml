@@ -129,13 +129,13 @@ else
 					<div class="sidebar">
 						<div class="widget price text-center">
 							<h4>Price</h4>
-							<p>$230</p>
+							<p>@Model.Price.ToString("C")</p>
 						</div>
 						<!-- User Profile widget -->
 						<div class="widget user text-center">
 							<img class="rounded-circle img-fluid mb-5 px-5" src="~/images/user/user-thumb.jpg" alt="">
 							<h4>@Model.User.Name</h4>
-							<p class="member-time">Member Since @Model.User.CreatedAt.ToString("dd-MM-yyyy")</p>
+							<p class="member-time">Member Since @Model.CreatedAt.ToString("dd-MM-yyyy")</p>
 						</div>
 						<!-- Map Widget -->
 						<div class="widget map">

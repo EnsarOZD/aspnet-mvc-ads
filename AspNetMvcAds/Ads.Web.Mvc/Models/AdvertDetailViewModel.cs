@@ -11,5 +11,6 @@
         public List<string> ImagePaths { get; set; }
         public UserViewModel User { get; set; }
         public int StarCount { get; set; }
+		public decimal Price { get; set; }
     }
 }

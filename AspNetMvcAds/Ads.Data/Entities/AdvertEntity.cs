@@ -19,8 +19,9 @@ namespace Ads.Data.Entities
 
         [Required, Column(TypeName = "ntext")]
         public string Description { get; set; } = string.Empty;
+		public decimal Price { get; set; }
 
-        public int AdvertClickCount { get; set; }
+		public int AdvertClickCount { get; set; }
 
         public int UserId { get; set; }
 
