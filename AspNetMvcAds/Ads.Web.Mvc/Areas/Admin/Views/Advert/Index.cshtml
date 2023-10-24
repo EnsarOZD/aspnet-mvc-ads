@@ -1,1 +1,26 @@
-﻿<h1>Advert Index</h1>
+﻿@model List<Ads.Web.Mvc.Areas.Admin.Models.AdvertViewModel>
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+{
+    <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+}
+<h1>Advertisement Details</h1>
+
+@foreach (var advert in Model)
+{
+
+    <div>
+        <h2>Title: @advert.Title</h2>
+        <p>Description: @advert.Description</p>
+        <p>Price: @advert.Price €</p>
+        <p>Click Count: @advert.AdvertClickCount</p>
+        <p>User ID: @advert.UserId</p>
+        <p>
+            <form asp-controller="Advert" asp-area="Admin" asp-action="Delete" method="post">
+                <input type="hidden" name="id" value="@advert.Id" />
+                <button type="submit" class="d-block btn alert-danger btn-sm font-weight-bold  border-0 rounded" onclick="return confirm('Are you sure you want to delete this comment?');">Delete this Ad Listing</button>
+            </form>
+        </p>
+    </div>
+
+}
+

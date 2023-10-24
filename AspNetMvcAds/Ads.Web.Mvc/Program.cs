@@ -35,7 +35,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
-    context.Database.EnsureDeleted();
+    //context.Database.EnsureDeleted();
     bool isDatabaseCreated = context.Database.EnsureCreated();
     if (isDatabaseCreated)
     {
@@ -55,14 +55,28 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "adminDelete",
+        pattern: "/Admin/AdvertComment/Delete/{id?}",
+        defaults: new { controller = "AdvertComment", action = "Delete" }
+    );
+});
 
 
 app.MapControllerRoute(
-	name: "areas",
-	pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "deleteComment",
+    pattern: "Admin/AdvertComment/Delete/{id}",
+    defaults: new { controller = "AdvertComment", action = "Delete" }
+);
+
 
 app.Run();
