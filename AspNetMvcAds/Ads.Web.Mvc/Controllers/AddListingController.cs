@@ -91,16 +91,12 @@ namespace Ads.Web.Mvc.Controllers
                 AdvertId = newAdvert.Id,
                 Advert = newAdvert,
                 ImagePath = imagePath,
-                
 
-
-                // TODO: doldur burayı
             };
             _context.AdvertImageEntities.Add(advImage);
             await _context.SaveChangesAsync();
 
             var selectedCategory = model.CategoryId;
-            // TODO: newAdvert için CategoryAdvertEntity ekle, neden eklediğimizi tartış
             CategoryAdvertEntity categoryAdvert = new()
             {
                 CategoryId = selectedCategory,
