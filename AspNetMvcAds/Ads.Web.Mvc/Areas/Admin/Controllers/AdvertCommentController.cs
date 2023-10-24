@@ -1,6 +1,7 @@
 ﻿using Ads.Data;
 using Ads.Web.Mvc.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ads.Web.Mvc.Areas.Admin.Controllers
 {
@@ -15,9 +16,9 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         }
 
         [Area("Admin")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var comments = _context.AdvertCommentEntities.Select(comment => new AdvertCommentsViewModel
+            var comments = await _context.AdvertCommentEntities.Select(comment => new AdvertCommentsViewModel
             {
                 Id = comment.Id,
                 Comment = comment.Comment.Substring(0, 40) + "...",
@@ -25,7 +26,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
                 CreatedAt = comment.CreatedAt,
                 UpdatedAt = comment.UpdatedAt,
                 DeletedAt = comment.DeletedAt,
-            }).ToList();
+            }).ToListAsync();
             return View(comments);
         }
 
@@ -37,26 +38,21 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         }
         [Area("Admin")]
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (DeleteComment(id))
-            {
-                ViewBag.SuccessMessage = "Comment has been deleted successfully.";
-            }
+            await DeleteCommentAsync(id);
             return RedirectToAction("Index");
         }
-        public bool DeleteComment(int commentId)
+        public async Task DeleteCommentAsync(int commentId)
         {
             var comment = _context.AdvertCommentEntities.Find(commentId);
             if (comment != null)
             {
                 _context.AdvertCommentEntities.Remove(comment);
-                _context.SaveChanges();
-                return true;
+                await _context.SaveChangesAsync();
             }
-            return false;
+
+
         }
-
-
     }
 }

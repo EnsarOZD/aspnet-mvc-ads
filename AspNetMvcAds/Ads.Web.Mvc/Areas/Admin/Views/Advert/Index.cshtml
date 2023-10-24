@@ -1,8 +1,13 @@
 ﻿@model List<Ads.Web.Mvc.Areas.Admin.Models.AdvertViewModel>
-@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
-{
-    <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+@{
+    var successMessage = TempData["SuccessMessage"] as string;
 }
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success">@successMessage</div>
+}
+
 <h1>Advertisement Details</h1>
 
 @foreach (var advert in Model)

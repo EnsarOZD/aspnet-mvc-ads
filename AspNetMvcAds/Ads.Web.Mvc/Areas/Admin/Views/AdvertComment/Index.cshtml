@@ -1,9 +1,12 @@
-﻿@if (ViewBag.SuccessMessage != null)
-{
-    <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+﻿@model List<Ads.Web.Mvc.Areas.Admin.Models.AdvertCommentsViewModel>
+@{
+    var successMessage = TempData["SuccessMessage"] as string;
 }
 
-@model List<Ads.Web.Mvc.Areas.Admin.Models.AdvertCommentsViewModel>
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success">@successMessage</div>
+}
 <h2>Advert Comments</h2>
 
 <table class="table">

@@ -14,9 +14,9 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var adverts = _context.AdvertEntities.Select(advert => new AdvertViewModel
+            var adverts = await _context.AdvertEntities.Select(advert => new AdvertViewModel
             {
                 Id = advert.Id,
                 AdvertClickCount = advert.AdvertClickCount,
@@ -24,7 +24,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
                 Price = advert.Price,
                 Title = advert.Title,
                 UserId = advert.UserId,
-            }).ToList();
+            }).ToListAsync();
             return View(adverts);
         }
         [Area("Admin")]
@@ -35,21 +35,21 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         }
         [Area("Admin")]
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            DeleteAdvert(id);
+            await DeleteAdvertAsync(id);
+            TempData["SuccessMessage"] = "Advert deleted succesfully";
             return RedirectToAction("Index");
         }
-        public void DeleteAdvert(int commentId)
+        public async Task DeleteAdvertAsync(int commentId)
         {
             //var comment = _context.AdvertCommentEntities.FirstOrDefault(c => c.Id == commentId);
             var comment = _context.AdvertEntities.Find(commentId);
             if (comment != null)
             {
                 _context.AdvertEntities.Remove(comment);
-                _context.SaveChanges();
-                ViewBag.SuccessMessage = "Advertisement has been deleted successfully.";
+                await _context.SaveChangesAsync();
             }
+        }
     }
-}
 }
