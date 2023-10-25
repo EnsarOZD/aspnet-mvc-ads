@@ -1,17 +1,23 @@
-﻿
-@model Ads.Web.Mvc.Areas.Admin.Models.AdvertSearchViewModel
+﻿@model Ads.Web.Mvc.Areas.Admin.Models.AdvertSearchViewModel
 
-<h1 style="text-align:center;color:red">Search Results</h1>
-@foreach (var item in Model.AdvertEntities)
-{
-    
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">@item.Title</h5>
-                <p class="card-text">@item.Description</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+<h1 style="text-align:center;color:red"> Advert Search Results</h1>
+<div class="row">
+    @foreach (var item in Model.AdvertEntities)
+    {
+        var advertImage = Model.AdvertImageEntities.FirstOrDefault(a => a.Id == item.Id);
+        var imagePath = Url.Content(advertImage.ImagePath);
+        //var image = advertImage.ImagePath;
+
+        <div class="col-md-4">
+            <div class="card">
+                <img src="@imagePath" alt="Advert Image">
+                <div class="card-body">
+                    <h5 class="card-title">Advert Title: @item.Title</h5>
+                    <p class="card-text">Advert Description: @item.Description</p>
+                    <p class="card-text">Advert Price: @item.Price €</p>
+                    <a href="#" class="btn btn-primary">Go to details</a>
+                </div>
             </div>
         </div>
-    
-}
+    }
+</div>

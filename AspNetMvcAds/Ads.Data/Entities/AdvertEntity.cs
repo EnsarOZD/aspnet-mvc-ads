@@ -32,7 +32,7 @@ namespace Ads.Data.Entities
         public bool AcceptTermsAndConditions { get; set; }
         public int StarCount { get; set; }
         public int AdvertClickCount { get; set; }
-
+         public string? ImagePath { get; set; }
         public int UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
