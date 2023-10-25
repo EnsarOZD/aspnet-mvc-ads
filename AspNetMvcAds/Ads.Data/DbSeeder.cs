@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 namespace Ads.Data
 {
 
-	public class DbSeeder
-	{
+    public class DbSeeder
+    {
         public static void Seed(AppDbContext dbcontext)
         {
             var fakeuser = new Faker<UserEntity>()
@@ -19,6 +19,7 @@ namespace Ads.Data
            .RuleFor(u => u.Password, f => f.Internet.Password())
            .RuleFor(u => u.Name, f => f.Name.FirstName())
            .RuleFor(u => u.Address, f => f.Address.FullAddress())
+           .RuleFor(u => u.IsEmailConfirmed, f => f.Random.Bool())
            .RuleFor(u => u.Phone, f =>
            {
                var phone = f.Phone.PhoneNumber();
@@ -68,8 +69,13 @@ namespace Ads.Data
             .RuleFor(a => a.Description, f => f.Lorem.Sentence(10))
             .RuleFor(a => a.AdvertClickCount, f => f.Random.Number(0, 1000))
             .RuleFor(a => a.UserId, f => f.Random.Number(1, 100))
+
+            .RuleFor(p => p.StarCount, f => f.Random.Number(1, 5))
+            .RuleFor(a => a.CreatedAt, f => f.Date.Past(2));
+
             .RuleFor(a => a.CreatedAt, f => f.Date.Past(2))
             .RuleFor(a => a.Price, f => f.Random.Number(0,5000));
+
 
 
 			var advert = advertFaker.Generate(50);
@@ -83,8 +89,7 @@ namespace Ads.Data
             .RuleFor(p => p.CreatedAt, f => f.Date.PastOffset())
             .RuleFor(p => p.CoverImageInt, f => f.Random.Number(1, 1000))
             .RuleFor(p => p.AdvertId, f => f.Random.Number(1, 50))
-            .RuleFor(p => p.UpdatedAt, f => f.Date.PastOffset())
-            .RuleFor(p => p.StarCount, f => f.Random.Number(1, 5));
+            .RuleFor(p => p.UpdatedAt, f => f.Date.PastOffset());
             var advertImage = advertImagefaker.Generate(50);
             dbcontext.AdvertImageEntities.AddRange(advertImage);
             dbcontext.SaveChanges();

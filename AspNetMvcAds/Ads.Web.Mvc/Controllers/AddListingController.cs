@@ -5,6 +5,7 @@ using Ads.Web.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Ads.Web.Mvc.Controllers
 {
@@ -17,24 +18,20 @@ namespace Ads.Web.Mvc.Controllers
             _fileService = fileService;
             _context = context;
         }
-
-
         public IActionResult Add()
         {
             var categories = _context.CategoryEntities.ToList();
-            //ViewData["Categories"] = new SelectList(categories, "Id", "Name");
-            ViewData["Categories"] = new SelectList(categories, "Name", "Name");
+            ViewData["Categories"] = new SelectList(categories, nameof(CategoryEntity.Id), nameof(CategoryEntity.Name));
             var model = new AddListingViewModel();
             return View(model);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Add(AddListingViewModel model, [FromForm] IFormFile formFile)
         {
             if (formFile != null)
             {
-                if (formFile.Length > 2 * 1024 * 1024) 
+                if (formFile.Length > 2 * 1024 * 1024)
                 {
                     ModelState.AddModelError("File", "Dosya boyutu 2 MB'dan büyük olamaz.");
                     ViewBag.Error = "Dosya boyutu 2 MB'dan büyük olamaz.";
@@ -55,21 +52,23 @@ namespace Ads.Web.Mvc.Controllers
             }
             await _fileService.UploadFileAsync(formFile);
             ViewBag.SuccessMessage = "Uploaded Successfully";
-         
+
 
             var categories = _context.CategoryEntities.ToList();
-            ViewData["Categories"] = new SelectList(categories, "Id", "Name");
+            ViewData["Categories"] = new SelectList(categories, nameof(CategoryEntity.Id), nameof(CategoryEntity.Name));
 
-
-            AddListingEntity add = new()
+            if (!int.TryParse(User.FindFirstValue(ClaimTypes.PrimarySid), out int userId))
             {
-                ContactEmail = model.ContactEmail,
+                return BadRequest();
+            }
+
+            AdvertEntity newAdvert = new()
+            {
                 AdType = model.AdType,
                 AcceptTermsAndConditions = model.AcceptTermsAndConditions,
-                AdFeature = model.AddFeature,
-                //AdvertImages = model.AdvertImages,
-                //CategoryId = model.CategoryId,
-                CategoryName=model.CategoryName,
+                AdFeature = model.AdFeature,
+                AdvertClickCount = 0,
+                ContactEmail = model.ContactEmail,
                 ContactAddress = model.ContactAddress,
                 ContactName = model.ContactName,
                 ContactNumber = model.ContactNumber,
@@ -81,14 +80,31 @@ namespace Ads.Web.Mvc.Controllers
                 Price = model.Price,
                 Title = model.Title,
                 UpdatedAt = DateTime.Now,
-                User = model.User,
-                //Advert = model.Advert,
+                UserId = userId,
             };
-            _context.AddListingEntities.Add(add);
+            _context.AdvertEntities.Add(newAdvert);
+            await _context.SaveChangesAsync();
+            string imageName = formFile.FileName;
+            string imagePath = $"~/uploads/{imageName}";
+            AdvertImageEntity advImage = new()
+            {
+                AdvertId = newAdvert.Id,
+                Advert = newAdvert,
+                ImagePath = imagePath,
+
+            };
+            _context.AdvertImageEntities.Add(advImage);
             await _context.SaveChangesAsync();
 
+            var selectedCategory = model.CategoryId;
+            CategoryAdvertEntity categoryAdvert = new()
+            {
+                CategoryId = selectedCategory,
+                AdvertId = newAdvert.Id,
 
-
+            };
+            _context.CategoryAdvertEntities.Add(categoryAdvert);
+            await _context.SaveChangesAsync();
 
             return View("Add", model);
 

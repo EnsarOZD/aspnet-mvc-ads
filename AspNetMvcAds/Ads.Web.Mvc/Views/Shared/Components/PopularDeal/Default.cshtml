@@ -17,66 +17,69 @@
                 <div class="trending-ads-slide">
                     @foreach (var item in Model.AdvertImageEntities)
                     {
-                        var advert = Model.AdvertEntities.FirstOrDefault(a => a.Id == item.AdvertId); // Eğer AdvertId diye bir özellik varsa
+                        var advert = Model.AdvertEntities.FirstOrDefault(a => a.Id == item.AdvertId);
 
-                        @*  if (advert != null)
-                    {
-                    var categoryAdverts = Model.CategoryAdvertEntities.Where(ca => ca.AdvertId == advert.Id).ToList();
-                    var category = categoryAdverts.FirstOrDefault()?.Category; // Eğer birden fazla kategori varsa sadece ilki seçiliyor
-                    }
+                        if (advert != null)
+                        {
+                            var categoryAdvert = Model.CategoryAdvertEntities.FirstOrDefault(ca => ca.AdvertId == advert.Id);
+                            if (categoryAdvert != null)
+                            {
+                                var category = Model.CategoryEntities.FirstOrDefault(c => c.Id == categoryAdvert.CategoryId);
+                                if (category != null)
+                                {
 
-                    *@
+                                    <div class="col-sm-12 col-lg-4">
+                                        <!-- product card -->
+                                        <div class="product-item bg-light">
+                                            <div class="card">
+                                                <div class="thumb-content">
+                                                    <!-- <div class="price">$200</div> -->
 
-                        <div class="col-sm-12 col-lg-4">
-                            <!-- product card -->
-                            <div class="product-item bg-light">
-                                <div class="card">
-                                    <div class="thumb-content">
-                                        <!-- <div class="price">$200</div> -->
+                                                    <a href="single.html">
+                                                        <img class="card-img-top img-fluid" src="https://picsum.photos/id/@(item.CoverImageInt)/100/100" alt="Card image cap">
+                                                    </a>
 
-                                        <a href="single.html">
-                                            <img class="card-img-top img-fluid" src="https://picsum.photos/id/@(item.CoverImageInt)/100/100" alt="Card image cap">
-                                        </a>
+                                                    <div class="card-body">
+                                                        <h4 class="card-title"><a href="single.html">@item.Advert.Title</a></h4>
+                                                        <ul class="list-inline product-meta">
+                                                            <li class="list-inline-item">
+                                                            <li class="list-inline-item">
 
-                                        <div class="card-body">
-                                            <h4 class="card-title"><a href="single.html">@item.Advert.Title</a></h4>
-                                            <ul class="list-inline product-meta">
-                                                <li class="list-inline-item">
-                                                <li class="list-inline-item">
-
-                                                    {
-                                                    <a href="single.html"><i class="fa fa-folder-open-o"></i></a>
+                                                                <a href="single.html"><i class="fa fa-folder-open-o"></i>@category.Name</a>
 
 
-                                                </li>
+                                                            </li>
 
-                                                <li class="list-inline-item">
-                                                    <a href="#"><i class="fa fa-calendar"></i>@item.CreatedAt.ToString("MM/dd/yyyy")</a>
-                                                </li>
-                                            </ul>
-                                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, aliquam!</p>
-                                            <div class="product-ratings">
-                                                <ul class="list-inline">
-                                                    @for (int i = 0; i < item.StarCount; i++)
-                                                    {
-                                                        <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+                                                            <li class="list-inline-item">
+                                                                <a href="#"><i class="fa fa-calendar"></i>@item.CreatedAt.ToString("MM/dd/yyyy")</a>
+                                                            </li>
+                                                        </ul>
+                                                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, aliquam!</p>
+                                                        <div class="product-ratings">
+                                                            <ul class="list-inline">
+                                                                @for (int i = 0; i < item.Advert.StarCount; i++)
+                                                                {
+                                                                    <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
 
-                                                    }
-                                                    @for (int i = 0; i < (5 - item.StarCount); i++)
-                                                    {
-                                                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                                }
+                                                                @for (int i = 0; i < (5 - item.Advert.StarCount); i++)
+                                                                {
+                                                                    <li class="list-inline-item"><i class="fa fa-star"></i></li>
 
-                                                    }
+                                                                }
 
-                                                </ul>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
                                             </div>
                                         </div>
 
                                     </div>
-                                </div>
-                            </div>
-
-                        </div>
+                                }
+                            }
+                        }
                     }
                 </div>
             </div>

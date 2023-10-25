@@ -19,15 +19,24 @@ namespace Ads.Data.Entities
 
         [Required, Column(TypeName = "ntext")]
         public string Description { get; set; } = string.Empty;
-		public decimal Price { get; set; }
 
-		public int AdvertClickCount { get; set; }
+        public string AdType { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public bool IsPriceNegotiable { get; set; }
+        public string ContactName { get; set; } = string.Empty;
+        public string ContactNumber { get; set; } = string.Empty;
+        public string ContactEmail { get; set; } = string.Empty;
+        public string ContactAddress { get; set; } = string.Empty;
+        public string AdFeature { get; set; } = string.Empty;
+        public string PaymentMethod { get; set; } = string.Empty;
+        public bool AcceptTermsAndConditions { get; set; }
+        public int StarCount { get; set; }
+        public int AdvertClickCount { get; set; }
 
         public int UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public UserEntity User { get; set; }= null!;
-
+        public UserEntity User { get; set; } = null!;
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public DateTimeOffset DeletedAt { get; set; }

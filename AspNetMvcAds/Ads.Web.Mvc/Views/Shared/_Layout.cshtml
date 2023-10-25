@@ -23,14 +23,17 @@
     <link rel="stylesheet" href="~/plugins/jquery-nice-select/css/nice-select.css">
     <!-- CUSTOM CSS -->
     <link href="~/css/style.css" rel="stylesheet" asp-append-version="true">
-    
+
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="body-wrapper">
-
+    @if (Context.User.Identity.IsAuthenticated)
+    {
+        <span class="nav-link text-dark">Welcome @Context.User.Identity.Name</span>
+    }
     @await Component.InvokeAsync("Navbar")
 
-	@RenderBody()
+    @RenderBody()
 
     @await Html.PartialAsync("_FooterPartial")
 
@@ -50,7 +53,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU&libraries=places"></script>
     <script src="~/plugins/google-map/gmap.js"></script>
     <script src="~/js/script.js"></script>
-    <partial name="_ValidationScriptsPartial"/>
+    <partial name="_ValidationScriptsPartial" />
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
