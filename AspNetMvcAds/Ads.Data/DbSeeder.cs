@@ -92,6 +92,7 @@ namespace Ads.Data
             .RuleFor(a => a.Description, f => f.Lorem.Sentence(10))
             .RuleFor(a => a.AdvertClickCount, f => f.Random.Number(0, 1000))
             .RuleFor(a => a.UserId, f => f.Random.Number(1, 100))
+
             //.RuleFor(a => a.CreatedAt, f => f.Date.Past(2))
              .RuleFor(c => c.CreatedAt, f =>
              {
@@ -115,6 +116,18 @@ namespace Ads.Data
 
 
             var advert = advertFaker.Generate(50);
+
+
+            .RuleFor(p => p.StarCount, f => f.Random.Number(1, 5))
+            .RuleFor(a => a.CreatedAt, f => f.Date.Past(2));
+
+            .RuleFor(a => a.CreatedAt, f => f.Date.Past(2))
+            .RuleFor(a => a.Price, f => f.Random.Number(0,5000));
+
+
+
+			var advert = advertFaker.Generate(50);
+
             dbcontext.AdvertEntities.AddRange(advert);
             dbcontext.SaveChanges();
 
@@ -143,6 +156,7 @@ namespace Ads.Data
              })
             .RuleFor(p => p.CoverImageInt, f => f.Random.Number(1, 1000))
             .RuleFor(p => p.AdvertId, f => f.Random.Number(1, 50))
+
             //.RuleFor(p => p.UpdatedAt, f => f.Date.PastOffset())
              .RuleFor(c => c.CreatedAt, f =>
              {
@@ -151,6 +165,9 @@ namespace Ads.Data
                  return result;
              })
             .RuleFor(p => p.StarCount, f => f.Random.Number(1, 5));
+
+            .RuleFor(p => p.UpdatedAt, f => f.Date.PastOffset());
+
             var advertImage = advertImagefaker.Generate(50);
             dbcontext.AdvertImageEntities.AddRange(advertImage);
             dbcontext.SaveChanges();

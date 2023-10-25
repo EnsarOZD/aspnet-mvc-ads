@@ -13,18 +13,14 @@ namespace Ads.Data.Entities
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
         [Required, MaxLength(100)]
         public string Name { get; set; } = string.Empty;
-
         [Required, MaxLength(200)]
         public string Description { get; set; } = string.Empty;
-
-
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public DateTimeOffset DeletedAt { get; set; }
-        public ICollection<AddListingEntity> AdListings { get; set; }
+        public ICollection<AdvertEntity> AdListings { get; set; }
 
     }
 }
