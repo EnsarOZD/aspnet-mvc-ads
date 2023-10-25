@@ -69,11 +69,16 @@ namespace Ads.Data
             .RuleFor(a => a.Description, f => f.Lorem.Sentence(10))
             .RuleFor(a => a.AdvertClickCount, f => f.Random.Number(0, 1000))
             .RuleFor(a => a.UserId, f => f.Random.Number(1, 100))
+
             .RuleFor(p => p.StarCount, f => f.Random.Number(1, 5))
             .RuleFor(a => a.CreatedAt, f => f.Date.Past(2));
 
+            .RuleFor(a => a.CreatedAt, f => f.Date.Past(2))
+            .RuleFor(a => a.Price, f => f.Random.Number(0,5000));
 
-            var advert = advertFaker.Generate(50);
+
+
+			var advert = advertFaker.Generate(50);
             dbcontext.AdvertEntities.AddRange(advert);
             dbcontext.SaveChanges();
 

@@ -43,14 +43,17 @@ namespace Ads.Web.Mvc.Controllers
                     CategoryName = category?.Name ?? "-",
                     ImagePaths = imagePaths,
                     User = new UserViewModel
+
                     {
                         Id = user.Id,
                         Name = user.Name,
                         CreatedAt = user.CreatedAt
-                    }
-                };
+                    },
 
-                return View(advertModel);
+					 Price = advertEntity.Price
+				};
+
+				return View(advertModel);
             }
 
             return View();
