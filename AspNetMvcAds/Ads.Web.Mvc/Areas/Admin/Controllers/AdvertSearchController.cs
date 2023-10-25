@@ -15,15 +15,16 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         [Area("Admin")]
         public IActionResult Index(string searchContent)
         {
-            var titles = _searchService.SearchAdvertsByTitle(searchContent);
+            var searchResult = _searchService.SearchAdvertsByTitle(searchContent);
 
             var viewModel = new AdvertSearchViewModel
             {
-                Titles = titles
+                AdvertEntities = searchResult.AdvertEntities,
+                AdvertImageEntities = searchResult.AdvertImageEntities
             };
 
             return View(viewModel);
-            
         }
+
     }
 }
