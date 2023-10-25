@@ -1,30 +1,29 @@
-﻿using Ads.Data;
-using Ads.Services.Services;
+﻿using Ads.Services.Services;
+using Ads.Web.Mvc.Areas.Admin.Models;
 using Ads.Web.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-namespace Ads.Web.Mvc.Controllers
+namespace Ads.Web.Mvc.Areas.Admin.Controllers
 {
-    public class SearchController : Controller
+    public class AdvertSearchController : Controller
     {
         private readonly ISearchService _searchService;
-
-        public SearchController(ISearchService searchService)
+        public AdvertSearchController(ISearchService searchService)
         {
             _searchService = searchService;
         }
-        //TODO: HttpPost olmalı mı çünkü viewında form işlemi method:post şeklinde submit ediyor buton ile?
+        [Area("Admin")]
         public IActionResult Index(string searchContent)
         {
             var titles = _searchService.SearchAdvertsByTitle(searchContent);
 
-            var viewModel = new SearchViewModel
+            var viewModel = new AdvertSearchViewModel
             {
                 Titles = titles
             };
 
             return View(viewModel);
+            
         }
     }
 }

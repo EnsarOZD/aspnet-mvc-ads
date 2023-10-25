@@ -1,0 +1,16 @@
+﻿@model Ads.Web.Mvc.Areas.Admin.Models.AdvertSearchViewModel
+
+<h1 style="text-align:center;color:red">Search Results</h1>
+@foreach (var item in Model.AdvertImages)
+{
+    
+
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" src="@item.ImagePath" alt="Card image cap">
+    <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+</div>
+}

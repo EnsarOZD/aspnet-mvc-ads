@@ -41,6 +41,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await DeleteCommentAsync(id);
+            TempData["SuccessMessage"] = "Comment deleted succesfully";
             return RedirectToAction("Index");
         }
         public async Task DeleteCommentAsync(int commentId)

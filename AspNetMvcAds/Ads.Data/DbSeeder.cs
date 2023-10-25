@@ -19,6 +19,7 @@ namespace Ads.Data
            .RuleFor(u => u.Password, f => f.Internet.Password())
            .RuleFor(u => u.Name, f => f.Name.FirstName())
            .RuleFor(u => u.Address, f => f.Address.FullAddress())
+           .RuleFor(u => u.IsEmailConfirmed, f => f.Random.Bool())
            .RuleFor(u => u.Phone, f =>
            {
                var phone = f.Phone.PhoneNumber();
