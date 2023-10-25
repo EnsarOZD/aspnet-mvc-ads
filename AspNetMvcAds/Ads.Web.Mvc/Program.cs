@@ -28,6 +28,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<TokenUsageService>();
+builder.Services.AddScoped<ISearchService, SearchService>();
 
 // Uygulama inşa edilirken hizmetlerin oluşturulmasını ve veritabanının oluşturulup doldurulmasını sağlayın.
 var app = builder.Build();
@@ -55,14 +56,38 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+//app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapControllerRoute(
+//        name: "adminDelete",
+//        pattern: "/Admin/AdvertComment/Delete/{id?}",
+//        defaults: new { controller = "AdvertComment", action = "Delete" }
+//    );
+//});
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "areas",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
 
 
 app.MapControllerRoute(
-	name: "areas",
-	pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "deleteComment",
+    pattern: "Admin/AdvertComment/Delete/{id}",
+    defaults: new { controller = "AdvertComment", action = "Delete" }
+);
+
 
 app.Run();

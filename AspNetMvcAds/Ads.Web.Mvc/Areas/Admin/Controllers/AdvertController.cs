@@ -1,13 +1,55 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Ads.Data;
+using Ads.Web.Mvc.Areas.Admin.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ads.Web.Mvc.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class AdvertController : Controller
     {
-        public IActionResult Index()
+        private readonly AppDbContext _context;
+
+        public AdvertController(AppDbContext context)
         {
+            _context = context;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var adverts = await _context.AdvertEntities.Select(advert => new AdvertViewModel
+            {
+                Id = advert.Id,
+                AdvertClickCount = advert.AdvertClickCount,
+                Description = advert.Description,
+                Price = advert.Price,
+                Title = advert.Title,
+                UserId = advert.UserId,
+            }).ToListAsync();
+            return View(adverts);
+        }
+        [Area("Admin")]
+        public IActionResult Delete()
+        {
+
             return View();
+        }
+        [Area("Admin")]
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await DeleteAdvertAsync(id);
+            TempData["SuccessMessage"] = "Advert deleted succesfully";
+            return RedirectToAction("Index");
+        }
+        public async Task DeleteAdvertAsync(int commentId)
+        {
+            //var comment = _context.AdvertCommentEntities.FirstOrDefault(c => c.Id == commentId);
+            var comment = _context.AdvertEntities.Find(commentId);
+            if (comment != null)
+            {
+                _context.AdvertEntities.Remove(comment);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

@@ -56,7 +56,30 @@ namespace Ads.Data
                 .RuleFor(p => p.Slug, (f, p) => GenerateSlug(p.Title))
                 .RuleFor(p => p.Content, f => f.Lorem.Paragraphs())
                 .RuleFor(p => p.IsActive, f => f.Random.Bool())
-                .RuleFor(p => p.CreatedAt, f => f.Date.Past(2));
+                //.RuleFor(p => p.CreatedAt, f => f.Date.Past(2));
+                .RuleFor(c => c.CreatedAt, f =>
+                  {
+                      var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
+                      var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                      return result;
+                  })
+                .RuleFor(c => c.UpdatedAt, f =>
+                {
+                    var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
+                    var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                    return result;
+                })
+                 .RuleFor(c => c.DeletedAt, f =>
+                 {
+                     var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
+                     var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                     return result;
+                 });
+
+
+
+
+
 
             var pages = pageFaker.Generate(pageTitles.Length);
             dbcontext.PageEntities.AddRange(pages);
@@ -70,6 +93,31 @@ namespace Ads.Data
             .RuleFor(a => a.AdvertClickCount, f => f.Random.Number(0, 1000))
             .RuleFor(a => a.UserId, f => f.Random.Number(1, 100))
 
+            //.RuleFor(a => a.CreatedAt, f => f.Date.Past(2))
+             .RuleFor(c => c.CreatedAt, f =>
+             {
+                 var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
+                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return result;
+             })
+             .RuleFor(c => c.UpdatedAt, f =>
+             {
+                 var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
+                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return result;
+             })
+             .RuleFor(c => c.DeletedAt, f =>
+              {
+                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
+                  var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                  return result;
+              })
+            .RuleFor(a => a.Price, f => f.Random.Number(0, 5000));
+
+
+            var advert = advertFaker.Generate(50);
+
+
             .RuleFor(p => p.StarCount, f => f.Random.Number(1, 5))
             .RuleFor(a => a.CreatedAt, f => f.Date.Past(2));
 
@@ -79,6 +127,7 @@ namespace Ads.Data
 
 
 			var advert = advertFaker.Generate(50);
+
             dbcontext.AdvertEntities.AddRange(advert);
             dbcontext.SaveChanges();
 
@@ -86,10 +135,39 @@ namespace Ads.Data
 
 
             .RuleFor(p => p.ImagePath, f => f.Image.PicsumUrl())
-            .RuleFor(p => p.CreatedAt, f => f.Date.PastOffset())
+            //.RuleFor(p => p.CreatedAt, f => f.Date.PastOffset())
+             .RuleFor(c => c.CreatedAt, f =>
+             {
+                 var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
+                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return result;
+             })
+             .RuleFor(c => c.UpdatedAt, f =>
+             {
+                 var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
+                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return result;
+             })
+             .RuleFor(c => c.DeletedAt, f =>
+             {
+                 var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
+                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return result;
+             })
             .RuleFor(p => p.CoverImageInt, f => f.Random.Number(1, 1000))
             .RuleFor(p => p.AdvertId, f => f.Random.Number(1, 50))
+
+            //.RuleFor(p => p.UpdatedAt, f => f.Date.PastOffset())
+             .RuleFor(c => c.CreatedAt, f =>
+             {
+                 var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
+                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return result;
+             })
+            .RuleFor(p => p.StarCount, f => f.Random.Number(1, 5));
+
             .RuleFor(p => p.UpdatedAt, f => f.Date.PastOffset());
+
             var advertImage = advertImagefaker.Generate(50);
             dbcontext.AdvertImageEntities.AddRange(advertImage);
             dbcontext.SaveChanges();
@@ -115,7 +193,25 @@ namespace Ads.Data
             .RuleFor(ac => ac.IsActive, f => f.Random.Bool())
             .RuleFor(ac => ac.AdvertId, f => f.Random.Int(1, 50))
             .RuleFor(ac => ac.UserId, f => f.Random.Int(1, 100))
-            .RuleFor(ac => ac.CreatedAt, f => f.Date.Past(1));
+            //.RuleFor(ac => ac.CreatedAt, f => f.Date.Past(1));
+             .RuleFor(c => c.CreatedAt, f =>
+             {
+                 var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
+                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return result;
+             })
+             .RuleFor(c => c.UpdatedAt, f =>
+             {
+                 var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
+                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return result;
+             })
+             .RuleFor(c => c.DeletedAt, f =>
+             {
+                 var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
+                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return result;
+             });
 
             var coment = ComentFaker.Generate(100);
             dbcontext.AdvertCommentEntities.AddRange(coment);

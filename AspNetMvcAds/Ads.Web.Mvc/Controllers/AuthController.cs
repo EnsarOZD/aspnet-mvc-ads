@@ -39,7 +39,7 @@ namespace Ads.Web.Mvc.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-           
+
             var existingUser = await DbContext.UserEntities.FirstOrDefaultAsync(u => u.Email == model.Email);
             if (existingUser != null)
             {
@@ -51,10 +51,10 @@ namespace Ads.Web.Mvc.Controllers
                 ViewBag.Error = "Passwords does not a match!";
                 return View(model);
             }
-         
+
             if (ModelState.IsValid)
             {
-              
+
                 UserEntity user = new()
                 {
                     Email = model.Email,
@@ -67,16 +67,16 @@ namespace Ads.Web.Mvc.Controllers
                 DbContext.UserEntities.Add(user);
                 await DbContext.SaveChangesAsync();
 
-              
+
                 string mailMessage = $" Thank you for registration to our website.  Here your verification code is: <strong>{user.EmailConfirmationToken}</strong>";
                 await _emailService.SendEmailAsync(model.Email, "User Verification", mailMessage);
 
-              
+
                 ModelState.Clear();
                 return View("~/Views/Auth/VerifyAccount.cshtml", user.Id);
             }
 
-         
+
             return View();
         }
 
@@ -231,7 +231,7 @@ namespace Ads.Web.Mvc.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ResetPassword( [FromRoute] string id)
+        public async Task<IActionResult> ResetPassword([FromRoute] string id)
         {
 
             var user = DbContext.UserEntities.FirstOrDefault(u => u.PasswordResetToken == id);
