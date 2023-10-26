@@ -1,4 +1,5 @@
 ﻿using Ads.Data.Entities;
+using Ads.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Ads.Services.Services
 {
     public interface ISearchService
     {
-        List<AdvertEntity> SearchAdvertsByTitle(string searchContent);
+        SearchViewModel SearchAdvertsByTitle(string searchContent);
     }
 }

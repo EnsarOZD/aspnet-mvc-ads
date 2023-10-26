@@ -32,7 +32,7 @@ namespace Ads.Data.Entities
         public bool AcceptTermsAndConditions { get; set; }
         public int StarCount { get; set; }
         public int AdvertClickCount { get; set; }
-
+         public string? ImagePath { get; set; }
         public int UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
@@ -40,5 +40,6 @@ namespace Ads.Data.Entities
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public DateTimeOffset DeletedAt { get; set; }
+        public ICollection<AdvertImageEntity> AdvertImages;
     }
 }

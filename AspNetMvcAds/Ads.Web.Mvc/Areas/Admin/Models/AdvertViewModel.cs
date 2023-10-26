@@ -10,12 +10,13 @@ namespace Ads.Web.Mvc.Areas.Admin.Models
         public string Title { get; set; } = string.Empty;
 
         public string Description { get; set; } = string.Empty;
+        public string ImagePath { get; set; } = string.Empty;
 
         public decimal Price { get; set; }
 
         public int AdvertClickCount { get; set; }
 
         public int UserId { get; set; }
-
+       
     }
 }

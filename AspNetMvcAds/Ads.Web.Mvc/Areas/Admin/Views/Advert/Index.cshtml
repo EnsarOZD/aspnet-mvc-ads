@@ -10,22 +10,29 @@
 
 <h1>Advertisement Details</h1>
 
-@foreach (var advert in Model)
-{
+<div class="row">
+    @foreach (var advert in Model)
+    {
+       
 
-    <div>
-        <h2>Title: @advert.Title</h2>
-        <p>Description: @advert.Description</p>
-        <p>Price: @advert.Price €</p>
-        <p>Click Count: @advert.AdvertClickCount</p>
-        <p>User ID: @advert.UserId</p>
-        <p>
-            <form asp-controller="Advert" asp-area="Admin" asp-action="Delete" method="post">
-                <input type="hidden" name="id" value="@advert.Id" />
-                <button type="submit" class="d-block btn alert-danger btn-sm font-weight-bold  border-0 rounded" onclick="return confirm('Are you sure you want to delete this comment?');">Delete this Ad Listing</button>
-            </form>
-        </p>
-    </div>
-
-}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="@advert.ImagePath" alt="Advert Image" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">@advert.Title</h5>
+                    <p class="card-text">@advert.Description</p>
+                    <p class="card-text"><strong>Price:</strong> @advert.Price €</p>
+                    <p class="card-text"><strong>Click Count:</strong> @advert.AdvertClickCount</p>
+                    <p class="card-text"><strong>User ID:</strong> @advert.UserId</p>
+                </div>
+                <div class="card-footer">
+                    <form asp-controller="Advert" asp-area="Admin" asp-action="Delete" method="post">
+                        <input type="hidden" name="id" value="@advert.Id" />
+                        <button type="submit" class="btn btn-danger btn-block" onclick="return confirm('Are you sure you want to delete this Ad Listing?');">Delete this advert</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>
 

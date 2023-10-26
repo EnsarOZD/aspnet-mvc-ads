@@ -1,4 +1,5 @@
 ﻿using Ads.Data;
+using Ads.Data.Entities;
 using Ads.Web.Mvc.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +15,12 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         {
             _context = context;
         }
+        [Area("Admin")]
         public async Task<IActionResult> Index()
         {
-            var adverts = await _context.AdvertEntities.Select(advert => new AdvertViewModel
+           
+            var adverts = await _context.AdvertEntities
+                .Select(advert => new AdvertViewModel
             {
                 Id = advert.Id,
                 AdvertClickCount = advert.AdvertClickCount,
@@ -24,9 +28,12 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
                 Price = advert.Price,
                 Title = advert.Title,
                 UserId = advert.UserId,
-            }).ToListAsync();
+                ImagePath= _context.AdvertImageEntities.First().ImagePath,
+                }).ToListAsync();
             return View(adverts);
         }
+
+
         [Area("Admin")]
         public IActionResult Delete()
         {

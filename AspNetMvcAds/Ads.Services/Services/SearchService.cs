@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Ads.Services.Models;
 
 namespace Ads.Services.Services
 {
@@ -17,17 +19,25 @@ namespace Ads.Services.Services
             _context = context;
         }
 
-        public List<AdvertEntity> SearchAdvertsByTitle(string searchContent)
+        public SearchViewModel SearchAdvertsByTitle(string searchContent)
         {
             var query = from s in _context.AdvertEntities
                         select s;
+            var images = _context.AdvertImageEntities.ToList();
 
             if (!string.IsNullOrEmpty(searchContent))
             {
                 query = query.Where(p => p.Title.Contains(searchContent));
             }
 
-            return query.ToList();
+            var viewModel = new SearchViewModel
+            {
+                AdvertEntities = query.ToList(),
+                AdvertImageEntities = images
+            };
+
+            return viewModel;
         }
+
     }
 }

@@ -19,23 +19,11 @@ namespace Ads.Web.Mvc.Controllers
             _searchService = searchService;
         }
 
-        //TODO: HttpPost olmalı mı çünkü viewında form işlemi method:post şeklinde submit ediyor buton ile?
         public IActionResult Index(string searchContent)
         {
-            var titles = _searchService.SearchAdvertsByTitle(searchContent);
+            var searchResult = _searchService.SearchAdvertsByTitle(searchContent);
 
-            var viewModel = new SearchViewModel
-            {
-                Titles = titles
-
-            var viewModel = new SearchViewModel
-            {
-                Titles = titles,
-                Categories = categories,
-
-            };
-
-            return View(viewModel);
+            return View(searchResult);
         }
     }
 }
