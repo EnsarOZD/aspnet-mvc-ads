@@ -42,7 +42,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
             TempData["SuccessMessage"] = "User deleted succesfully";
             return RedirectToAction("Index");
         }
-        public async Task DeleteCommentAsync(int userId)
+        public async Task DeleteCommentAsync(int userId) 
         {
             var user = _context.UserEntities.Find(userId);
             if (user != null)
@@ -70,13 +70,8 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 
         }
 
-
-
-
-
-
         [HttpPost]
-        public async Task<IActionResult> Edit([FromRoute] int id,UserRoles roles ,UserViewModel userViewModel)
+        public async Task<IActionResult> Edit([FromRoute] int id, UserRoles roles, UserViewModel userViewModel)
         {
             var user = await _context.UserEntities.FindAsync(id);
 
@@ -92,10 +87,8 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction("Index"); 
+            return RedirectToAction("Index");
         }
-
-
 
     }
 }
