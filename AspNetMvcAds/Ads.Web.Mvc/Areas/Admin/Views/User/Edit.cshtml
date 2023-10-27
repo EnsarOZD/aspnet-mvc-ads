@@ -1,0 +1,45 @@
+﻿@model Ads.Web.Mvc.Areas.Admin.Models.UserViewModel
+
+
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<h2>Edit User</h2>
+
+<form asp-controller="User" asp-action="Edit" asp-route-id="@Model.Id" method="post" asp-area="Admin">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="IsEmailConfirmed"></label>
+        <input asp-for="IsEmailConfirmed" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone"></label>
+        <input asp-for="Phone" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Roles">User Role:</label>
+        <select asp-for="Roles" class="form-control">
+            <option value="BasicUser">Basic User</option>
+            <option value="Admin">Admin</option>
+            <option value="Moderator">Moderator</option>
+            <option value="StandartUser">Standart User</option>
+            <option value="PremiumUser">Premium User</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+<a asp-controller="User" asp-action="Index">Back to List</a>
