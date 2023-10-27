@@ -6,15 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace Ads.Data
 {
 
     public class DbSeeder
     {
+      
         public static void Seed(AppDbContext dbcontext)
         {
-            var fakeuser = new Faker<UserEntity>()
+			
+
+			var fakeuser = new Faker<UserEntity>()
            .RuleFor(u => u.Email, f => f.Internet.Email())
            .RuleFor(u => u.Password, f => f.Internet.Password())
            .RuleFor(u => u.Name, f => f.Name.FirstName())
@@ -60,20 +64,20 @@ namespace Ads.Data
                 .RuleFor(c => c.CreatedAt, f =>
                   {
                       var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                      var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                      return result;
+                      //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy",culture));
+                      return pastDateTime;
                   })
                 .RuleFor(c => c.UpdatedAt, f =>
                 {
                     var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                    var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                    return result;
+                    //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy", culture));
+                    return pastDateTime;
                 })
                  .RuleFor(c => c.DeletedAt, f =>
                  {
                      var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                     var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                     return result;
+					 // var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy", culture));
+					 return pastDateTime;
                  });
 
 
@@ -98,20 +102,20 @@ namespace Ads.Data
              .RuleFor(c => c.CreatedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+				 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy",culture));
+				 return pastDateTime;
              })
              .RuleFor(c => c.UpdatedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+				 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy",culture));
+				 return pastDateTime;
              })
              .RuleFor(c => c.DeletedAt, f =>
               {
                   var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                  var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                  return result;
+				  //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy",culture));
+				  return pastDateTime;
               })
             .RuleFor(a => a.Price, f => f.Random.Number(0, 5000));
 
@@ -128,20 +132,20 @@ namespace Ads.Data
              .RuleFor(c => c.CreatedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+				 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy", culture));
+				 return pastDateTime;
              })
              .RuleFor(c => c.UpdatedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+				 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy", culture));
+				 return pastDateTime;
              })
              .RuleFor(c => c.DeletedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+				 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy", culture));
+				 return pastDateTime;
              })
             .RuleFor(p => p.CoverImageInt, f => f.Random.Number(1, 1000))
             .RuleFor(p => p.AdvertId, f => f.Random.Number(1, 50))
@@ -150,8 +154,8 @@ namespace Ads.Data
              .RuleFor(c => c.CreatedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+				 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy", culture));
+				 return pastDateTime;
              })
             
 
@@ -186,20 +190,20 @@ namespace Ads.Data
              .RuleFor(c => c.CreatedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+				 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy", culture));
+				 return pastDateTime;
              })
              .RuleFor(c => c.UpdatedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+				 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy", culture));
+				 return pastDateTime;
              })
              .RuleFor(c => c.DeletedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+				 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy", culture));
+				 return pastDateTime;
              });
 
             var coment = ComentFaker.Generate(100);
