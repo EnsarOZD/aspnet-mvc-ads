@@ -8,6 +8,7 @@
 }
 
 
+
 <section class="login py-5 border-top-1">
     <div class="container">
         <div class="row justify-content-center">
@@ -35,9 +36,14 @@
                         </fieldset>
                     </form>
                 </div>
+
                 @if (!string.IsNullOrEmpty(ViewBag.Error))
                 {
                     <div class="alert alert-danger">@ViewBag.Error</div>
+                }
+                @if (!string.IsNullOrEmpty(ViewBag.Warning))
+                {
+                    <div class="alert alert-warning">@ViewBag.Warning</div>
                 }
             </div>
         </div>
