@@ -22,39 +22,22 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 
             _searchService = searchService;
         }
-        public IActionResult Index(int? id, string searchContent)
+        public IActionResult Index(string searchContent)
         {
-            var searchResult=_searchService.SearchAdvertsByTitle(searchContent);
-            int? advertId = _advertImageService.GetImageById(id)?.AdvertId;
+            var searchResult = _searchService.SearchAdvertsByTitle(searchContent);
             IQueryable<AdminAdvertImageViewModel> images;
+            images = _advertImageService.GetAllImagesQueryable()
+                .Include(i => i.Advert)
+                .Select(i => new AdminAdvertImageViewModel
+                {
+                    Id = i.Id,
+                    ImagePath = i.ImagePath,
+                    ImageSize = i.ImageSize,
+                    AdvertId = i.AdvertId,
+                    AdvertTitle = i.Advert.Title
+                });
 
-            if (advertId.HasValue)
-            {
-                images = _advertImageService.GetAllImagesQueryable()
-                    .Where(i => i.AdvertId == advertId.Value)
-                    .Include(i => i.Advert)
-                    .Select(i => new AdminAdvertImageViewModel
-                    {
-                        Id = i.Id,
-                        ImagePath = i.ImagePath,
-                        ImageSize = i.ImageSize,
-                        AdvertId = i.AdvertId,
-                        AdvertTitle = i.Advert.Title
-                    });
-            }
-            else
-            {
-                images = _advertImageService.GetAllImagesQueryable()
-                    .Include(i => i.Advert)
-                    .Select(i => new AdminAdvertImageViewModel
-                    {
-                        Id = i.Id,
-                        ImagePath = i.ImagePath,
-                        ImageSize = i.ImageSize,
-                        AdvertId = i.AdvertId,
-                        AdvertTitle = i.Advert.Title
-                    });
-            }
+
             if (!string.IsNullOrEmpty(searchContent))
             {
                 images = images.Where(i => i.AdvertTitle.Contains(searchContent));
@@ -63,24 +46,13 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 
             return View(images);
         }
-        public IActionResult Delete(int id)
-        {
-
-            var image = _advertImageService.GetImageById(id);
-           
-            if (image == null)
-            {
-                return NotFound();
-            }
-            return View(image);
-
-        }
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public IActionResult Delete(int id)
         {
             _advertImageService.DeleteImage(id);
+            TempData["SuccessMessage"] = "Image deleted succesfully";
+
             return RedirectToAction(nameof(Index));
         }
 
