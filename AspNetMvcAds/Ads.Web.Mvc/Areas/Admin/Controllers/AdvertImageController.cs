@@ -1,8 +1,10 @@
-﻿using Ads.Data.Entities;
+﻿using Ads.Data;
+using Ads.Data.Entities;
 using Ads.Services.Services.Abstract;
 using Ads.Web.Mvc.Areas.Admin.Models;
 using Bogus.DataSets;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace Ads.Web.Mvc.Areas.Admin.Controllers
 {
@@ -10,25 +12,35 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 	public class AdvertImageController : Controller
 	{
 		private readonly IAdvertImageService _advertImageService;
+        private readonly AppDbContext _context;
 
-		public AdvertImageController(IAdvertImageService advertImageService)
+        public AdvertImageController(IAdvertImageService advertImageService, AppDbContext context)
 		{
 			_advertImageService = advertImageService;
-		}
+            _context = context;
+        }
 		public IActionResult Index(int? advertId)
 		{
-            IEnumerable<AdvertImageEntity> images;
-            if (advertId.HasValue)
+            var viewModel = new AdvertViewModel
             {
-                images = _advertImageService.GetAllImages().Where(i => i.AdvertId == advertId.Value);
-            }
-            else
-            {
-                images=_advertImageService.GetAllImages();
-            }
-			
-			return View(images);
-		}
+                AdvertEntities = _context.AdvertEntities.ToList(),
+                AdvertImageEntities = _context.AdvertImageEntities.ToList(),
+            };
+
+            //IEnumerable<AdvertImageEntity> images;
+            //if (advertId.HasValue)
+            //{
+            //    images = _advertImageService.GetAllImages().Where(i => i.AdvertId == advertId.Value);
+
+
+            //}
+            //else
+            //{
+            //    images=_advertImageService.GetAllImages();
+            //}
+
+            return View(viewModel);
+        }
         public IActionResult Delete(int id)
         {
             var image = _advertImageService.GetImageById(id);

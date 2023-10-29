@@ -14,6 +14,7 @@ namespace Ads.Services.Services.Abstract
         void AddImage(AdvertImageEntity image);
         void UpdateImage(AdvertImageEntity image);
         void DeleteImage(int id);
+        void GetAdvertTitle(int advertId);
 
     }
 }

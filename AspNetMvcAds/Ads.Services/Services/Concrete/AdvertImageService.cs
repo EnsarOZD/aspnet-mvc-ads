@@ -33,7 +33,12 @@ namespace Ads.Services.Services.Concrete
 			}
 		}
 
-		public IEnumerable<AdvertImageEntity> GetAllImages()
+        public void GetAdvertTitle(int advertId)
+        {
+            var advert = _context.AdvertEntities.FirstOrDefault(a => a.Id == advertId);
+        }
+
+        public IEnumerable<AdvertImageEntity> GetAllImages()
 		{
 			return _context.AdvertImageEntities.ToList();
 		}

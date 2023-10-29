@@ -1,5 +1,4 @@
-﻿@model IEnumerable<Ads.Data.Entities.AdvertImageEntity>
-
+﻿@model Ads.Web.Mvc.Areas.Admin.Models.AdvertViewModel
 @{
     ViewData["Title"] = "Advert Images";
 }
@@ -23,21 +22,22 @@
     <thead>
         <tr>
             <th>Thumbnail</th>
-            <th>Advert Id</th>
+            <th>Advert Title</th>
             <th>Size</th>
             <th>Number Of Image</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var image in Model)
+        @foreach (var image in Model.AdvertEntities)
         {
-           
+            var advertImage = Model.AdvertImageEntities.FirstOrDefault(a => a.Id == image.Id);
+            var imagePath = Url.Content(advertImage.ImagePath);
             <tr>
-                <td><img src="@image.ImagePath" alt="@image.AdvertId" width="100" /></td>
-                <td>@image.AdvertId</td>
-                <td>@image.ImageSize</td>
-                <td></td>
+                <td><img src="@imagePath" alt="" width="100" /></td>
+                <td>@image.Title</td>
+@*                 <td>@image.</td> TODO: IMAGE SIZE HALLEDİLECEK
+ *@                <td></td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@image.Id" class="btn btn-primary">Edit</a>
                     <a asp-action="Delete" asp-route-id="@image.Id" class="btn btn-danger">Delete</a>
