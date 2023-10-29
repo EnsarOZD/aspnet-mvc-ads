@@ -1,5 +1,6 @@
 ﻿using Ads.Data;
 using Ads.Data.Entities;
+using Ads.Services.Services;
 using Ads.Services.Services.Abstract;
 using Ads.Web.Mvc.Areas.Admin.Models;
 using Bogus.DataSets;
@@ -12,19 +13,22 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 	public class AdvertImageController : Controller
 	{
 		private readonly IAdvertImageService _advertImageService;
-        private readonly AppDbContext _context;
+        //private readonly AppDbContext _context;
+        private readonly ISearchService _searchService;
 
-        public AdvertImageController(IAdvertImageService advertImageService, AppDbContext context)
+        public AdvertImageController(IAdvertImageService advertImageService, AppDbContext context, ISearchService searchService)
 		{
 			_advertImageService = advertImageService;
-            _context = context;
+            //_context = context;
+            _searchService = searchService;
         }
-		public IActionResult Index(int? advertId)
+		public IActionResult Index(string searchContent)
 		{
+            var searchResult = _searchService.SearchAdvertsByTitle(searchContent);
             var viewModel = new AdvertViewModel
             {
-                AdvertEntities = _context.AdvertEntities.ToList(),
-                AdvertImageEntities = _context.AdvertImageEntities.ToList(),
+                AdvertEntities = searchResult.AdvertEntities.ToList(),
+                AdvertImageEntities = searchResult.AdvertImageEntities.ToList(),
             };
 
             //IEnumerable<AdvertImageEntity> images;
