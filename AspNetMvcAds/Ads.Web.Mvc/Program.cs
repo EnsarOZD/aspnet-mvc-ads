@@ -6,12 +6,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using Microsoft.Extensions.Configuration;
+using Ads.Services.Services.Abstract;
+using Ads.Services.Services.Concrete;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IAdvertImageService, AdvertImageService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

@@ -1,0 +1,7 @@
+﻿@model Ads.Data.Entities.AdvertImageEntity
+
+<form asp-action="Delete" asp-controller="AdvertImage" asp-area="Admin" method="post">
+    <input type="hidden" asp-for="Id" />
+    <p>Silmek istediğinize emin misiniz?</p>
+    <button type="submit">Sil</button>
+</form>

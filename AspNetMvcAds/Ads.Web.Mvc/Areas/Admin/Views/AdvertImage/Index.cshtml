@@ -1,1 +1,50 @@
-﻿<h1>Advert Image</h1>
+﻿@model IEnumerable<Ads.Data.Entities.AdvertImageEntity>
+
+@{
+    ViewData["Title"] = "Advert Images";
+}
+
+<h1>Advert Images</h1>
+<!-- Topbar Search -->
+<form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="get" asp-area="Admin" asp-action="Index" asp-controller="AdvertImage">
+    <div class="input-group">
+        <input type="text" class="form-control bg-light border-0 small" name="searchContent" placeholder="Search for advert"
+               aria-label="Search" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-primary ml-4" type="submit">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
+        </div>
+    </div>
+</form>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Thumbnail</th>
+            <th>Advert Id</th>
+            <th>Size</th>
+            <th>Number Of Image</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var image in Model)
+        {
+           
+            <tr>
+                <td><img src="@image.ImagePath" alt="@image.AdvertId" width="100" /></td>
+                <td>@image.AdvertId</td>
+                <td>@image.ImageSize</td>
+                <td></td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@image.Id" class="btn btn-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@image.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-success">Add New Image</a>
