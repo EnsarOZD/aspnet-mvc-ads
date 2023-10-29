@@ -1,0 +1,12 @@
+﻿@model Ads.Web.Mvc.Areas.Admin.Models.AdminAdvertImageViewModel
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="ImagePath"></label>
+        <input asp-for="ImagePath" class="form-control" />
+    </div>
+    <!-- Diğer form alanları... -->
+    <button type="submit">Kaydet</button>
+    @Html.AntiForgeryToken()
+</form>

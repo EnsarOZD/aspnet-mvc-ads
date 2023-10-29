@@ -86,11 +86,13 @@ namespace Ads.Web.Mvc.Controllers
             await _context.SaveChangesAsync();
             string imageName = formFile.FileName;
             string imagePath = $"~/uploads/{imageName}";
+            long imageSize = formFile.Length;
             AdvertImageEntity advImage = new()
             {
                 AdvertId = newAdvert.Id,
                 Advert = newAdvert,
                 ImagePath = imagePath,
+                ImageSize=imageSize
 
             };
             _context.AdvertImageEntities.Add(advImage);
