@@ -10,11 +10,12 @@ namespace Ads.Services.Services.Abstract
     public interface IAdvertImageService
     {
         IEnumerable<AdvertImageEntity> GetAllImages();
-        AdvertImageEntity GetImageById(int id);
+        AdvertImageEntity GetImageById(int? id);
         void AddImage(AdvertImageEntity image);
         void UpdateImage(AdvertImageEntity image);
         void DeleteImage(int id);
         void GetAdvertTitle(int advertId);
+        IQueryable<AdvertImageEntity> GetAllImagesQueryable();
 
     }
 }

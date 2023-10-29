@@ -5,6 +5,7 @@ using Ads.Services.Services.Abstract;
 using Ads.Web.Mvc.Areas.Admin.Models;
 using Bogus.DataSets;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Ads.Web.Mvc.Areas.Admin.Controllers
@@ -21,32 +22,52 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 
             _searchService = searchService;
         }
-        public IActionResult Index(string searchContent)
+        public IActionResult Index(int? id, string searchContent)
         {
-            var searchResult = _searchService.SearchAdvertsByTitle(searchContent);
-            var viewModel = new AdvertViewModel
+            var searchResult=_searchService.SearchAdvertsByTitle(searchContent);
+            int? advertId = _advertImageService.GetImageById(id)?.AdvertId;
+            IQueryable<AdminAdvertImageViewModel> images;
+
+            if (advertId.HasValue)
             {
-                AdvertEntities = searchResult.AdvertEntities.ToList(),
-                AdvertImageEntities = searchResult.AdvertImageEntities.ToList(),
-            };
+                images = _advertImageService.GetAllImagesQueryable()
+                    .Where(i => i.AdvertId == advertId.Value)
+                    .Include(i => i.Advert)
+                    .Select(i => new AdminAdvertImageViewModel
+                    {
+                        Id = i.Id,
+                        ImagePath = i.ImagePath,
+                        ImageSize = i.ImageSize,
+                        AdvertId = i.AdvertId,
+                        AdvertTitle = i.Advert.Title
+                    });
+            }
+            else
+            {
+                images = _advertImageService.GetAllImagesQueryable()
+                    .Include(i => i.Advert)
+                    .Select(i => new AdminAdvertImageViewModel
+                    {
+                        Id = i.Id,
+                        ImagePath = i.ImagePath,
+                        ImageSize = i.ImageSize,
+                        AdvertId = i.AdvertId,
+                        AdvertTitle = i.Advert.Title
+                    });
+            }
+            if (!string.IsNullOrEmpty(searchContent))
+            {
+                images = images.Where(i => i.AdvertTitle.Contains(searchContent));
+            }
 
-            //IEnumerable<AdvertImageEntity> images;
-            //if (advertId.HasValue)
-            //{
-            //    images = _advertImageService.GetAllImages().Where(i => i.AdvertId == advertId.Value);
 
-
-            //}
-            //else
-            //{
-            //    images=_advertImageService.GetAllImages();
-            //}
-
-            return View(viewModel);
+            return View(images);
         }
         public IActionResult Delete(int id)
         {
+
             var image = _advertImageService.GetImageById(id);
+           
             if (image == null)
             {
                 return NotFound();

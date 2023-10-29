@@ -1,4 +1,4 @@
-﻿@model Ads.Web.Mvc.Areas.Admin.Models.AdvertViewModel
+﻿@model IEnumerable<Ads.Web.Mvc.Areas.Admin.Models.AdminAdvertImageViewModel>
 @{
     ViewData["Title"] = "Advert Images";
 }
@@ -17,27 +17,23 @@
     </div>
 </form>
 
-
 <table class="table">
     <thead>
         <tr>
             <th>Thumbnail</th>
             <th>Advert Title</th>
             <th>Size</th>
-            <th>Number Of Image</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var image in Model.AdvertEntities)
+        @foreach (var image in Model)
         {
-            var advertImage = Model.AdvertImageEntities.FirstOrDefault(a => a.Id == image.Id);
-            var imagePath = Url.Content(advertImage.ImagePath);
-            var imageSize = advertImage.ImageSize;
+            var imagePath = Url.Content(image.ImagePath);
             <tr>
                 <td><img src="@imagePath" alt="" width="100" /></td>
-                <td>@image.Title</td>
-                <td>@imageSize</td>
+                <td>@image.AdvertTitle</td>
+                <td>@image.ImageSize</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@image.Id" class="btn btn-primary">Edit</a>
                     <a asp-action="Delete" asp-route-id="@image.Id" class="btn btn-danger">Delete</a>

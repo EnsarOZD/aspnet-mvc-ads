@@ -43,7 +43,7 @@ namespace Ads.Services.Services.Concrete
 			return _context.AdvertImageEntities.ToList();
 		}
 
-		public AdvertImageEntity GetImageById(int id)
+		public AdvertImageEntity GetImageById(int? id)
 		{
 			return _context.AdvertImageEntities.FirstOrDefault(i => i.Id == id);
 		}
@@ -53,5 +53,9 @@ namespace Ads.Services.Services.Concrete
 			_context.AdvertImageEntities.Update(image);
 			_context.SaveChanges();
 		}
-	}
+        public IQueryable<AdvertImageEntity> GetAllImagesQueryable()
+        {
+            return _context.AdvertImageEntities.AsQueryable();
+        }
+    }
 }

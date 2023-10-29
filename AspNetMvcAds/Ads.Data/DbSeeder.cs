@@ -60,20 +60,20 @@ namespace Ads.Data
                 .RuleFor(c => c.CreatedAt, f =>
                   {
                       var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                      var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                      return result;
+                      
+                      return pastDateTime;
                   })
                 .RuleFor(c => c.UpdatedAt, f =>
                 {
                     var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                    var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                    return result;
+                    //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                    return pastDateTime;
                 })
                  .RuleFor(c => c.DeletedAt, f =>
                  {
                      var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                     var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                     return result;
+                     //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                     return pastDateTime;
                  });
 
 
@@ -98,20 +98,20 @@ namespace Ads.Data
              .RuleFor(c => c.CreatedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+                 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return pastDateTime;
              })
              .RuleFor(c => c.UpdatedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+                 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return pastDateTime;
              })
              .RuleFor(c => c.DeletedAt, f =>
               {
                   var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                  var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                  return result;
+                  //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                  return pastDateTime;
               })
             .RuleFor(a => a.Price, f => f.Random.Number(0, 5000));
 
@@ -128,20 +128,20 @@ namespace Ads.Data
              .RuleFor(c => c.CreatedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+                 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return pastDateTime;
              })
              .RuleFor(c => c.UpdatedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+                 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return pastDateTime;
              })
              .RuleFor(c => c.DeletedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+                 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return pastDateTime;
              })
             .RuleFor(p => p.CoverImageInt, f => f.Random.Number(1, 1000))
             .RuleFor(p => p.AdvertId, f => f.Random.Number(1, 50))
@@ -151,8 +151,8 @@ namespace Ads.Data
              .RuleFor(c => c.CreatedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+                 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return pastDateTime;
              })
             
 
@@ -187,20 +187,20 @@ namespace Ads.Data
              .RuleFor(c => c.CreatedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+                 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return pastDateTime;
              })
              .RuleFor(c => c.UpdatedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+                 //var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return pastDateTime;
              })
              .RuleFor(c => c.DeletedAt, f =>
              {
                  var pastDateTime = f.Date.PastOffset(1, DateTime.Now.AddYears(-2));
-                 var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
-                 return result;
+                 ////var result = DateTime.Parse(pastDateTime.ToString("MM.dd.yyyy"));
+                 return pastDateTime;
              });
 
             var coment = ComentFaker.Generate(100);
