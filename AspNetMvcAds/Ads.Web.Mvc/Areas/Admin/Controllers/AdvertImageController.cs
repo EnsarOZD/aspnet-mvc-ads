@@ -9,21 +9,20 @@ using System.Reflection;
 
 namespace Ads.Web.Mvc.Areas.Admin.Controllers
 {
-	[Area("Admin")]
-	public class AdvertImageController : Controller
-	{
-		private readonly IAdvertImageService _advertImageService;
-        //private readonly AppDbContext _context;
+    [Area("Admin")]
+    public class AdvertImageController : Controller
+    {
+        private readonly IAdvertImageService _advertImageService;
         private readonly ISearchService _searchService;
 
-        public AdvertImageController(IAdvertImageService advertImageService, AppDbContext context, ISearchService searchService)
-		{
-			_advertImageService = advertImageService;
-            //_context = context;
+        public AdvertImageController(IAdvertImageService advertImageService, ISearchService searchService)
+        {
+            _advertImageService = advertImageService;
+
             _searchService = searchService;
         }
-		public IActionResult Index(string searchContent)
-		{
+        public IActionResult Index(string searchContent)
+        {
             var searchResult = _searchService.SearchAdvertsByTitle(searchContent);
             var viewModel = new AdvertViewModel
             {
@@ -53,7 +52,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
                 return NotFound();
             }
             return View(image);
-            
+
         }
 
         [HttpPost, ActionName("Delete")]
@@ -66,7 +65,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 
         public IActionResult Edit(int id)
         {
-            var advertImage=_advertImageService.GetImageById(id);
+            var advertImage = _advertImageService.GetImageById(id);
             if (advertImage == null)
             {
                 return NotFound();
@@ -84,11 +83,11 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(AdminAdvertImageViewModel entity)
         {
-           
+
             if (ModelState.IsValid)
             {
                 var advertImage = _advertImageService.GetImageById(entity.Id);
-                if (advertImage==null)
+                if (advertImage == null)
                 {
                     return NotFound();
                 }
