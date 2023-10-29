@@ -33,11 +33,11 @@
         {
             var advertImage = Model.AdvertImageEntities.FirstOrDefault(a => a.Id == image.Id);
             var imagePath = Url.Content(advertImage.ImagePath);
+            var imageSize = advertImage.ImageSize;
             <tr>
                 <td><img src="@imagePath" alt="" width="100" /></td>
                 <td>@image.Title</td>
-@*                 <td>@image.</td> TODO: IMAGE SIZE HALLEDİLECEK
- *@                <td></td>
+                <td>@imageSize</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@image.Id" class="btn btn-primary">Edit</a>
                     <a asp-action="Delete" asp-route-id="@image.Id" class="btn btn-danger">Delete</a>

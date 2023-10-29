@@ -145,6 +145,7 @@ namespace Ads.Data
              })
             .RuleFor(p => p.CoverImageInt, f => f.Random.Number(1, 1000))
             .RuleFor(p => p.AdvertId, f => f.Random.Number(1, 50))
+            .RuleFor(p => p.ImageSize, f => f.Random.Number(1, 2000))
 
             //.RuleFor(p => p.UpdatedAt, f => f.Date.PastOffset())
              .RuleFor(c => c.CreatedAt, f =>
