@@ -21,27 +21,28 @@ namespace Ads.Web.Mvc.Controllers
         {
             IQueryable<AdvertEntity> advertTitle = _context.AdvertEntities;
 
-            IQueryable<CategoryEntity> filteredPosts = _context.CategoryEntities;
+            IQueryable<CategoryEntity> advertCategory = _context.CategoryEntities;
 
 
             if (!string.IsNullOrEmpty(searchContent))
             {
                 advertTitle = advertTitle.Where(p => p.Title.Contains(searchContent));
+
             }
 
-            if (categoryId is not null)
-            {
-                var advertIds = _context.CategoryAdvertEntities
-                    .Where(x => x.CategoryId == categoryId)
-                    .Select(x => x.AdvertId)
-                    .ToList();
+			if (categoryId is not null)
+			{
+				var advertIds = _context.CategoryAdvertEntities
+					.Where(x => x.CategoryId == categoryId)
+					.Select(x => x.AdvertId)
+					.ToList();
 
-                advertTitle = advertTitle.Where(x => advertIds.Contains(x.Id));
-            }
+				advertTitle = advertTitle.Where(x => advertIds.Contains(x.Id));
+			}
 
 
-            var titles = advertTitle.ToList();
-            var categories = filteredPosts.ToList();
+			var titles = advertTitle.ToList();
+            var categories = advertCategory.ToList();
             var viewModel = new SearchViewModel
             {
                 Titles = titles,

@@ -30,36 +30,32 @@ namespace Ads.Web.Mvc.ViewComponents
 		//    return View();
 		//}
 
-		public IViewComponentResult Invoke(string searchContent)
+		public IViewComponentResult Invoke(int id, string searchContent)
 		{
-			// Burada veritabanından kategori listesini alabilirsiniz. Örneğin:
-			var adverts = new SearchViewModel
-			{
+			var viewModel = new SearchViewModel();
 
-				Titles = _context.AdvertEntities.ToList()
-			};
-			var categoriess = new CategoryViewModel
-			{
-				Categories = _context.CategoryEntities.ToList()
-			};
-			var filteredTitle = from s in _context.AdvertEntities
-								select s;
-			var filteredCategories = from s in _context.CategoryEntities
-									 select s;
 			if (!string.IsNullOrEmpty(searchContent))
 			{
-				filteredTitle = filteredTitle.Where(p => p.Title.Contains(searchContent));
-				filteredCategories = filteredCategories.Where(p => p.Name.Contains(searchContent));
+				// Kategoriye ait başlıkları sorgula
+				var titles = _context.CategoryAdvertEntities
+					.Where(ca => ca.CategoryId == id) // Kategoriye göre filtrele
+					.Select(ca => ca.Advert) // İlanlara eriş
+					.Where(a => a.Title.Contains(searchContent)) // Başlıkları ara
+					.ToList();
+
+				viewModel.Titles = titles;
 			}
-			var titles = filteredTitle.ToList();
-			var categories = filteredCategories.ToList();
-			var viewModel = new SearchViewModel
+			else
 			{
-				Titles = titles,
-				Categories = categories,
-			};
+				// Eğer kategori seçimi yoksa, tüm başlıkları getir
+				viewModel.Titles = _context.AdvertEntities.ToList();
+			}
+
+			// Diğer gerekli verileri de model içerisine ekleyebilirsiniz
+			viewModel.Categories = _context.CategoryEntities.ToList();
 
 			return View(viewModel);
 		}
+
 	}
 }
