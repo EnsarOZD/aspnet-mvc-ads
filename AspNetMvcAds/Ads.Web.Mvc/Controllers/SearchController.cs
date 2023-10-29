@@ -12,18 +12,42 @@ namespace Ads.Web.Mvc.Controllers
 {
     public class SearchController : Controller
     {
-        private readonly ISearchService _searchService;
-
-        public SearchController(ISearchService searchService)
+        private readonly AppDbContext _context;
+        public SearchController(AppDbContext context)
         {
-            _searchService = searchService;
+            _context = context;
         }
-
-        public IActionResult Index(string searchContent)
+        public IActionResult Index(string searchContent, int? categoryId, string location)
         {
-            var searchResult = _searchService.SearchAdvertsByTitle(searchContent);
+            IQueryable<AdvertEntity> advertTitle = _context.AdvertEntities;
 
-            return View(searchResult);
+            IQueryable<CategoryEntity> filteredPosts = _context.CategoryEntities;
+
+
+            if (!string.IsNullOrEmpty(searchContent))
+            {
+                advertTitle = advertTitle.Where(p => p.Title.Contains(searchContent));
+            }
+
+            if (categoryId is not null)
+            {
+                var advertIds = _context.CategoryAdvertEntities
+                    .Where(x => x.CategoryId == categoryId)
+                    .Select(x => x.AdvertId)
+                    .ToList();
+
+                advertTitle = advertTitle.Where(x => advertIds.Contains(x.Id));
+            }
+
+
+            var titles = advertTitle.ToList();
+            var categories = filteredPosts.ToList();
+            var viewModel = new SearchViewModel
+            {
+                Titles = titles,
+                Categories = categories,
+            };
+            return View(viewModel);
         }
     }
 }
