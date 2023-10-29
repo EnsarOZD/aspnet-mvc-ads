@@ -41,11 +41,23 @@ namespace Ads.Web.Mvc.Controllers
         {
 
             var existingUser = await DbContext.UserEntities.FirstOrDefaultAsync(u => u.Email == model.Email);
-            if (existingUser != null)
+            if (existingUser is not null && existingUser.IsEmailConfirmed==true)
             {
-                ViewBag.Error = "Please enter a valid Email";
+
+                ViewBag.Error = "Your entered email is not valid ";
+
+               
                 return View();
             }
+            if (existingUser is not null && existingUser.IsEmailConfirmed == false)
+            {
+                ViewBag.Warning = "Your entered email was unconfirmed, now you can register again. ";
+                DbContext.Remove(existingUser);
+                await DbContext.SaveChangesAsync();
+                return View();
+
+            }
+
             if (model.Password != model.PasswordVerify)
             {
                 ViewBag.Error = "Passwords does not a match!";
@@ -234,7 +246,7 @@ namespace Ads.Web.Mvc.Controllers
         public async Task<IActionResult> ResetPassword([FromRoute] string id)
         {
 
-            var user = DbContext.UserEntities.FirstOrDefault(u => u.PasswordResetToken == id);
+            var user = await DbContext.UserEntities.FirstOrDefaultAsync(u => u.PasswordResetToken == id);
 
             if (user == null)
             {
