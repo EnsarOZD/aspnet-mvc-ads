@@ -15,17 +15,17 @@ namespace Ads.Web.Mvc.ViewComponents
             _db = db;
         }
 
-       
+
         public ViewViewComponentResult Invoke()
         {
             var advertImage = new PopularDealViewModel
             {
                 AdvertImageEntities = _db.AdvertImageEntities.ToList(),
-                AdvertEntities=_db.AdvertEntities.ToList(),
+                AdvertEntities = _db.AdvertEntities.ToList(),
                 CategoryEntities = _db.CategoryEntities.ToList(),
-                CategoryAdvertEntities=_db.CategoryAdvertEntities.ToList()
-               
-              
+                CategoryAdvertEntities = _db.CategoryAdvertEntities.ToList()
+
+
             };
 
             return View(advertImage);

@@ -8,54 +8,47 @@ using System.Threading.Tasks;
 using Ads.Web.Mvc.Models;
 namespace Ads.Web.Mvc.ViewComponents
 {
-	public class SearchBarViewComponent : ViewComponent
-	{
-		private readonly AppDbContext _context;
+    public class SearchBarViewComponent : ViewComponent
+    {
+        private readonly AppDbContext _context;
 
-		public SearchBarViewComponent(AppDbContext context)
-		{
-			_context = context;
-		}
+        public SearchBarViewComponent(AppDbContext context)
+        {
+            _context = context;
+        }
 
-		//public async Task<IViewComponentResult> InvokeAsync(string searchQuery)
-		//{
-		//    //var articles = _context.AdvertEntities.AsQueryable();
+        public IViewComponentResult Invoke(int id, string searchContent)
+        {
+            var viewModel = new SearchViewModel();
 
-		//    //if (!string.IsNullOrEmpty(searchQuery))
-		//    //{
-		//    //    articles = articles.Where(a => a.Title.Contains(searchQuery));
-		//    //}
+            if (!string.IsNullOrEmpty(searchContent))
+            {
 
-		//    //return View(articles.ToList());
-		//    return View();
-		//}
+                var titles = _context.CategoryAdvertEntities
+                    .Where(ca => ca.CategoryId == id)
+                    .Select(ca => ca.Advert)
+                    .Where(a => a.Title.Contains(searchContent))
+                    .ToList();
 
-		public IViewComponentResult Invoke(int id, string searchContent)
-		{
-			var viewModel = new SearchViewModel();
 
-			if (!string.IsNullOrEmpty(searchContent))
-			{
-				// Kategoriye ait başlıkları sorgula
-				var titles = _context.CategoryAdvertEntities
-					.Where(ca => ca.CategoryId == id) // Kategoriye göre filtrele
-					.Select(ca => ca.Advert) // İlanlara eriş
-					.Where(a => a.Title.Contains(searchContent)) // Başlıkları ara
-					.ToList();
+                var category = _context.CategoryEntities.FirstOrDefault(c => c.Id == id);
+                if (category != null)
+                {
+                    viewModel.CategoryEntities = new List<CategoryEntity> { category };
+                }
 
-				viewModel.Titles = titles;
-			}
-			else
-			{
-				// Eğer kategori seçimi yoksa, tüm başlıkları getir
-				viewModel.Titles = _context.AdvertEntities.ToList();
-			}
+                viewModel.AdvertEntities = titles;
+            }
+            else
+            {
 
-			// Diğer gerekli verileri de model içerisine ekleyebilirsiniz
-			viewModel.Categories = _context.CategoryEntities.ToList();
+                viewModel.AdvertEntities = _context.AdvertEntities.ToList();
+                viewModel.CategoryEntities = _context.CategoryEntities.ToList();
+            }
 
-			return View(viewModel);
-		}
+            return View(viewModel);
+        }
 
-	}
+
+    }
 }

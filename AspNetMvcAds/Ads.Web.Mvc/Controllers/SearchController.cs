@@ -30,23 +30,26 @@ namespace Ads.Web.Mvc.Controllers
 
             }
 
-			if (categoryId is not null)
-			{
-				var advertIds = _context.CategoryAdvertEntities
-					.Where(x => x.CategoryId == categoryId)
-					.Select(x => x.AdvertId)
-					.ToList();
+            if (categoryId is not null)
+            {
+                var advertIds = _context.CategoryAdvertEntities
+                    .Where(x => x.CategoryId == categoryId)
+                    .Select(x => x.AdvertId)
+                    .ToList();
 
-				advertTitle = advertTitle.Where(x => advertIds.Contains(x.Id));
-			}
+                advertTitle = advertTitle.Where(x => advertIds.Contains(x.Id));
+            }
 
 
-			var titles = advertTitle.ToList();
+            var titles = advertTitle.ToList();
             var categories = advertCategory.ToList();
             var viewModel = new SearchViewModel
             {
-                Titles = titles,
-                Categories = categories,
+                AdvertEntities = titles,
+                CategoryEntities = categories,
+                AdvertImageEntities = _context.AdvertImageEntities.ToList(),
+                CategoryAdvertEntities = _context.CategoryAdvertEntities.ToList()
+
             };
             return View(viewModel);
         }

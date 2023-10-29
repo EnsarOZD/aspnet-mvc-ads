@@ -1,18 +1,73 @@
 ﻿@model SearchViewModel
-<h1 style="text-align:center;color:red">Search Results</h1>
-@foreach (var item in Model.Titles)
-{
-    <h2>@item.Title</h2>
 
-}
-@* @foreach (var item in Model.Categories)
-{
-    <h2>@item.Description</h2>
+<section class="popular-deals section bg-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-title">
+                    <h2 class="d-flex justify-content-center" style="color:red">Search Results</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- offer 01 -->
+            <div class="col-lg-12">
+                <div class="row">
+                    @foreach (var item in Model.AdvertImageEntities)
+                    {
+                        var advert = Model.AdvertEntities.FirstOrDefault(a => a.Id == item.AdvertId);
+                        var imagePath = Url.Content(item.ImagePath);
+                        if (advert != null)
+                        {
+                            var categoryAdvert = Model.CategoryAdvertEntities.FirstOrDefault(ca => ca.AdvertId == advert.Id);
+                            if (categoryAdvert != null)
+                            {
+                                var category = Model.CategoryEntities.FirstOrDefault(c => c.Id == categoryAdvert.CategoryId);
+                                if (category != null)
+                                {
+                                    <div class="col-sm-12 col-lg-4">
+                                        <!-- product card with border -->
+                                        <div class="product-item bg-light border rounded p-2">
+                                            <div class="card">
+                                                <div class="thumb-content">
+                                                    <a href="single.html">
+                                                        <img class="card-img-top img-fluid" src="@imagePath" style="max-height:auto; max-width:auto" alt="Card image cap">
+                                                    </a>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h4 class="card-title"><a href="single.html">@item.Advert.Title</a></h4>
+                                                    <ul class="list-inline product-meta">
+                                                        <li class="list-inline-item">
+                                                            <i class="fa fa-folder-open-o"></i> @category.Name
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <i class="fa fa-calendar"></i> @item.CreatedAt.ToString("MM/dd/yyyy")
+                                                        </li>
+                                                    </ul>
+                                                    <p class="card-text">@advert.Description</p>
+                                                    <div class="product-ratings">
+                                                        <ul class="list-inline">
+                                                            @for (int i = 0; i < item.Advert.StarCount; i++)
+                                                            {
+                                                                <li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+                                                            }
+                                                            @for (int i = 0; i < (5 - item.Advert.StarCount); i++)
+                                                            {
+                                                                <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                                                            }
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
 
-} *@
-@* @{
-    //var categories = Model.Titles.Where(x => x. == x.CategoryName);
-    //var advert = Model.AdvertEntities.FirstOrDefault(a => a.Id == item.AdvertId); // Eğer AdvertId diye bir özellik varsa
-
-} *@
-
+    </div>
+</section>

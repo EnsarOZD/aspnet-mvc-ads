@@ -20,7 +20,7 @@ namespace Ads.Data.Entities
         public int CoverImageInt { get; set; }
 		public long? ImageSize { get; set; }
 
-		public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTimeOffset UpdatedAt { get; set; }
         public DateTimeOffset DeletedAt { get; set; }
