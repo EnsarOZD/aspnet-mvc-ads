@@ -33,12 +33,17 @@ namespace Ads.Services.Services.Concrete
 			}
 		}
 
-		public IEnumerable<AdvertImageEntity> GetAllImages()
+        public void GetAdvertTitle(int advertId)
+        {
+            var advert = _context.AdvertEntities.FirstOrDefault(a => a.Id == advertId);
+        }
+
+        public IEnumerable<AdvertImageEntity> GetAllImages()
 		{
 			return _context.AdvertImageEntities.ToList();
 		}
 
-		public AdvertImageEntity GetImageById(int id)
+		public AdvertImageEntity GetImageById(int? id)
 		{
 			return _context.AdvertImageEntities.FirstOrDefault(i => i.Id == id);
 		}
@@ -48,5 +53,9 @@ namespace Ads.Services.Services.Concrete
 			_context.AdvertImageEntities.Update(image);
 			_context.SaveChanges();
 		}
-	}
+        public IQueryable<AdvertImageEntity> GetAllImagesQueryable()
+        {
+            return _context.AdvertImageEntities.AsQueryable();
+        }
+    }
 }

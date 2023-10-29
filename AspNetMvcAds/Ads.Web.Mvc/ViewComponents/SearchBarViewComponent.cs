@@ -8,58 +8,47 @@ using System.Threading.Tasks;
 using Ads.Web.Mvc.Models;
 namespace Ads.Web.Mvc.ViewComponents
 {
-	public class SearchBarViewComponent : ViewComponent
-	{
-		private readonly AppDbContext _context;
+    public class SearchBarViewComponent : ViewComponent
+    {
+        private readonly AppDbContext _context;
 
-		public SearchBarViewComponent(AppDbContext context)
-		{
-			_context = context;
-		}
+        public SearchBarViewComponent(AppDbContext context)
+        {
+            _context = context;
+        }
 
-		//public async Task<IViewComponentResult> InvokeAsync(string searchQuery)
-		//{
-		//    //var articles = _context.AdvertEntities.AsQueryable();
+        public IViewComponentResult Invoke(int id, string searchContent)
+        {
+            var viewModel = new SearchViewModel();
 
-		//    //if (!string.IsNullOrEmpty(searchQuery))
-		//    //{
-		//    //    articles = articles.Where(a => a.Title.Contains(searchQuery));
-		//    //}
+            if (!string.IsNullOrEmpty(searchContent))
+            {
 
-		//    //return View(articles.ToList());
-		//    return View();
-		//}
+                var titles = _context.CategoryAdvertEntities
+                    .Where(ca => ca.CategoryId == id)
+                    .Select(ca => ca.Advert)
+                    .Where(a => a.Title.Contains(searchContent))
+                    .ToList();
 
-		public IViewComponentResult Invoke(string searchContent)
-		{
-			// Burada veritabanından kategori listesini alabilirsiniz. Örneğin:
-			var adverts = new SearchViewModel
-			{
 
-				Titles = _context.AdvertEntities.ToList()
-			};
-			var categoriess = new CategoryViewModel
-			{
-				Categories = _context.CategoryEntities.ToList()
-			};
-			var filteredTitle = from s in _context.AdvertEntities
-								select s;
-			var filteredCategories = from s in _context.CategoryEntities
-									 select s;
-			if (!string.IsNullOrEmpty(searchContent))
-			{
-				filteredTitle = filteredTitle.Where(p => p.Title.Contains(searchContent));
-				filteredCategories = filteredCategories.Where(p => p.Name.Contains(searchContent));
-			}
-			var titles = filteredTitle.ToList();
-			var categories = filteredCategories.ToList();
-			var viewModel = new SearchViewModel
-			{
-				Titles = titles,
-				Categories = categories,
-			};
+                var category = _context.CategoryEntities.FirstOrDefault(c => c.Id == id);
+                if (category != null)
+                {
+                    viewModel.CategoryEntities = new List<CategoryEntity> { category };
+                }
 
-			return View(viewModel);
-		}
-	}
+                viewModel.AdvertEntities = titles;
+            }
+            else
+            {
+
+                viewModel.AdvertEntities = _context.AdvertEntities.ToList();
+                viewModel.CategoryEntities = _context.CategoryEntities.ToList();
+            }
+
+            return View(viewModel);
+        }
+
+
+    }
 }
