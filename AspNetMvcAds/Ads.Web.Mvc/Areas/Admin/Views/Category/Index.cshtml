@@ -1,1 +1,38 @@
-﻿<h1>Category index</h1>
+﻿@model List<Ads.Web.Mvc.Areas.Admin.Models.AdminCategoryViewModel>
+
+
+@{
+    ViewData["Title"] = "Kategori Listesi";
+}
+
+<div class="container">
+    <h2>Category Index</h2>
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Yeni Kategori Ekle</a>
+    </p>
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th> Description</th>
+            <th> CreatedAt</th>
+            <th>UpdatedAt</th>
+
+        </tr>
+        
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.Id</td>
+                <td>@category.Name</td>
+                <td>@category.Description</td>
+                <td>@category.CreatedAt</td>
+                <td>@category.UpdatedAt</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@category.Id" class="btn btn-warning">Düzenle</a>
+                    <a asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger">Sil</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
