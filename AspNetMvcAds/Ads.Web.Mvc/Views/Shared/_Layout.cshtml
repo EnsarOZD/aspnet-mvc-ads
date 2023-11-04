@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="~/plugins/bootstrap/css/bootstrap-slider.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="~/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
     <!-- Owl Carousel -->
     <link rel="stylesheet" href="~/plugins/slick-carousel/slick/slick.css">
     <link rel="stylesheet" href="~/plugins/slick-carousel/slick/slick-theme.css">
@@ -27,10 +29,10 @@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="body-wrapper">
-    @if (Context.User.Identity.IsAuthenticated)
+ @*    @if (Context.User.Identity.IsAuthenticated)
     {
         <span class="nav-link text-dark">Welcome @Context.User.Identity.Name</span>
-    }
+    } *@
     @await Component.InvokeAsync("Navbar")
 
     @RenderBody()
