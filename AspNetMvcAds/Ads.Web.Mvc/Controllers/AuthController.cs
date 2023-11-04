@@ -69,8 +69,10 @@ namespace Ads.Web.Mvc.Controllers
 
                 UserEntity user = new()
                 {
+                    Name = model.Name,
                     Email = model.Email,
                     Password = model.Password,
+                    Phone = model.Phone,
                     Roles = "User",
                     IsEmailConfirmed = false,
                     EmailConfirmationToken = Guid.NewGuid().ToString("n").Substring(0, 6).ToUpper()
@@ -129,7 +131,7 @@ namespace Ads.Web.Mvc.Controllers
             await DbContext.SaveChangesAsync();
 
             ViewBag.HasMessage = true;
-            ViewBag.Success = "Hesabınız onaylandı";
+            ViewBag.Success = "Your account has confirmed!";
             return View();
         }
 

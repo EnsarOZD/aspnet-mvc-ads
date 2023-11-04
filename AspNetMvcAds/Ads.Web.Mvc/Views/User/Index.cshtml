@@ -1,4 +1,6 @@
-﻿<section class="dashboard section">
+﻿@model ProductViewModel
+
+<section class="dashboard section">
     <!-- Container Start -->
     <div class="container">
         <!-- Row Start -->
@@ -12,22 +14,21 @@
                             <img src="images/user/user-thumb.jpg" alt="" class="rounded-circle">
                         </div>
                         <!-- User Name -->
-                        <h5 class="text-center">@Context.User.Identity.Name</h5>
-                        <p>Joined February 06, 2017</p> @* TODO : Created At çek *@
+                        <h5 class="text-center">@User.Identity?.Name</h5>
+                        <p>Joined February 06, 2017</p>
                         <a asp-action="Edit" asp-controller="User" class="btn btn-main-sm">Edit Profile</a>
                     </div>
                     <!-- Dashboard Links -->
                     <div class="widget user-dashboard-menu">
                         <ul>
-                            <li class="active"><a href="dashboard-my-ads.html"><i class="fa fa-user"></i> My Ads</a></li>
+                            <li class="active"><a asp-action="UserAds" asp-controller="User"><i class="fa fa-user"></i> My Ads</a></li>
                             <li><a href="dashboard-favourite-ads.html"><i class="fa fa-bookmark-o"></i> Favourite Ads <span>5</span></a></li>
-                            <li><a href="dashboard-archived-ads.html"><i class="fa fa-file-archive-o"></i>Archived Ads <span>12</span></a></li>
+                            <li><a href="dashboard-archived-ads.html"><i class="fa fa-file-archive-o"></i> Archived Ads <span>12</span></a></li>
                             <li><a href="dashboard-pending-ads.html"><i class="fa fa-bolt"></i> Pending Approval<span>23</span></a></li>
                             <li><a href="#"><i class="fa fa-cog"></i> Logout</a></li>
                             <li>
                                 <a href="" data-toggle="modal" data-target="#deleteaccount">
-                                    <i class="fa fa-power-off"></i>Delete
-                                    Account
+                                    <i class="fa fa-power-off"></i> Delete Account
                                 </a>
                             </li>
                         </ul>
@@ -63,7 +64,7 @@
                 </div>
             </div>
             <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-0">
-                <!-- Recently Favorited -->
+                <!-- USERS ADS-->
                 <div class="widget dashboard-container my-adslist">
                     <h3 class="widget-header">My Ads</h3>
                     <table class="table table-responsive product-dashboard-table">
@@ -76,183 +77,59 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-
-                                <td class="product-thumb">
-                                    <img width="80px" height="auto" src="images/products/products-1.jpg" alt="image description">
-                                </td>
-                                <td class="product-details">
-                                    <h3 class="title">Macbook Pro 15inch</h3>
-                                    <span class="add-id"><strong>Ad ID:</strong> ng3D5hAMHPajQrM</span>
-                                    <span><strong>Posted on: </strong><time>Jun 27, 2017</time> </span>
-                                    <span class="status active"><strong>Status</strong>Active</span>
-                                    <span class="location"><strong>Location</strong>Dhaka,Bangladesh</span>
-                                </td>
-                                <td class="product-category"><span class="categories">Laptops</span></td>
-                                <td class="action" data-title="Action">
-                                    <div class="">
-                                        <ul class="list-inline justify-content-center">
-                                            <li class="list-inline-item">
-                                                <a data-toggle="tooltip" data-placement="top" title="" class="view" href="category.html" data-original-title="view">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a class="edit" data-toggle="tooltip" data-placement="top" title="" href="" data-original-title="Edit">
-                                                    <i class="fa fa-pencil"></i>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a class="delete" data-toggle="tooltip" data-placement="top" title="" href="" data-original-title="Delete">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-
-                                <td class="product-thumb">
-                                    <img width="80px" height="auto" src="images/products/products-2.jpg" alt="image description">
-                                </td>
-                                <td class="product-details">
-                                    <h3 class="title">Study Table Combo</h3>
-                                    <span class="add-id"><strong>Ad ID:</strong> ng3D5hAMHPajQrM</span>
-                                    <span><strong>Posted on: </strong><time>Feb 12, 2017</time> </span>
-                                    <span class="status active"><strong>Status</strong>Active</span>
-                                    <span class="location"><strong>Location</strong>USA</span>
-                                </td>
-                                <td class="product-category"><span class="categories">Laptops</span></td>
-                                <td class="action" data-title="Action">
-                                    <div class="">
-                                        <ul class="list-inline justify-content-center">
-                                            <li class="list-inline-item">
-                                                <a data-toggle="tooltip" data-placement="top" title="" class="view" href="category.html" data-original-title="View">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a class="edit" data-toggle="tooltip" data-placement="top" title="" href="" data-original-title="Edit">
-                                                    <i class="fa fa-pencil"></i>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a class="delete" data-toggle="tooltip" data-placement="top" title="" href="" data-original-title="Delete">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="product-thumb">
-                                    <img width="80px" height="auto" src="images/products/products-3.jpg" alt="image description">
-                                </td>
-                                <td class="product-details">
-                                    <h3 class="title">Macbook Pro 15inch</h3>
-                                    <span class="add-id"><strong>Ad ID:</strong> ng3D5hAMHPajQrM</span>
-                                    <span><strong>Posted on: </strong><time>Jun 27, 2017</time> </span>
-                                    <span class="status active"><strong>Status</strong>Active</span>
-                                    <span class="location"><strong>Location</strong>Dhaka,Bangladesh</span>
-                                </td>
-                                <td class="product-category"><span class="categories">Laptops</span></td>
-                                <td class="action" data-title="Action">
-                                    <div class="">
-                                        <ul class="list-inline justify-content-center">
-                                            <li class="list-inline-item">
-                                                <a data-toggle="tooltip" data-placement="top" title="" class="view" href="category.html" data-original-title="View">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a class="edit" data-toggle="tooltip" data-placement="top" title="" href="" data-original-title="Edit">
-                                                    <i class="fa fa-pencil"></i>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a class="delete" data-toggle="tooltip" data-placement="top" title="" href="" data-original-title="Delete">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-
-                                <td class="product-thumb">
-                                    <img width="80px" height="auto" src="images/products/products-4.jpg" alt="image description">
-                                </td>
-                                <td class="product-details">
-                                    <h3 class="title">Macbook Pro 15inch</h3>
-                                    <span class="add-id"><strong>Ad ID:</strong> ng3D5hAMHPajQrM</span>
-                                    <span><strong>Posted on: </strong><time>Jun 27, 2017</time> </span>
-                                    <span class="status active"><strong>Status</strong>Active</span>
-                                    <span class="location"><strong>Location</strong>Dhaka,Bangladesh</span>
-                                </td>
-                                <td class="product-category"><span class="categories">Laptops</span></td>
-                                <td class="action" data-title="Action">
-                                    <div class="">
-                                        <ul class="list-inline justify-content-center">
-                                            <li class="list-inline-item">
-                                                <a data-toggle="tooltip" data-placement="top" title="" class="view" href="category.html" data-original-title="View">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a class="edit" data-toggle="tooltip" data-placement="top" title="" href="" data-original-title="Edit">
-                                                    <i class="fa fa-pencil"></i>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a class="delete" data-toggle="tooltip" data-placement="top" title="" href="" data-original-title="Delete">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-
-                                <td class="product-thumb">
-                                    <img width="80px" height="auto" src="images/products/products-1.jpg" alt="image description">
-                                </td>
-                                <td class="product-details">
-                                    <h3 class="title">Macbook Pro 15inch</h3>
-                                    <span class="add-id"><strong>Ad ID:</strong> ng3D5hAMHPajQrM</span>
-                                    <span><strong>Posted on: </strong><time>Jun 27, 2017</time> </span>
-                                    <span class="status active"><strong>Status</strong>Active</span>
-                                    <span class="location"><strong>Location</strong>Dhaka,Bangladesh</span>
-                                </td>
-                                <td class="product-category"><span class="categories">Laptops</span></td>
-                                <td class="action" data-title="Action">
-                                    <div class="">
-                                        <ul class="list-inline justify-content-center">
-                                            <li class="list-inline-item">
-                                                <a href="category.html" data-toggle="tooltip" data-placement="top" title="" class="view" data-original-title="View">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a class="edit" data-toggle="tooltip" data-placement="top" title="" href="" data-original-title="Edit">
-                                                    <i class="fa fa-pencil"></i>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a class="delete" data-toggle="tooltip" data-placement="top" title="" href="" data-original-title="Delete">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
+                            @foreach (var item in Model.AdvertImageEntities)
+                            {
+                                var advert = Model.AdvertEntities.FirstOrDefault(a => a.Id == item.AdvertId);
+                                var myAdvert = Model.AdvertEntities.FirstOrDefault(a => a.UserId == item.AdvertId);
+                                if (advert != null)
+                                {
+                                    var categoryAdvert = Model.CategoryAdvertEntities.FirstOrDefault(ca => ca.AdvertId == advert.Id);
+                                    if (categoryAdvert != null)
+                                    {
+                                        var category = Model.CategoryEntities.FirstOrDefault(c => c.Id == categoryAdvert.CategoryId);
+                                        if (category != null)
+                                        {
+                                            var imagePath = Url.Content(item.ImagePath);
+                                            <tr>
+                                                <td class="product-thumb">
+                                                    <img width="80px" height="auto" src="@imagePath" alt="image description">
+                                                </td>
+                                                <td class="product-details">
+                                                    <h3 class="title">@advert.Title</h3>
+                                                    <span class="add-id"><strong>Ad ID:</strong> @advert.Id</span>
+                                                    <span><strong>Posted on: </strong><time>@advert.CreatedAt</time> </span>
+                                                    <span class="status active"><strong>Status</strong>Active</span>
+                                                    <span class="location"><strong>Location</strong>@advert.ContactAddress</span>
+                                                </td>
+                                                <td class="product-category"><span class="categories">@category.Name</span></td>
+                                                <td class="action" data-title="Action">
+                                                    <div class="">
+                                                        <ul class="list-inline justify-content-center">
+                                                            <li class="list-inline-item">
+                                                                <a data-toggle="tooltip" data-placement="top" title="View" href="category.html">
+                                                                    <i class="fa fa-eye"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <a data-toggle="tooltip" data-placement="top" title="Edit" href="">
+                                                                    <i class="fa fa-pencil"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <a data-toggle="tooltip" data-placement="top" title="Delete" href="">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            }
                         </tbody>
                     </table>
-
                 </div>
 
                 <!-- pagination -->
@@ -278,7 +155,6 @@
                     </nav>
                 </div>
                 <!-- pagination -->
-
             </div>
         </div>
         <!-- Row End -->
