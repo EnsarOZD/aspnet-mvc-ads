@@ -1,5 +1,9 @@
 ﻿@model ProductViewModel
-
+@using System.Security.Claims
+@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
 <section class="dashboard section">
     <!-- Container Start -->
     <div class="container">
@@ -14,9 +18,13 @@
                             <img src="images/user/user-thumb.jpg" alt="" class="rounded-circle">
                         </div>
                         <!-- User Name -->
-                        <h5 class="text-center">@User.Identity?.Name</h5>
+                      
+
+                        @* <h5 class="text-center">@User.Identity?.Name</h5> *@
+                        <h5 class="text-center">@Model.Name</h5>
                         <p>Joined February 06, 2017</p>
-                        <a asp-action="Edit" asp-controller="User" class="btn btn-main-sm">Edit Profile</a>
+                      
+                        <a asp-action="Edit" asp-controller="User" asp-route-id="@Model.Id" class="btn btn-main-sm">Edit Profile</a>
                     </div>
                     <!-- Dashboard Links -->
                     <div class="widget user-dashboard-menu">

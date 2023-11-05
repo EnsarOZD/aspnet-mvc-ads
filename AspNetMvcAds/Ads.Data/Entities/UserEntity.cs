@@ -35,7 +35,7 @@ namespace Ads.Data.Entities
         public string Roles { get; set; } = string.Empty;
         public string? EmailConfirmationToken { get; set; } = string.Empty;
         public string? PasswordResetToken { get; set; } = string.Empty;
-
+        public string? UserImagePath { get; set; } = string.Empty;
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public DateTimeOffset DeletedAt { get; set; }

@@ -16,7 +16,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var user = await _context.UserEntities.Select(user => new UserViewModel
+            var user = await _context.UserEntities.Select(user => new AdminUserViewModel
             {
                 Id = user.Id,
                 Name = user.Name,
@@ -56,7 +56,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         public IActionResult Edit([FromRoute] int id)
         {
             var user = _context.UserEntities.Find(id);
-            var userViewModel = new UserViewModel
+            var userViewModel = new AdminUserViewModel
             {
                 Id = id,
                 Name = user.Name,
@@ -71,7 +71,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit([FromRoute] int id, UserRoles roles, UserViewModel userViewModel)
+        public async Task<IActionResult> Edit([FromRoute] int id, UserRoles roles, AdminUserViewModel userViewModel)
         {
             var user = await _context.UserEntities.FindAsync(id);
 

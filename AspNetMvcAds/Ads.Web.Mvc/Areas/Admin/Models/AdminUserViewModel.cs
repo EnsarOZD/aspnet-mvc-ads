@@ -1,6 +1,6 @@
 ﻿namespace Ads.Web.Mvc.Areas.Admin.Models
 {
-    public class UserViewModel
+    public class AdminUserViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
