@@ -4,6 +4,7 @@ using Ads.Web.Mvc.Areas.Admin.Models;
 using Ads.Web.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Ads.Web.Mvc.Controllers
 {
@@ -16,8 +17,10 @@ namespace Ads.Web.Mvc.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var userName = User.Identity.Name;
-            var user = _context.UserEntities.FirstOrDefault(u => u.Name == userName);
+            var userId = int.TryParse(User.FindFirstValue(ClaimTypes.PrimarySid), out int result) ? result.ToString() : null;
+
+            var user = _context.UserEntities.FirstOrDefault(x => x.Id.ToString() == userId);
+
 
             if (user != null)
             {
@@ -72,13 +75,14 @@ namespace Ads.Web.Mvc.Controllers
             if (user != null)
             {
                 user.Name = userName.Name;
+                user.Id = userName.Id;
 
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Your name has changed successfully";
                 
             }
             //return RedirectToAction("Edit","User");
-            return RedirectToAction("Index", "User");
+            return RedirectToAction("Index", "Home");
         }
 
     }
