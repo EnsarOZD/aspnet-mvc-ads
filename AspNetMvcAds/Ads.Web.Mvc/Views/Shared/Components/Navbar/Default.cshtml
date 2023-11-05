@@ -47,11 +47,12 @@
                             </li>
                         </ul>
                         <ul class="navbar-nav ml-auto mt-10">
-                            <li class="nav-item">
-                                <a class="nav-link login-button" asp-controller="Auth" asp-action="Login">Login</a>
-                            </li>
+                            
                             @if (!User.Identity.IsAuthenticated)
                             {
+                                <li class="nav-item">
+                                    <a class="nav-link login-button" asp-controller="Auth" asp-action="Login">Login</a>
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link login-button" asp-controller="Auth" asp-action="Register">Register</a>
                                 </li>

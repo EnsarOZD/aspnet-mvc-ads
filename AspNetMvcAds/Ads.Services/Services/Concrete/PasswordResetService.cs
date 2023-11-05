@@ -1,4 +1,4 @@
-﻿namespace Ads.Services.Services
+﻿namespace Ads.Services.Services.Concrete
 {
     public class PasswordResetService
     {

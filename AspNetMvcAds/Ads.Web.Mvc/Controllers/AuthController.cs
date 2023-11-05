@@ -11,8 +11,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Azure.Core;
-using Ads.Services.Services;
 using NuGet.Protocol;
+using Ads.Services.Services.Concrete;
 
 namespace Ads.Web.Mvc.Controllers
 {

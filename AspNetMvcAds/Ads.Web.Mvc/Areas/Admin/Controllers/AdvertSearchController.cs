@@ -1,4 +1,4 @@
-﻿using Ads.Services.Services;
+﻿using Ads.Services.Services.Abstract;
 using Ads.Web.Mvc.Areas.Admin.Models;
 using Ads.Web.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;

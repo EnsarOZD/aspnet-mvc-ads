@@ -1,6 +1,6 @@
 ﻿using Ads.Data;
 using Ads.Data.Entities;
-using Ads.Services.Services;
+using Ads.Services.Services.Abstract;
 using Ads.Web.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
