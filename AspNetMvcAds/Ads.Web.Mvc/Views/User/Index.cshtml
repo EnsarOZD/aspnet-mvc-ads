@@ -2,8 +2,14 @@
 @using System.Security.Claims
 @if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
 {
-    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    <div class="alert alert-success d-flex justify-content-center align-items-center">@TempData["SuccessMessage"]</div>
 }
+@if (!string.IsNullOrEmpty(TempData["ErrorMessage"] as string))
+{
+    <div class="alert alert-danger d-flex justify-content-center align-items-center">@TempData["ErrorMessage"]</div>
+}
+
+
 <section class="dashboard section">
     <!-- Container Start -->
     <div class="container">

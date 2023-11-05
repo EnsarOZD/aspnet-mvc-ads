@@ -1,5 +1,12 @@
 ﻿ @model Ads.Web.Mvc.Models.UserViewModel
-
+@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
+{
+    <div class="alert alert-success d-flex justify-content-center align-items-center">@TempData["SuccessMessage"]</div>
+}
+@if (!string.IsNullOrEmpty(TempData["ErrorMessage"] as string))
+{
+    <div class="alert alert-danger d-flex justify-content-center align-items-center">@TempData["ErrorMessage"]</div>
+}
 <section class="user-profile section">
     <div class="container">
         <div class="row">
@@ -81,20 +88,22 @@
                         <!-- Change Email Address -->
                         <div class="widget change-email mb-0">
                             <h3 class="widget-header user">Edit Email Address</h3>
-                            <form asp-action="Edit" asp-controller="User" method="post" asp-route-id="@Model.Id">
-                                <!-- Current Password -->
+                            <form asp-action="EditEmail" asp-controller="User" method="post" asp-route-id="@Model.Id">
                                 <div class="form-group">
-                                    <label for="current-email">Current Email</label>
-                                    <input type="email" class="form-control" id="current-email">
+                                    <label>New email</label>
+                                    <input type="email" class="form-control" asp-for="NewEmail">
+                                    <span asp-validation-for="NewEmail" class="text-danger"></span>
                                 </div>
-                                <!-- New email -->
+                                <!-- Verify New email -->
                                 <div class="form-group">
-                                    <label for="new-email">New email</label>
-                                    <input type="email" class="form-control" id="new-email">
+                                    <label>Verify New email</label>
+                                    <input type="email" class="form-control" asp-for="VerifyNewEmail">
+                                    <span asp-validation-for="VerifyNewEmail" class="text-danger"></span>
                                 </div>
                                 <!-- Submit Button -->
                                 <button class="btn btn-transparent">Change email</button>
                             </form>
+
                         </div>
                     </div>
                 </div>

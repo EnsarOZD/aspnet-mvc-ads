@@ -51,7 +51,7 @@ namespace Ads.Web.Mvc.Controllers
             var user = _context.UserEntities.Find(id);
             if (user == null)
             {
-               
+
                 return RedirectToAction("Index");
             }
 
@@ -59,7 +59,7 @@ namespace Ads.Web.Mvc.Controllers
             {
                 Id = user.Id,
                 Name = user.Name,
-                Email = user.Email,
+                NewEmail = user.Email,
                 Address = user.Address,
                 Phone = user.Phone,
             };
@@ -79,12 +79,32 @@ namespace Ads.Web.Mvc.Controllers
 
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Your name has changed successfully";
-                
-            }
-            //return RedirectToAction("Edit","User");
-            return RedirectToAction("Index", "Home");
-        }
 
+            }
+            return RedirectToAction("Edit", "User", new { id = id });
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditEmail([FromRoute] int id, UserViewModel userName)
+        {
+            var user = await _context.UserEntities.FindAsync(id);
+
+            if (user != null)
+            {
+                if (userName.NewEmail == userName.VerifyNewEmail)
+                {
+                    user.Email = userName.NewEmail;
+                    user.Id = userName.Id;
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Your E-mail has changed successfully";
+                    return RedirectToAction("Edit", "User");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Emails should match!";
+                }
+            }
+            return RedirectToAction("Edit", "User", new { id = id });
+        }
     }
 }
 
