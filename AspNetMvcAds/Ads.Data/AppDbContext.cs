@@ -19,6 +19,7 @@ namespace Ads.Data
         public DbSet<PageEntity> PageEntities { get; set; }
         public DbSet<SettingEntity> SettingEntities { get; set; }
         public DbSet<UserEntity> UserEntities { get; set; }
+        public DbSet<UserImageEntity> UserImageEntities { get; set; }
         public DbSet<TokenUsage> TokenUsages { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }

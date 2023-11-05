@@ -1,7 +1,10 @@
 ﻿using Ads.Data;
+using Ads.Data.Entities;
+using Ads.Services.Services;
 using Ads.Web.Mvc.Areas.Admin.Controllers;
 using Ads.Web.Mvc.Areas.Admin.Models;
 using Ads.Web.Mvc.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -11,9 +14,11 @@ namespace Ads.Web.Mvc.Controllers
     public class UserController : Controller
     {
         private readonly AppDbContext _context;
-        public UserController(AppDbContext context)
+        private readonly IFileService _fileService;
+        public UserController(AppDbContext context, IFileService fileService)
         {
             _context = context;
+            _fileService = fileService;
         }
         public async Task<IActionResult> Index()
         {
@@ -28,6 +33,7 @@ namespace Ads.Web.Mvc.Controllers
                 {
                     Id = user.Id,
                     Name = user.Name,
+                    ImagePath=user.UserImagePath,
                     AdvertEntities = _context.AdvertEntities
                         .Where(a => a.UserId == user.Id)
                         .ToList(),
@@ -62,6 +68,7 @@ namespace Ads.Web.Mvc.Controllers
                 NewEmail = user.Email,
                 Address = user.Address,
                 Phone = user.Phone,
+                
             };
 
             return View(userViewModel);
@@ -102,6 +109,40 @@ namespace Ads.Web.Mvc.Controllers
                 {
                     TempData["ErrorMessage"] = "Emails should match!";
                 }
+            }
+            return RedirectToAction("Edit", "User", new { id = id });
+        }
+        public async Task<IActionResult> AddImage([FromRoute] int id, UserViewModel model, [FromForm] IFormFile formFile)
+        {
+            if (formFile != null)
+            {
+                if (formFile.Length > 2 * 1024 * 1024)
+                {
+                    ModelState.AddModelError("File", "Dosya boyutu 2 MB'dan büyük olamaz.");
+                    ViewBag.Error = "Dosya boyutu 2 MB'dan büyük olamaz.";
+                    return View("Add");
+                }
+
+                if (Path.GetExtension(formFile.FileName).ToLower() != ".jpg")
+                {
+                    ModelState.AddModelError("File", "Sadece .jpg uzantılı dosyaları yükleyebilirsiniz.");
+                    ViewBag.Error = "Sadece.jpg uzantılı dosyaları yükleyebilirsiniz.";
+                    return View("Add");
+                }
+               
+                await _fileService.UploadFileAsync(formFile);
+                string imageName = formFile.FileName;
+                long imageSize = formFile.Length;
+
+                UserImageEntity userImage = new()
+                {
+                    CreatedAt = DateTime.Now,
+                    Id = id,
+                    ImagePath = $"~/uploads/{imageName}",
+            };
+                _context.UserImageEntities.Add(userImage);
+                await _context.SaveChangesAsync();
+                TempData["UploadMessage"] = "Uploaded Successfully";
             }
             return RedirectToAction("Edit", "User", new { id = id });
         }

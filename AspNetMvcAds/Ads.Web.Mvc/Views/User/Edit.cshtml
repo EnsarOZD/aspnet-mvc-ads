@@ -1,4 +1,4 @@
-﻿ @model Ads.Web.Mvc.Models.UserViewModel
+﻿@model Ads.Web.Mvc.Models.UserViewModel
 @if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
 {
     <div class="alert alert-success d-flex justify-content-center align-items-center">@TempData["SuccessMessage"]</div>
@@ -6,6 +6,10 @@
 @if (!string.IsNullOrEmpty(TempData["ErrorMessage"] as string))
 {
     <div class="alert alert-danger d-flex justify-content-center align-items-center">@TempData["ErrorMessage"]</div>
+}
+@if (!string.IsNullOrEmpty(TempData["UploadMessage"] as string))
+{
+    <div class="alert alert-success d-flex justify-content-center align-items-center">@TempData["UploadMessage"]</div>
 }
 <section class="user-profile section">
     <div class="container">
@@ -16,7 +20,7 @@
                     <div class="widget user">
                         <!-- User Image -->
                         <div class="image d-flex justify-content-center">
-                            <img src="images/user/user-thumb.jpg" alt="" class=""> 
+                            <img src="images/user/user-thumb.jpg" alt="" class="">
                         </div>
                         <!-- User Name -->
                         <h5 class="text-center">@Model.Name</h5>
@@ -43,21 +47,28 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="widget personal-info">
                             <h3 class="widget-header user">Edit Personal Information</h3>
-                            <form  asp-action="EditName" asp-controller="User" method="post" asp-route-id="@Model.Id" >
+                            <form asp-action="EditName" asp-controller="User" method="post" asp-route-id="@Model.Id">
                                 <!-- First Name -->
                                 <div class="form-group">
-                                    <label asp-for="Name" >First Name and Last Name</label>
-                                    <input type="text" class="form-control"  asp-for="Name">
-                                </div>
-                                <!-- File chooser -->
-                                <div class="form-group choose-file d-inline-flex">
-                                    <i class="fa fa-user text-center px-3"></i>
-                                    <input type="file" class="form-control-file mt-2 pt-1" >
-                                </div>
-                                <!-- Submit button -->
+                                    <label asp-for="Name">First Name and Last Name</label>
+                                    <input type="text" class="form-control" asp-for="Name">
                                 <button type="submit" class="btn btn-transparent">Save My Changes</button>
+                                </div>
                             </form>
                         </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Upload an Image</h5>
+                                <form method="post" asp-action="AddImage" asp-controller="User" enctype="multipart/form-data">
+                                    <div class="form-group choose-file d-inline-flex">
+                                        <i class="fa fa-user text-center px-3"></i>
+                                        <input type="file" name="formFile" class="form-control-file mt-2 pt-1">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mt-3">Upload Picture</button>
+                                </form>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <!-- Change Password -->
@@ -84,7 +95,7 @@
                             </form>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6">
+                   @*  <div class="col-lg-6 col-md-6">
                         <!-- Change Email Address -->
                         <div class="widget change-email mb-0">
                             <h3 class="widget-header user">Edit Email Address</h3>
@@ -105,7 +116,7 @@
                             </form>
 
                         </div>
-                    </div>
+                    </div> *@
                 </div>
             </div>
         </div>

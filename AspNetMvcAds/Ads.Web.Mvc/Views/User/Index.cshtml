@@ -20,8 +20,11 @@
                     <!-- User Widget -->
                     <div class="widget user-dashboard-profile">
                         <!-- User Image -->
+                        @{
+                            var userImagePath = Url.Content(Model.ImagePath);
+                        }
                         <div class="profile-thumb">
-                            <img src="images/user/user-thumb.jpg" alt="" class="rounded-circle">
+                            <img src="@userImagePath" alt="" class="rounded-circle">
                         </div>
                         <!-- User Name -->
                       
