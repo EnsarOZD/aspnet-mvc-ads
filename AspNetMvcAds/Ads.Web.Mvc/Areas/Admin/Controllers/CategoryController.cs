@@ -3,6 +3,7 @@ using Ads.Data;
 using Ads.Web.Mvc.Models;
 using Microsoft.EntityFrameworkCore;
 using Ads.Web.Mvc.Areas.Admin.Models;
+using Ads.Data.Entities;
 
 namespace Ads.Web.Mvc.Areas.Admin.Controllers
 {
@@ -10,82 +11,101 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 	[Area("Admin")]
     public class CategoryController : Controller
     {
-		private AppDbContext _context;
+		private readonly AppDbContext _context;
 		public CategoryController(AppDbContext context)
 		{
 			_context = context;
 		}
+
+		
 		public async Task<IActionResult> Index()
 		{
-			var categories = await _context.CategoryEntities.ToListAsync();
-			return View(categories);
+			var category= await _context.CategoryEntities.Select(category => new AdminCategoryViewModel
+			{
+				Id = category.Id,
+				Name = category.Name,
+				Description = category.Description,
+				UpdatedAt = category.UpdatedAt,
+				CreatedAt = category.DeletedAt,
+			}).ToListAsync();
+			return View(category);
 		}
+	
 		public IActionResult Create()
 		{
 			return View();
 		}
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create(Category category)
-		{
-			if (ModelState.IsValid)
-			{
-				_context.Add(category);
-				await _context.SaveChangesAsync();
-				return RedirectToAction("Index");
-			}
-			return View(category);
-			
-		}
-		public async Task<IActionResult> Edit(int? id)
-		{
-			if (id == null)
-			{
-				return NotFound();
-			}
+        public async Task<IActionResult> Create(AdminCategoryViewModel category)
+        {
+            if (ModelState.IsValid)
+            {
+                // Veritabanına yeni kategori ekleyin
+                var newCategory = new CategoryEntity
+                {
+                    Name = category.Name,
+                    Description = category.Description,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now,
+                };
 
-			var category = await _context.CategoryEntities.FindAsync(id);
+                _context.CategoryEntities.Add(newCategory);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
 
-			if (category == null)
-			{
-				return NotFound();
-			}
+            return View(category);
+        }
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-			return View(category);
-			
-		}
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, Category category)
-		{
-			if (id != category.Id)
-			{
-				return NotFound();
-			}
-			if (ModelState.IsValid)
-			{
-				try
-				{
-					_context.Update(category);
-					await _context.SaveChangesAsync();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!CategoryExists(category.Id))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
-				return RedirectToAction("Index");
-			}
-			
-			return View(category);
-		}
-		public async Task<IActionResult> Delete(int? id)
+            var category = await _context.CategoryEntities.FindAsync(id);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Models.AdminCategoryViewModel category)
+        {
+            if (id != category.Id)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(category);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CategoryExists(category.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Index");
+            }
+
+            return View(category);
+        }
+        public async Task<IActionResult> Delete(int? id)
 		{
 			if (id == null)
 			{
