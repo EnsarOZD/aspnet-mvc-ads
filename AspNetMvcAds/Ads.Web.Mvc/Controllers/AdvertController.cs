@@ -61,13 +61,14 @@ namespace Ads.Web.Mvc.Controllers
 				.ToListAsync();
 			var comments = _advertCommentRepository.GetAll()
 				.Where(c => c.AdvertId == id && c.IsActive)
-				.Include(c => c.User)
+				.Include(c => c.Advert)
+				.ThenInclude(a=>a.User)
 				.Select(c => new AdvertCommentViewModel
 				{
 					
 					Id= c.Id,
 					Comment=c.Comment,
-					UserName=c.User.Name
+					UserName=c.Advert.User.Name
 
 				})
 				.ToList() ;

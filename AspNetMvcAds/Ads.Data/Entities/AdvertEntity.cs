@@ -40,5 +40,6 @@ namespace Ads.Data.Entities
         public DateTimeOffset UpdatedAt { get; set; }
         public DateTimeOffset DeletedAt { get; set; }
         public ICollection<AdvertImageEntity> AdvertImages;
-    }
+
+	}
 }

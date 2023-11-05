@@ -9,6 +9,17 @@
 }
 
 <h1>Advertisement Details</h1>
+   <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="post" asp-area="Admin" asp-action="Index" asp-controller="AdvertSearch">
+        <div class="input-group">
+            <input type="text" class="form-control bg-light border-0 small" name="searchContent" placeholder="Search for advert"
+                   aria-label="Search" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-primary ml-4" type="submit" >
+                    <i class="fas fa-search fa-sm" ></i>
+                </button>
+            </div>
+        </div>
+    </form>v
 
 <div class="row">
     @foreach (var advert in Model)

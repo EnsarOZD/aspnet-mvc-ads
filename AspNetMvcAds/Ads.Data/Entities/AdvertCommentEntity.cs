@@ -24,8 +24,6 @@ namespace Ads.Data.Entities
         [ForeignKey(nameof(AdvertId))]
         public AdvertEntity Advert { get; set; } = null!;
 
-		[ForeignKey(nameof(UserId))]
-		public UserEntity User { get; set; }
 
 		public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
