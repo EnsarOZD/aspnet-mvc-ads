@@ -65,9 +65,13 @@
 							<li class="nav-item">
 								<a class="nav-link login-button" href="login.html">Login</a>
 							</li>
+							@* @if (User.Identity.IsAuthenticated)
+							{
 							<li class="nav-item">
 								<a class="nav-link text-white add-button" href="@Url.Action("Index", "AddListing")"><i class="fa fa-plus-circle"></i> Add Listing</a>
 							</li>
+								
+							} *@
 						</ul>
 					</div>
 				</nav>

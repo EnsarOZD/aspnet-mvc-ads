@@ -1,66 +1,104 @@
 ﻿@model NavbarListViewModel
 <section>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<nav class="navbar navbar-expand-lg navbar-light navigation">
-					<a class="navbar-brand" asp-controller="Home" asp-action="Index">
-						<img src="~/images/logo.png" alt="">
-					</a>
-					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-							aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-						<span class="navbar-toggler-icon"></span>
-					</button>
-					<div class="collapse navbar-collapse" id="navbarSupportedContent">
-						<ul class="navbar-nav ml-auto main-nav ">
-							<li class="nav-item active">
-								<a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-							</li>
-					
-							<li class="nav-item dropdown dropdown-slide">
-								<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Pages <span><i class="fa fa-angle-down"></i></span>
-								</a>
-								<!-- Dropdown list -->
-								<div class="dropdown-menu">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-expand-lg navbar-light navigation">
+                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                        <img src="~/images/logo.png" alt="">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto main-nav ">
+                            <li class="nav-item active">
+                                <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
 
-									@foreach (var pages in Model.Pages)
-									{
-										<a class="dropdown-item" asp-controller="Page" asp-action="@pages.Slug" >@pages.Title</a>
-									}
-									
-								</div>
-							</li>
-							<li class="nav-item dropdown dropdown-slide">
-								<a class="nav-link dropdown-toggle" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Categories <span><i class="fa fa-angle-down"></i></span>
-								</a>
-								<!-- Dropdown list -->
-								<div class="dropdown-menu">
+                            <li class="nav-item dropdown dropdown-slide">
+                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Pages <span><i class="fa fa-angle-down"></i></span>
+                                </a>
+                                <!-- Dropdown list -->
+                                <div class="dropdown-menu">
 
-									@foreach (var categories in Model.Categories)
-									{
-										<a class="dropdown-item" asp-controller="Category" asp-action="Index" asp-route-id="@categories.Id">@categories.Name</a>
-									}
-									
-									
-								</div>
-							</li>
-						</ul>
-						<ul class="navbar-nav ml-auto mt-10">
-							<li class="nav-item">
-								<a class="nav-link login-button" asp-controller="Auth" asp-action="Login">Login</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link login-button" asp-controller="Auth" asp-action="Register">Register</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-white add-button" asp-action="Add" asp-controller="AddListing"><i class="fa fa-plus-circle"></i> Add Listing</a>
-							</li>
-						</ul>
-					</div>
-				</nav>
-			</div>
-		</div>
-	</div>
+                                    @foreach (var pages in Model.Pages)
+                                    {
+                                        <a class="dropdown-item" asp-controller="Page" asp-action="@pages.Slug">@pages.Title</a>
+                                    }
+
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown dropdown-slide">
+                                <a class="nav-link dropdown-toggle" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Categories <span><i class="fa fa-angle-down"></i></span>
+                                </a>
+                                <!-- Dropdown list -->
+                                <div class="dropdown-menu">
+
+                                    @foreach (var categories in Model.Categories)
+                                    {
+                                        <a class="dropdown-item" asp-controller="Category" asp-action="Index" asp-route-id="@categories.Id">@categories.Name</a>
+                                    }
+
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav ml-auto mt-10">
+                            <li class="nav-item">
+                                <a class="nav-link login-button" asp-controller="Auth" asp-action="Login">Login</a>
+                            </li>
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link login-button" asp-controller="Auth" asp-action="Register">Register</a>
+                                </li>
+
+                            }
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-white add-button" asp-action="Add" asp-controller="AddListing"><i class="fa fa-plus-circle"></i> Add Listing</a>
+                                </li>
+                            }
+
+                        </ul>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+
+                            <ul>
+                                <li class="nav-item dropdown no-arrow">
+                                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">@Model.Name</span>
+                                        <img class="img-profile rounded-circle"
+                                             src="~/assets/img/undraw_profile.svg">
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                         aria-labelledby="userDropdown">
+                                        <a class="dropdown-item" asp-action="Index" asp-controller="User">
+                                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Profile
+                                        </a>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Settings
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" asp-action="Logout" asp-controller="Auth">
+                                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Logout
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        }
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
 </section>

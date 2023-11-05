@@ -41,12 +41,12 @@ namespace Ads.Web.Mvc.Controllers
         {
 
             var existingUser = await DbContext.UserEntities.FirstOrDefaultAsync(u => u.Email == model.Email);
-            if (existingUser is not null && existingUser.IsEmailConfirmed==true)
+            if (existingUser is not null && existingUser.IsEmailConfirmed == true)
             {
 
                 ViewBag.Error = "Your entered email is not valid ";
 
-               
+
                 return View();
             }
             if (existingUser is not null && existingUser.IsEmailConfirmed == false)
@@ -69,8 +69,10 @@ namespace Ads.Web.Mvc.Controllers
 
                 UserEntity user = new()
                 {
+                    Name = model.Name,
                     Email = model.Email,
                     Password = model.Password,
+                    Phone = model.Phone,
                     Roles = "User",
                     IsEmailConfirmed = false,
                     EmailConfirmationToken = Guid.NewGuid().ToString("n").Substring(0, 6).ToUpper()
@@ -129,7 +131,7 @@ namespace Ads.Web.Mvc.Controllers
             await DbContext.SaveChangesAsync();
 
             ViewBag.HasMessage = true;
-            ViewBag.Success = "Hesabınız onaylandı";
+            ViewBag.Success = "Your account has confirmed!";
             return View();
         }
 
@@ -153,9 +155,9 @@ namespace Ads.Web.Mvc.Controllers
                 && x.Password == login.Password
                 && x.IsEmailConfirmed);
 
-            if (user == null)
+            if (user == null || user.IsEmailConfirmed == false)
             {
-                ViewBag.Error = "Kullanıcı adı veya şifre hatalı";
+                ViewBag.Error = "Wrong username or password or deactive account!";
                 return View(login);
             }
 
@@ -194,7 +196,7 @@ namespace Ads.Web.Mvc.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet("logout")]
+        
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

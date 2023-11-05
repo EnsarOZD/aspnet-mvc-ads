@@ -19,7 +19,6 @@ namespace Ads.Data.Entities
 
         [Required, Column(TypeName = "ntext")]
         public string Description { get; set; } = string.Empty;
-
         public string AdType { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public bool IsPriceNegotiable { get; set; }
@@ -32,8 +31,7 @@ namespace Ads.Data.Entities
         public bool AcceptTermsAndConditions { get; set; }
         public int StarCount { get; set; }
         public int AdvertClickCount { get; set; }
-         public string? ImagePath { get; set; }
-       
+        public string? ImagePath { get; set; }
         public int UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]

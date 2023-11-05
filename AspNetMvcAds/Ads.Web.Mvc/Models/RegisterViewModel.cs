@@ -11,9 +11,15 @@ namespace Ads.Web.Mvc.Models
         [Required(ErrorMessage = "Required."), MinLength(4), DataType(DataType.Password)]
         public string Password { get; set; } = string.Empty;
 
-        [Required(ErrorMessage ="Required."), DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Passwords does not match!")]
+        [Required(ErrorMessage = "Required."), DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Passwords do not match!")]
         public string PasswordVerify { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Required.")]
+        public string Name { get; set; } = string.Empty;
+
+        [DataType(DataType.PhoneNumber)]
+        public string Phone { get; set; } = string.Empty;
 
     }
 }

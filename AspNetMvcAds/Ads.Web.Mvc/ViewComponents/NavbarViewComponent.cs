@@ -1,16 +1,18 @@
 ﻿using Ads.Data;
 using Ads.Web.Mvc.Models;
-
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Ads.Web.Mvc.ViewComponents
 {
-    public class NavbarViewComponent:ViewComponent
+    public class NavbarViewComponent : ViewComponent
     {
         private readonly AppDbContext _db;
+
 
         public NavbarViewComponent(AppDbContext db)
         {
@@ -19,14 +21,40 @@ namespace Ads.Web.Mvc.ViewComponents
 
         public ViewViewComponentResult Invoke()
         {
-            var navbarList = new NavbarListViewModel
+            if (User.Identity.IsAuthenticated)
             {
-                Categories = _db.CategoryEntities.ToList(),
-                Pages=_db.PageEntities.ToList()
-             
-            };
+                //var userName = User.Identity.Name;
+                //var user =  _context.UserEntities.FirstOrDefault(u => u.Name == userName);
+                //var user = _db.UserEntities.FirstOrDefault(x => x.Id == x.Id); //TODO: Idye göre çekilirse sorun çözülüyor
+                var claimsPrincipal = User as ClaimsPrincipal;
+                var userId = int.TryParse(claimsPrincipal?.FindFirstValue(ClaimTypes.PrimarySid), out int result) ? result.ToString() : null;
 
-            return View(navbarList);
+
+                var user = _db.UserEntities.FirstOrDefault(x => x.Id.ToString() == userId);
+
+                var navbarList = new NavbarListViewModel
+                {
+                    Id = user.Id,
+                    Categories = _db.CategoryEntities.ToList(),
+                    Pages = _db.PageEntities.ToList(),
+                    Name = user.Name,
+                };
+                return View(navbarList);
+
+            }
+            else
+            {
+                var navbarList = new NavbarListViewModel
+                {
+                    Categories = _db.CategoryEntities.ToList(),
+                    Pages = _db.PageEntities.ToList(),
+
+                };
+                return View(navbarList);
+            }
+
+
+
         }
     }
 }

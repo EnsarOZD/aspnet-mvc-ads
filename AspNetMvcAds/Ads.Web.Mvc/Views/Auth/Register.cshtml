@@ -18,13 +18,19 @@
                     <form asp-action="Register" asp-controller="Auth" method="post">
                         <fieldset class="p-4">
                             <div class="form-group">
+                                <label asp-for="Name"></label>
+                                <input asp-for="Name" placeholder="Name*" class="border p-3 w-100 my-2" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
                                 <label asp-for="Email"></label>
                                 <input asp-for="Email" type="email" placeholder="Email*" class="border p-3 w-100 my-2" />
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Password"></label>
-                                <input asp-for="Password" type="password" placeholder="Password*" class="form-control" />
+                                <input asp-for="Password" type="password" placeholder="Password*" class="border p-3 w-100 my-2" />
                                 <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                             <div class="form-group">
@@ -32,20 +38,27 @@
                                 <input asp-for="PasswordVerify" type="password" placeholder="Confirm Password*" class="border p-3 w-100 my-2" />
                                 <span asp-validation-for="PasswordVerify" class="text-danger"></span>
                             </div>
+                            <div class="form-group">
+                                <label asp-for="Phone"></label>
+                                <input asp-for="Phone" placeholder="Phone" class="border p-3 w-100 my-2" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
                             <button type="submit" class="d-block py-3 px-4 bg-primary text-white border-0 rounded font-weight-bold">Register Now</button>
                         </fieldset>
                     </form>
                 </div>
-
-                @if (!string.IsNullOrEmpty(ViewBag.Error))
-                {
-                    <div class="alert alert-danger">@ViewBag.Error</div>
-                }
-                @if (!string.IsNullOrEmpty(ViewBag.Warning))
-                {
-                    <div class="alert alert-warning">@ViewBag.Warning</div>
-                }
             </div>
         </div>
     </div>
 </section>
+
+
+@if (!string.IsNullOrEmpty(ViewBag.Error))
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+@if (!string.IsNullOrEmpty(ViewBag.Warning))
+{
+    <div class="alert alert-warning">@ViewBag.Warning</div>
+}
+           
