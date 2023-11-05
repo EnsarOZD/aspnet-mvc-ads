@@ -1,4 +1,4 @@
-﻿using Ads.Data.Abstract;
+﻿using Ads.Data.Services.Abstract;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
