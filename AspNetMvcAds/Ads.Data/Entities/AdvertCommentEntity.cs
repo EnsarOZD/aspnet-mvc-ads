@@ -1,4 +1,4 @@
-﻿using Ads.Data.Abstract;
+﻿using Ads.Data.Services.Abstract;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,7 +24,10 @@ namespace Ads.Data.Entities
         [ForeignKey(nameof(AdvertId))]
         public AdvertEntity Advert { get; set; } = null!;
 
-        public DateTimeOffset CreatedAt { get; set; }
+		[ForeignKey(nameof(UserId))]
+		public UserEntity User { get; set; }
+
+		public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
         public DateTimeOffset DeletedAt { get; set; }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ads.Data.Abstract
+namespace Ads.Data.Services.Abstract
 {
     public interface IAuditEntity
     {
