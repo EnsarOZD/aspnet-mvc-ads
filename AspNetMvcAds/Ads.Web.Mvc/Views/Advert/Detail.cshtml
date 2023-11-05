@@ -62,40 +62,45 @@ else
 									</p>
 
 								</div>
+								
 								<div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
 									<h3 class="tab-title">Product Review</h3>
+									
 									<div class="product-review">
-										<div class="media">
-											<!-- Avater -->
-											<img src="~/images/user/user-thumb.jpg" alt="avater">
-											<div class="media-body">
-												<!-- Ratings -->
-												<div class="ratings">
-													<ul class="list-inline">
-														@for (int i = 0; i < Model.StarCount; i++)
-														{
-															<li class="list-inline-item">
-																<i class="fa fa-star"></i>
-															</li>
+										@foreach (var comments in Model.AdvertComments)
+										{
+											<div class="media">
+												<!-- Avater -->
+												<img src="~/images/user/user-thumb.jpg" alt="avater">
+												<div class="media-body">
+													<!-- Ratings -->
+													<div class="ratings">
+														<ul class="list-inline">
+															@for (int i = 0; i < Model.StarCount; i++)
+															{
+																<li class="list-inline-item">
+																	<i class="fa fa-star"></i>
+																</li>
 
-														}
+															}
 
-													</ul>
-												</div>
-												<div class="name">
-													<h5>Jessica Brown</h5>
-												</div>
-												<div class="date">
-													<p>Mar 20, 2018</p>
-												</div>
-												<div class="review-comment">
-													<p>
-														Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremqe laudant tota rem ape
-														riamipsa eaque.
-													</p>
+														</ul>
+													</div>
+													<div class="name">
+														<h5>@comments.UserName</h5>
+													</div>
+													<div class="date">
+														<p>@comments.CreatedAt</p>
+													</div>
+													<div class="review-comment">
+														<p>
+															@comments.Comment
+														</p>
+													</div>
 												</div>
 											</div>
-										</div>
+										}
+										
 										<div class="review-submission">
 											<h3 class="tab-title">Submit your review</h3>
 											<!-- Rate -->
@@ -135,7 +140,7 @@ else
 						<div class="widget user text-center">
 							<img class="rounded-circle img-fluid mb-5 px-5" src="~/images/user/user-thumb.jpg" alt="">
 							<h4>@Model.User.Name</h4>
-							<p class="member-time">Member Since @Model.CreatedAt.ToString("dd-MM-yyyy")</p>
+							<p class="member-time">Member Since @Model.User.CreatedAt.ToString("dd-MM-yyyy")</p>
 						</div>
 						<!-- Map Widget -->
 						<div class="widget map">
