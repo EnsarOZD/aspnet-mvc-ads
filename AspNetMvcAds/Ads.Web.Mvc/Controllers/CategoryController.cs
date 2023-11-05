@@ -33,9 +33,9 @@ namespace Ads.Web.Mvc.Controllers
 
 
 			ViewData["Page"] = page;
-			int skipCount = (page - 1) * 10;
+			int skipCount = (page - 1) * 12;
 			int pageSize = 12;
-			if (!id.HasValue)
+			if (!id.HasValue||id==0)
 			{
 				var totalAdvertCount = await _advertRepository.GetAll().CountAsync();
 				var totalPageCount = (int)Math.Ceiling(totalAdvertCount / (double)pageSize);
