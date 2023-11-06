@@ -19,6 +19,8 @@ namespace Ads.Data.Entities
 
         public int UserId { get; set; }
 
+        public long? ImageSize { get; set; }
+
         public DateTimeOffset CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTimeOffset UpdatedAt { get; set; }

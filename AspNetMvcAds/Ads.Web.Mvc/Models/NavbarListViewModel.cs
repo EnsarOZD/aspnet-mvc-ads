@@ -7,6 +7,7 @@ namespace Ads.Web.Mvc.Models
         public List<CategoryEntity> Categories { get; set; }
         public List<PageEntity> Pages { get; set; }
         public string Name { get; set; }
+        public string UserImagePath { get; set; }
         public int Id { get; set; }
 
     }

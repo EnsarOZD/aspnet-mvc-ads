@@ -1,3 +1,4 @@
+using Ads.Data.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace Ads.Web.Mvc.Models
@@ -21,7 +22,8 @@ namespace Ads.Web.Mvc.Models
         public string? Phone { get; set; }
         public string? Address { get; set; }
         public bool IsEmailConfirmed { get; set; }
-        public string? UserImagePath { get; set; }
+        public string UserImagePath { get; set; }
+        public List<UserImageEntity> UserImages { get; set; } 
     }
 
 }

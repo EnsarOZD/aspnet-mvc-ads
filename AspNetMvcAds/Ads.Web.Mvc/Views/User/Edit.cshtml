@@ -11,6 +11,9 @@
 {
     <div class="alert alert-success d-flex justify-content-center align-items-center">@TempData["UploadMessage"]</div>
 }
+@{
+    var userImagePath = Url.Content(Model.UserImagePath);
+}
 <section class="user-profile section">
     <div class="container">
         <div class="row">
@@ -19,9 +22,14 @@
                     <!-- User Widget -->
                     <div class="widget user">
                         <!-- User Image -->
-                        <div class="image d-flex justify-content-center">
-                            <img src="images/user/user-thumb.jpg" alt="" class="">
+                        <div class="profile-thumb" style="text-align: left;">
+                            <div class="image-container">
+                                <img src="@userImagePath" alt="" class="rounded-circle" style="width: 100px; height: 100px; margin-left:50px;">
+                            </div>
                         </div>
+
+
+
                         <!-- User Name -->
                         <h5 class="text-center">@Model.Name</h5>
                     </div>

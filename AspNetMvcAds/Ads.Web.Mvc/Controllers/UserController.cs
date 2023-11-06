@@ -23,17 +23,19 @@ namespace Ads.Web.Mvc.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = int.TryParse(User.FindFirstValue(ClaimTypes.PrimarySid), out int result) ? result.ToString() : null;
-
             var user = _context.UserEntities.FirstOrDefault(x => x.Id.ToString() == userId);
-
 
             if (user != null)
             {
+                var userImage = _context.UserImageEntities.FirstOrDefault();
+
+                var imagePath = userImage != null ? userImage.ImagePath : "default_image_path.jpg"; // Varsayılan bir resim yolu ekleyin
+
                 var viewmodel = new ProductViewModel
                 {
                     Id = user.Id,
                     Name = user.Name,
-                    ImagePath=user.UserImagePath,
+                    ImagePath = imagePath,
                     AdvertEntities = _context.AdvertEntities
                         .Where(a => a.UserId == user.Id)
                         .ToList(),
@@ -51,15 +53,19 @@ namespace Ads.Web.Mvc.Controllers
             }
             return View();
         }
+
         [HttpGet]
         public IActionResult Edit([FromRoute] int id)
         {
             var user = _context.UserEntities.Find(id);
+            var userImage = _context.UserImageEntities.FirstOrDefault();
+
             if (user == null)
             {
-
                 return RedirectToAction("Index");
             }
+
+            var userImagePath = userImage != null ? userImage.ImagePath : "default_image_path.jpg"; // Varsayılan bir resim yolu ekleyin
 
             var userViewModel = new UserViewModel
             {
@@ -68,11 +74,12 @@ namespace Ads.Web.Mvc.Controllers
                 NewEmail = user.Email,
                 Address = user.Address,
                 Phone = user.Phone,
-                
+                UserImagePath = userImagePath
             };
 
             return View(userViewModel);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> EditName([FromRoute] int id, ProductViewModel userName)
@@ -129,7 +136,7 @@ namespace Ads.Web.Mvc.Controllers
                     ViewBag.Error = "Sadece.jpg uzantılı dosyaları yükleyebilirsiniz.";
                     return View("Add");
                 }
-               
+
                 await _fileService.UploadFileAsync(formFile);
                 string imageName = formFile.FileName;
                 long imageSize = formFile.Length;
@@ -139,7 +146,7 @@ namespace Ads.Web.Mvc.Controllers
                     CreatedAt = DateTime.Now,
                     Id = id,
                     ImagePath = $"~/uploads/{imageName}",
-            };
+                };
                 _context.UserImageEntities.Add(userImage);
                 await _context.SaveChangesAsync();
                 TempData["UploadMessage"] = "Uploaded Successfully";

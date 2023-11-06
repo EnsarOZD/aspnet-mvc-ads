@@ -95,44 +95,6 @@ namespace Ads.Web.Mvc.Controllers
 
 		}
 
-		//    [Route("/advert/detail/{id}")]
-		//    public IActionResult Detail(int id)
-		//    {
-		//        var advertEntity = _advertRepository.GetById(id);
-		//        if (advertEntity != null)
-		//        {
-		//            var categoryId=_categoryAdvertRepository.GetById(advertEntity.Id==id)?.
-
-		//            var category = _db.CategoryEntities.FirstOrDefault(x => x.Id == categoryId);
-
-		//            var user = _db.UserEntities.FirstOrDefault(x => x.Id == advertEntity.UserId);
-
-		//            var imagePaths = _db.AdvertImageEntities.Where(x => x.AdvertId == id).Select(x => x.ImagePath).ToList();
-
-		//            var advertModel = new AdvertDetailViewModel
-		//            {
-		//                Id = advertEntity.Id,
-		//                Title = advertEntity.Title,
-		//                Description = advertEntity.Description,
-		//                CreatedAt = advertEntity.CreatedAt,
-		//                CategoryId = category?.Id ?? 0,
-		//                CategoryName = category?.Name ?? "-",
-		//                ImagePaths = imagePaths,
-		//                User = new UserViewModel
-
-		//                {
-		//                    Id = user.Id,
-		//                    Name = user.Name,
-		//                    CreatedAt = user.CreatedAt
-		//                },
-
-		//	 Price = advertEntity.Price
-		//};
-
-		//return View(advertModel);
-		//        }
-
-		//        return View();
-		//    }
+		
 	}
 }
