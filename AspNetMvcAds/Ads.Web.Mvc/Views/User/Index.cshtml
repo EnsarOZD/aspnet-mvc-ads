@@ -10,6 +10,10 @@
 {
     <div class="alert alert-danger d-flex justify-content-center align-items-center">@TempData["ErrorMessage"]</div>
 }
+@if (!string.IsNullOrEmpty(TempData["UploadMessage"] as string))
+{
+    <div class="alert alert-success d-flex justify-content-center align-items-center">@TempData["UploadMessage"]</div>
+}   
 <section class="dashboard section">
     <!-- Container Start -->
     <div class="container">

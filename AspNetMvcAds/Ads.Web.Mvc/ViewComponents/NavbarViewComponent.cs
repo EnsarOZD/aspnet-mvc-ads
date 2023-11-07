@@ -22,9 +22,9 @@ namespace Ads.Web.Mvc.ViewComponents
             {
                 var claimsPrincipal = User as ClaimsPrincipal;
                 var userId = int.TryParse(claimsPrincipal?.FindFirstValue(ClaimTypes.PrimarySid), out int result) ? result.ToString() : null;
-                var userImage = _db.UserImageEntities.FirstOrDefault();
 
                 var user = _db.UserEntities.FirstOrDefault(x => x.Id.ToString() == userId);
+                var userImage = _db.UserImageEntities.FirstOrDefault(x => x.UserId == user.Id);
 
                 var navbarList = new NavbarListViewModel
                 {

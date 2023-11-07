@@ -19,6 +19,8 @@ namespace Ads.Web.Mvc.Models
         [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
         public string VerifyNewEmail { get; set; }
         public string? Password { get; set; }
+        public string? PasswordVerify { get; set; }
+        public string CurrentPassword { get; set; } = string.Empty;
         public string? Phone { get; set; }
         public string? Address { get; set; }
         public bool IsEmailConfirmed { get; set; }

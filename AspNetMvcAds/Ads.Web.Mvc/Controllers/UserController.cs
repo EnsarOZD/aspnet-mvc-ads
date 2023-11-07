@@ -25,9 +25,11 @@ namespace Ads.Web.Mvc.Controllers
             var userId = int.TryParse(User.FindFirstValue(ClaimTypes.PrimarySid), out int result) ? result.ToString() : null;
             var user = _context.UserEntities.FirstOrDefault(x => x.Id.ToString() == userId);
 
+
+
             if (user != null)
             {
-                var userImage = _context.UserImageEntities.FirstOrDefault();
+                var userImage = _context.UserImageEntities.FirstOrDefault(x => x.UserId == user.Id);
 
                 var imagePath = userImage != null ? userImage.ImagePath : "default_image_path.jpg"; // Varsayılan bir resim yolu ekleyin
 
@@ -58,7 +60,8 @@ namespace Ads.Web.Mvc.Controllers
         public IActionResult Edit([FromRoute] int id)
         {
             var user = _context.UserEntities.Find(id);
-            var userImage = _context.UserImageEntities.FirstOrDefault();
+            var userImage = _context.UserImageEntities.FirstOrDefault(x => x.UserId == id);
+
 
             if (user == null)
             {
@@ -98,6 +101,30 @@ namespace Ads.Web.Mvc.Controllers
             return RedirectToAction("Edit", "User", new { id = id });
         }
         [HttpPost]
+        public async Task<IActionResult> EditPassword([FromRoute] int id, ProductViewModel userName)
+        {
+            var user = await _context.UserEntities.FindAsync(id);
+            var userOldPass = user.Password;
+
+            if (user != null && userName.Password == userName.PasswordVerify && userName.Password == userOldPass)
+            {
+                user.Password = userName.Password;
+                user.Id = userName.Id;
+
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Your password has changed successfully";
+
+                return RedirectToAction("Edit", "User", new { id = id });
+            }
+            else
+            {
+                TempData["PasswordErrorMessage"] = "Your passwords doesnt match or wrong current password";
+            }
+            return RedirectToAction("Edit", "User", new { id = id });
+
+        }
+
+        [HttpPost]
         public async Task<IActionResult> EditEmail([FromRoute] int id, UserViewModel userName)
         {
             var user = await _context.UserEntities.FindAsync(id);
@@ -110,7 +137,7 @@ namespace Ads.Web.Mvc.Controllers
                     user.Id = userName.Id;
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "Your E-mail has changed successfully";
-                    return RedirectToAction("Edit", "User");
+                    return RedirectToAction("Edit", "User", new { id = id });
                 }
                 else
                 {
@@ -127,25 +154,27 @@ namespace Ads.Web.Mvc.Controllers
                 {
                     ModelState.AddModelError("File", "Dosya boyutu 2 MB'dan büyük olamaz.");
                     ViewBag.Error = "Dosya boyutu 2 MB'dan büyük olamaz.";
-                    return View("Add");
+                    return RedirectToAction("Edit", "User", new { id = id });
                 }
 
                 if (Path.GetExtension(formFile.FileName).ToLower() != ".jpg")
                 {
                     ModelState.AddModelError("File", "Sadece .jpg uzantılı dosyaları yükleyebilirsiniz.");
                     ViewBag.Error = "Sadece.jpg uzantılı dosyaları yükleyebilirsiniz.";
-                    return View("Add");
+                    return RedirectToAction("Edit", "User", new { id = id });
                 }
 
                 await _fileService.UploadFileAsync(formFile);
                 string imageName = formFile.FileName;
                 long imageSize = formFile.Length;
-
+                var userId = int.TryParse(User.FindFirstValue(ClaimTypes.PrimarySid), out int result) ? result.ToString() : null;
+                var user = _context.UserEntities.FirstOrDefault(x => x.Id.ToString() == userId);
                 UserImageEntity userImage = new()
                 {
                     CreatedAt = DateTime.Now,
                     Id = id,
                     ImagePath = $"~/uploads/{imageName}",
+                    UserId = user.Id
                 };
                 _context.UserImageEntities.Add(userImage);
                 await _context.SaveChangesAsync();

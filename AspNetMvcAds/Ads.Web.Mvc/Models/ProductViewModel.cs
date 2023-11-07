@@ -8,6 +8,9 @@ namespace Ads.Web.Mvc.Models
         public int Id { get; set; }
         public string? Name { get; set; }
         public string Email { get; set; } = string.Empty;
+        public string CurrentPassword { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string PasswordVerify { get; set; } = string.Empty;
         public string ImagePath { get; set; } = string.Empty;
         public List<AdvertImageEntity> AdvertImageEntities { get; set; }
         public List<UserEntity> UserEntities { get; set; }
