@@ -22,7 +22,10 @@ namespace Ads.Data
         public DbSet<UserImageEntity> UserImageEntities { get; set; }
         public DbSet<TokenUsage> TokenUsages { get; set; }
 
+        public DbSet<ContactUsMessagesEntity> ContactUsMessage { get; set; }
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

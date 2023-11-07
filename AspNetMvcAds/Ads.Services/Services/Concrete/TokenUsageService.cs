@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ads.Services.Services
+namespace Ads.Services.Services.Concrete
 {
     public class TokenUsageService
     {
@@ -16,7 +16,7 @@ namespace Ads.Services.Services
         {
             _dbContext = dbContext;
         }
-        public  void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        public void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512())
             {
@@ -24,7 +24,7 @@ namespace Ads.Services.Services
                 passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
         }
-        public  string CreateRandomToken()
+        public string CreateRandomToken()
         {
             return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         }

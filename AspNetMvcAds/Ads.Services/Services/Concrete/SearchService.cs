@@ -7,8 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Ads.Services.Models;
+using Ads.Services.Services.Abstract;
 
-namespace Ads.Services.Services
+namespace Ads.Services.Services.Concrete
 {
     public class SearchService : ISearchService
     {

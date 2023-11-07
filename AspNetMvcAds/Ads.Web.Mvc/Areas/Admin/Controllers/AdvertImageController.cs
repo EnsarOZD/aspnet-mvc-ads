@@ -1,6 +1,5 @@
 ﻿using Ads.Data;
 using Ads.Data.Entities;
-using Ads.Services.Services;
 using Ads.Services.Services.Abstract;
 using Ads.Web.Mvc.Areas.Admin.Models;
 using Bogus.DataSets;
@@ -88,7 +87,8 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
                 _advertImageService.UpdateImage(advertImage);
                 return RedirectToAction(nameof(Index));
             }
-            return View(entity);
+			TempData["SuccessMessage"] = "Image edited succesfully";
+			return View(entity);
         }
     }
 }

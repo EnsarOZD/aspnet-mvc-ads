@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Ads.Services.Services.Abstract;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 
-namespace Ads.Services.Services
+namespace Ads.Services.Services.Concrete
 {
     public class FileService : IFileService
     {

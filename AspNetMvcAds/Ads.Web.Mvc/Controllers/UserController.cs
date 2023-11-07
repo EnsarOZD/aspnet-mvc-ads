@@ -98,7 +98,9 @@ namespace Ads.Web.Mvc.Controllers
                 TempData["SuccessMessage"] = "Your name has changed successfully";
 
             }
+
             return RedirectToAction("Edit", "User", new { id = id });
+
         }
         [HttpPost]
         public async Task<IActionResult> EditPassword([FromRoute] int id, ProductViewModel userName)
