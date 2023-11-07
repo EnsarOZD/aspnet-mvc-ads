@@ -1,4 +1,6 @@
 ﻿using Ads.Data;
+using Ads.Data.Entities;
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing.Text;
 
@@ -28,7 +30,22 @@ namespace Ads.Web.Mvc.Controllers
            
             return View(slug,page);
         }
+        [Route("/page")]
+        [Route("/page/{slug}")]
+        [HttpPost]
+        public IActionResult ContactMessages(ContactUsMessagesEntity messages)
+        {
+            if (ModelState.IsValid)
+            {
+                messages.DateTime = Convert.ToDateTime(DateTime.Now.ToShortDateString());
+                messages.Status = true;
+                _db.Add(messages);
+                _db.SaveChanges();
+            }
+            return RedirectToAction("Index", "Home");
+        }
 
-       
+
+
     }
 }
