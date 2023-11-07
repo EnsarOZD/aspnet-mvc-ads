@@ -20,8 +20,8 @@ namespace Ads.Data
         public DbSet<SettingEntity> SettingEntities { get; set; }
         public DbSet<UserEntity> UserEntities { get; set; }
         public DbSet<TokenUsage> TokenUsages { get; set; }
-
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+		
+		public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -1,9 +1,19 @@
 ﻿@model AdvertDetailViewModel
 @{
 	ViewData["Title"] = "Advert Detail";
+	
+
 }
 
 @await Html.PartialAsync("_SearchPartial")
+@{
+	var successMessage = TempData["SuccessMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+	<div class="alert alert-success">@successMessage</div>
+}
 
 @if (Model == null)
 {
@@ -100,30 +110,32 @@ else
 												</div>
 											</div>
 										}
+										@if (!User.Identity.IsAuthenticated)
+										{
+											<p>Please login to comment. </p>
+										}
+										else
+										{
+											<div class="review-submission">
+												<h3 class="tab-title">Submit your review</h3>
+												<!-- Rate -->
+												<div class="rate">
+													<div class="starrr"></div>
+												</div>
+												<div class="review-submit">
+													<form asp-controller="Advert" asp-action="Comment" class="row" method="post">
+														<input type="hidden" asp-for="Id" value="@Model.Id">
+														<div class="col-12">
+															<textarea name="review" id="review" rows="10" class="form-control" placeholder="Message"></textarea>
+														</div>
+														<div class="col-12">
+															<button type="submit" class="btn btn-main">Sumbit</button>
+														</div>
+													</form>
+												</div>
+											</div>
+										}
 										
-										<div class="review-submission">
-											<h3 class="tab-title">Submit your review</h3>
-											<!-- Rate -->
-											<div class="rate">
-												<div class="starrr"></div>
-											</div>
-											<div class="review-submit">
-												<form action="#" class="row">
-													<div class="col-lg-6">
-														<input type="text" name="name" id="name" class="form-control" placeholder="Name">
-													</div>
-													<div class="col-lg-6">
-														<input type="email" name="email" id="email" class="form-control" placeholder="Email">
-													</div>
-													<div class="col-12">
-														<textarea name="review" id="review" rows="10" class="form-control" placeholder="Message"></textarea>
-													</div>
-													<div class="col-12">
-														<button type="submit" class="btn btn-main">Sumbit</button>
-													</div>
-												</form>
-											</div>
-										</div>
 									</div>
 								</div>
 							</div>

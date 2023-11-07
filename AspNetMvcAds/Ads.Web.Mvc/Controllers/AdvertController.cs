@@ -4,6 +4,7 @@ using Ads.Data.Services.Abstract;
 using Ads.Web.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Ads.Web.Mvc.Controllers
 {
@@ -15,13 +16,15 @@ namespace Ads.Web.Mvc.Controllers
 		private readonly IRepository<AdvertImageEntity> _advertImageRepository;
         private readonly IRepository<UserEntity> _userRepository;
 		private readonly IRepository<AdvertCommentEntity> _advertCommentRepository;
+		private readonly AppDbContext _dbContext;
 
 		public AdvertController(IRepository<AdvertEntity> advertRepository,
 								  IRepository<CategoryEntity> categoryRepository,
 								  IRepository<CategoryAdvertEntity> categoryAdvertRepository,
 								  IRepository<AdvertImageEntity> advertImageRepository,
                                   IRepository<UserEntity> userRepository,
-								  IRepository<AdvertCommentEntity> advertCommentRepository)
+								  IRepository<AdvertCommentEntity> advertCommentRepository,
+								  AppDbContext dbContext)
 		{
 			_categoryRepository = categoryRepository;
 			_advertRepository = advertRepository;
@@ -29,6 +32,7 @@ namespace Ads.Web.Mvc.Controllers
 			_advertImageRepository = advertImageRepository;
 			_userRepository = userRepository;
 			_advertCommentRepository = advertCommentRepository;
+			_dbContext = dbContext;
 		}
 
 		[Route("/advert/search")]
@@ -47,6 +51,8 @@ namespace Ads.Web.Mvc.Controllers
 				return NotFound();
 			}
 			var advertEntiy = advertResult.Data;
+			advertEntiy.AdvertClickCount += 1;
+			await _advertRepository.Update(advertEntiy);
 			var categoryAdvertResult = await _categoryAdvertRepository.GetAll()
 				.FirstOrDefaultAsync(ca => ca.AdvertId == id);
 			var categoryResult = await _categoryRepository.GetById(categoryAdvertResult?.CategoryId ?? 0);
@@ -59,16 +65,18 @@ namespace Ads.Web.Mvc.Controllers
 				.Where(ai=>ai.AdvertId== id)
 				.Select(ai=>ai.ImagePath)
 				.ToListAsync();
+		
+
 			var comments = _advertCommentRepository.GetAll()
 				.Where(c => c.AdvertId == id && c.IsActive)
-				.Include(c => c.Advert)
-				.ThenInclude(a=>a.User)
+				.ToList()
 				.Select(c => new AdvertCommentViewModel
 				{
 					
 					Id= c.Id,
 					Comment=c.Comment,
-					UserName=c.Advert.User.Name
+					UserName=_userRepository.GetAll().FirstOrDefault(u=>u.Id==c.UserId)?.Name,
+					CreatedAt=c.CreatedAt
 
 				})
 				.ToList() ;
@@ -83,7 +91,7 @@ namespace Ads.Web.Mvc.Controllers
 				ImagePaths=imagePath,
 				User=new UserViewModel
 				{
-					Id=userResult.Data.Id,
+					Id= userResult.Data.Id,
 					Name=userResult.Data.Name,
 					CreatedAt=userResult.Data.CreatedAt,
 				},
@@ -95,44 +103,35 @@ namespace Ads.Web.Mvc.Controllers
 
 		}
 
-		//    [Route("/advert/detail/{id}")]
-		//    public IActionResult Detail(int id)
-		//    {
-		//        var advertEntity = _advertRepository.GetById(id);
-		//        if (advertEntity != null)
-		//        {
-		//            var categoryId=_categoryAdvertRepository.GetById(advertEntity.Id==id)?.
+		[HttpPost]
+        public async Task<IActionResult> Comment(int Id, string review)
+        {
+			
+            var advertEntityResult = await _advertRepository.GetById(Id);
+            if (!advertEntityResult.Success)
+            {
+                return NotFound();
+            }
+			var advertEntity=advertEntityResult.Data;
+			var claimsIdentity = User.Identity as ClaimsIdentity;
+			var userIdClaim=claimsIdentity?.FindFirst(ClaimTypes.PrimarySid);
+			var userId=userIdClaim?.Value;
+			
+           
+			var newComment = new AdvertCommentEntity			
+			{
+				AdvertId = Id,
+				Comment= review,
+				CreatedAt = DateTime.Now,
+				IsActive=false,
+				UserId=int.Parse(userId)
 
-		//            var category = _db.CategoryEntities.FirstOrDefault(x => x.Id == categoryId);
+			};
+			await _advertCommentRepository.Add(newComment);
+			await _dbContext.SaveChangesAsync();
+			TempData["SuccessMessage"] = "Advert comment added succesfully";
 
-		//            var user = _db.UserEntities.FirstOrDefault(x => x.Id == advertEntity.UserId);
-
-		//            var imagePaths = _db.AdvertImageEntities.Where(x => x.AdvertId == id).Select(x => x.ImagePath).ToList();
-
-		//            var advertModel = new AdvertDetailViewModel
-		//            {
-		//                Id = advertEntity.Id,
-		//                Title = advertEntity.Title,
-		//                Description = advertEntity.Description,
-		//                CreatedAt = advertEntity.CreatedAt,
-		//                CategoryId = category?.Id ?? 0,
-		//                CategoryName = category?.Name ?? "-",
-		//                ImagePaths = imagePaths,
-		//                User = new UserViewModel
-
-		//                {
-		//                    Id = user.Id,
-		//                    Name = user.Name,
-		//                    CreatedAt = user.CreatedAt
-		//                },
-
-		//	 Price = advertEntity.Price
-		//};
-
-		//return View(advertModel);
-		//        }
-
-		//        return View();
-		//    }
-	}
+			return RedirectToAction("Detail", new { id = Id });
+		}
+    }
 }

@@ -87,7 +87,8 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
                 _advertImageService.UpdateImage(advertImage);
                 return RedirectToAction(nameof(Index));
             }
-            return View(entity);
+			TempData["SuccessMessage"] = "Image edited succesfully";
+			return View(entity);
         }
     }
 }
