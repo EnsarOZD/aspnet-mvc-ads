@@ -55,6 +55,79 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 
 
         }
+		[Area("Admin")]
+		public async Task<IActionResult> Edit(int id)
+		{
+			var comment = await _context.AdvertCommentEntities.FindAsync(id);
+			if (comment == null)
+			{
+				return NotFound();
+			}
 
-    }
+			var model = new AdvertCommentsViewModel
+			{
+				Id = comment.Id,
+				Comment = comment.Comment,
+				IsActive = comment.IsActive,
+				CreatedAt = comment.CreatedAt,
+				UpdatedAt = comment.UpdatedAt,
+				DeletedAt = comment.DeletedAt,
+			};
+
+			return View(model);
+		}
+
+		[Area("Admin")]
+		[HttpPost]
+		[ValidateAntiForgeryToken] // CSRF koruması için eklendi
+		public async Task<IActionResult> Edit(int id, AdvertCommentsViewModel model)
+		{
+			if (id != model.Id)
+			{
+				return NotFound();
+			}
+
+			if (ModelState.IsValid)
+			{
+				var comment = await _context.AdvertCommentEntities.FindAsync(id);
+				if (comment == null)
+				{
+					return NotFound();
+				}
+
+				comment.Comment = model.Comment;
+				comment.IsActive = model.IsActive;
+				comment.UpdatedAt = DateTime.UtcNow; // Güncelleme tarihi olarak şu anki UTC zamanı ayarlayın
+
+				try
+				{
+					_context.Update(comment);
+					await _context.SaveChangesAsync();
+					TempData["SuccessMessage"] = "Comment updated succesfully";
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!CommentExists(id))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
+
+				return RedirectToAction("Index");
+			}
+
+			// Model doğrulanamazsa, düzenleme sayfasına geri dön
+			return View(model);
+		}
+
+		private bool CommentExists(int id)
+		{
+			return _context.AdvertCommentEntities.Any(e => e.Id == id);
+		}
+
+	}
 }
