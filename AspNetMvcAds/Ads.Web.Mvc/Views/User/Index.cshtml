@@ -1,9 +1,19 @@
-﻿@model ProductViewModel
+﻿@model Ads.Web.Mvc.Models.ProductViewModel
+
 @using System.Security.Claims
+
 @if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
 {
-    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    <div class="alert alert-success d-flex justify-content-center align-items-center">@TempData["SuccessMessage"]</div>
 }
+@if (!string.IsNullOrEmpty(TempData["ErrorMessage"] as string))
+{
+    <div class="alert alert-danger d-flex justify-content-center align-items-center">@TempData["ErrorMessage"]</div>
+}
+@if (!string.IsNullOrEmpty(TempData["UploadMessage"] as string))
+{
+    <div class="alert alert-success d-flex justify-content-center align-items-center">@TempData["UploadMessage"]</div>
+}   
 <section class="dashboard section">
     <!-- Container Start -->
     <div class="container">
@@ -14,16 +24,15 @@
                     <!-- User Widget -->
                     <div class="widget user-dashboard-profile">
                         <!-- User Image -->
+                        @{
+                            var userImagePath = Url.Content(Model.ImagePath);
+                        }
                         <div class="profile-thumb">
-                            <img src="images/user/user-thumb.jpg" alt="" class="rounded-circle">
+                            <img src="@userImagePath" alt="" class="rounded-circle">
                         </div>
                         <!-- User Name -->
-                      
-
-                        @* <h5 class="text-center">@User.Identity?.Name</h5> *@
                         <h5 class="text-center">@Model.Name</h5>
                         <p>Joined February 06, 2017</p>
-                      
                         <a asp-action="Edit" asp-controller="User" asp-route-id="@Model.Id" class="btn btn-main-sm">Edit Profile</a>
                     </div>
                     <!-- Dashboard Links -->
@@ -119,7 +128,7 @@
                                                                 </a>
                                                             </li>
                                                             <li class="list-inline-item">
-                                                                <a data-toggle="tooltip" data-placement="top" title="Edit" href="">
+                                                                <a data-toggle"tooltip" data-placement="top" title="Edit" href="">
                                                                     <i class="fa fa-pencil"></i>
                                                                 </a>
                                                             </li>

@@ -1,3 +1,6 @@
+using Ads.Data.Entities;
+using System.ComponentModel.DataAnnotations;
+
 namespace Ads.Web.Mvc.Models
 {
 
@@ -7,12 +10,22 @@ namespace Ads.Web.Mvc.Models
 
         public string? Name { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
-        public string? Email { get; set; } 
-        public string? Password { get; set; } 
-        public string? Phone { get; set; } 
-		    public string? Address { get; set; } 
-		    public bool IsEmailConfirmed { get; set; }
-        public string? UserImagePath { get; set; } 
+        [Required(ErrorMessage = "New email is required.")]
+        [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
+        public string NewEmail { get; set; }
+
+        [Required(ErrorMessage = "Verify New email is required.")]
+        [Compare("NewEmail", ErrorMessage = "The Verify New email must match the New email.")]
+        [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
+        public string VerifyNewEmail { get; set; }
+        public string? Password { get; set; }
+        public string? PasswordVerify { get; set; }
+        public string CurrentPassword { get; set; } = string.Empty;
+        public string? Phone { get; set; }
+        public string? Address { get; set; }
+        public bool IsEmailConfirmed { get; set; }
+        public string UserImagePath { get; set; }
+        public List<UserImageEntity> UserImages { get; set; } 
     }
 
 }

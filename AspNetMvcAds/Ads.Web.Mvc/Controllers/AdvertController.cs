@@ -103,6 +103,7 @@ namespace Ads.Web.Mvc.Controllers
 
 		}
 
+
 		[HttpPost]
         public async Task<IActionResult> Comment(int Id, string review)
         {
@@ -134,4 +135,3 @@ namespace Ads.Web.Mvc.Controllers
 			return RedirectToAction("Detail", new { id = Id });
 		}
     }
-}

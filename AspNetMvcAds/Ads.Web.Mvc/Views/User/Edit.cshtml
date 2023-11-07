@@ -1,5 +1,20 @@
-﻿ @model Ads.Web.Mvc.Models.UserViewModel
+﻿@model Ads.Web.Mvc.Models.UserViewModel
+@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
+{
+    <div class="alert alert-success d-flex justify-content-center align-items-center">@TempData["SuccessMessage"]</div>
+}
+@if (!string.IsNullOrEmpty(TempData["ErrorMessage"] as string))
+{
+    <div class="alert alert-danger d-flex justify-content-center align-items-center">@TempData["ErrorMessage"]</div>
+}
+@if (!string.IsNullOrEmpty(TempData["PasswordErrorMessage"] as string))
+{
+    <div class="alert alert-danger d-flex justify-content-center align-items-center">@TempData["PasswordErrorMessage"]</div>
+}
 
+@{
+    var userImagePath = Url.Content(Model.UserImagePath);
+}
 <section class="user-profile section">
     <div class="container">
         <div class="row">
@@ -8,19 +23,30 @@
                     <!-- User Widget -->
                     <div class="widget user">
                         <!-- User Image -->
-                        <div class="image d-flex justify-content-center">
-                            <img src="images/user/user-thumb.jpg" alt="" class=""> 
+                        <div class="profile-thumb" style="text-align: left;">
+                            <div class="image-container">
+                                <img src="@userImagePath" alt="" class="rounded-circle" style="width: 100px; height: 100px; margin-left:50px;">
+                            </div>
                         </div>
+
+
+
                         <!-- User Name -->
                         <h5 class="text-center">@Model.Name</h5>
                     </div>
                     <!-- Dashboard Links -->
-                    <div class="widget dashboard-links">
+                    <div class="widget user-dashboard-menu">
                         <ul>
-                            <li><a class="my-1 d-inline-block" href="">Savings Dashboard</a></li>
-                            <li><a class="my-1 d-inline-block" href="">Saved Offer <span>(5)</span></a></li>
-                            <li><a class="my-1 d-inline-block" href="">Favourite Stores <span>(3)</span></a></li>
-                            <li><a class="my-1 d-inline-block" href="">Recommended</a></li>
+                            <li class="active"><a href="/User/UserAds"><i class="fa fa-user"></i> My Ads</a></li>
+                            <li><a href="dashboard-favourite-ads.html"><i class="fa fa-bookmark-o"></i> Favourite Ads <span>5</span></a></li>
+                            <li><a href="dashboard-archived-ads.html"><i class="fa fa-file-archive-o"></i> Archived Ads <span>12</span></a></li>
+                            <li><a href="dashboard-pending-ads.html"><i class="fa fa-bolt"></i> Pending Approval<span>23</span></a></li>
+                            <li><a href="#"><i class="fa fa-cog"></i> Logout</a></li>
+                            <li>
+                                <a href="" data-toggle="modal" data-target="#deleteaccount">
+                                    <i class="fa fa-power-off"></i> Delete Account
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -36,41 +62,48 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="widget personal-info">
                             <h3 class="widget-header user">Edit Personal Information</h3>
-                            <form  asp-action="EditName" asp-controller="User" method="post" asp-route-id="@Model.Id" >
+                            <form asp-action="EditName" asp-controller="User" method="post" asp-route-id="@Model.Id">
                                 <!-- First Name -->
                                 <div class="form-group">
-                                    <label asp-for="Name" >First Name and Last Name</label>
-                                    <input type="text" class="form-control"  asp-for="Name">
-                                </div>
-                                <!-- File chooser -->
-                                <div class="form-group choose-file d-inline-flex">
-                                    <i class="fa fa-user text-center px-3"></i>
-                                    <input type="file" class="form-control-file mt-2 pt-1" >
-                                </div>
-                                <!-- Submit button -->
+                                    <label >First Name and Last Name</label>
+                                    <input type="text" class="form-control" asp-for="Name" value="">
                                 <button type="submit" class="btn btn-transparent">Save My Changes</button>
+                                </div>
                             </form>
                         </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Upload an Image</h5>
+                                <form method="post" asp-action="AddImage" asp-controller="User" enctype="multipart/form-data">
+                                    <div class="form-group choose-file d-inline-flex">
+                                        <i class="fa fa-user text-center px-3"></i>
+                                        <input type="file" name="formFile" class="form-control-file mt-2 pt-1">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mt-3">Upload Picture</button>
+                                </form>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <!-- Change Password -->
                         <div class="widget change-password">
                             <h3 class="widget-header user">Edit Password</h3>
-                            <form asp-action="Edit" asp-controller="User" method="post" asp-route-id="@Model.Id">
+                            <form asp-action="EditPassword" asp-controller="User" method="post" asp-route-id="@Model.Id">
                                 <!-- Current Password -->
                                 <div class="form-group">
                                     <label for="current-password">Current Password</label>
-                                    <input type="password" class="form-control" id="current-password">
+                                    <input type="password" class="form-control" asp-for="CurrentPassword">
                                 </div>
                                 <!-- New Password -->
                                 <div class="form-group">
                                     <label for="new-password">New Password</label>
-                                    <input type="password" class="form-control" id="new-password">
+                                    <input type="password" class="form-control" asp-for="Password">
                                 </div>
                                 <!-- Confirm New Password -->
                                 <div class="form-group">
                                     <label for="confirm-password">Confirm New Password</label>
-                                    <input type="password" class="form-control" id="confirm-password">
+                                    <input type="password" class="form-control" asp-for="PasswordVerify">
                                 </div>
                                 <!-- Submit Button -->
                                 <button type="submit" class="btn btn-transparent">Change Password</button>
@@ -81,20 +114,22 @@
                         <!-- Change Email Address -->
                         <div class="widget change-email mb-0">
                             <h3 class="widget-header user">Edit Email Address</h3>
-                            <form asp-action="Edit" asp-controller="User" method="post" asp-route-id="@Model.Id">
-                                <!-- Current Password -->
+                            <form asp-action="EditEmail" asp-controller="User" method="post" asp-route-id="@Model.Id">
                                 <div class="form-group">
-                                    <label for="current-email">Current Email</label>
-                                    <input type="email" class="form-control" id="current-email">
+                                    <label>New email</label>
+                                    <input type="email" class="form-control" asp-for="NewEmail" value="">
+                                    <span asp-validation-for="NewEmail" class="text-danger"></span>
                                 </div>
-                                <!-- New email -->
+                                <!-- Verify New email -->
                                 <div class="form-group">
-                                    <label for="new-email">New email</label>
-                                    <input type="email" class="form-control" id="new-email">
+                                    <label>Verify New email</label>
+                                    <input type="email" class="form-control" asp-for="VerifyNewEmail" value="">
+                                    <span asp-validation-for="VerifyNewEmail" class="text-danger"></span>
                                 </div>
                                 <!-- Submit Button -->
                                 <button class="btn btn-transparent">Change email</button>
                             </form>
+
                         </div>
                     </div>
                 </div>
