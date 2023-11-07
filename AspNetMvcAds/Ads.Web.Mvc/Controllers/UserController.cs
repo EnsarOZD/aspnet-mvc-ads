@@ -1,6 +1,7 @@
 ﻿using Ads.Data;
 using Ads.Data.Entities;
 using Ads.Services.Services;
+using Ads.Services.Services.Abstract;
 using Ads.Web.Mvc.Areas.Admin.Controllers;
 using Ads.Web.Mvc.Areas.Admin.Models;
 using Ads.Web.Mvc.Models;
@@ -106,9 +107,10 @@ namespace Ads.Web.Mvc.Controllers
         public async Task<IActionResult> EditPassword([FromRoute] int id, ProductViewModel userName)
         {
             var user = await _context.UserEntities.FindAsync(id);
-            var userOldPass = user.Password;
+            var userOldPassword = user.Password;
 
-            if (user != null && userName.Password == userName.PasswordVerify && userName.Password == userOldPass)
+
+            if (user != null && userName.Password == userName.PasswordVerify && userOldPassword == userName.CurrentPassword)
             {
                 user.Password = userName.Password;
                 user.Id = userName.Id;
