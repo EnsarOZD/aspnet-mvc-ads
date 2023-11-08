@@ -3,6 +3,7 @@ using Ads.Web.Mvc.Areas.Admin.Models;
 using Bogus.DataSets;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Ads.Web.Mvc.Areas.Admin.Controllers
 {
@@ -16,18 +17,31 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var user = await _context.UserEntities.Select(user => new AdminUserViewModel
+
+            var userId = int.TryParse(User.FindFirstValue(ClaimTypes.PrimarySid), out int result) ? result.ToString() : null;
+            var user = _context.UserEntities.FirstOrDefault(x => x.Id.ToString() == userId);
+            if (user is not null)
             {
-                Id = user.Id,
-                Name = user.Name,
-                Email = user.Email,
-                Phone = user.Phone,
-                Roles = user.Roles,
-                IsEmailConfirmed = user.IsEmailConfirmed,
-                Address = user.Address,
-                CreatedAt = user.DeletedAt,
-            }).ToListAsync();
-            return View(user);
+                var userImage = _context.UserImageEntities.FirstOrDefault(x => x.UserId == user.Id);
+
+                var imagePath = userImage != null ? userImage.ImagePath : "default_image_path.jpg";
+
+
+                var viewmodel = await _context.UserEntities.Select(user => new AdminUserViewModel
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    Email = user.Email,
+                    Phone = user.Phone,
+                    Roles = user.Roles,
+                    IsEmailConfirmed = user.IsEmailConfirmed,
+                    Address = user.Address,
+                    CreatedAt = user.DeletedAt,
+                    UserImagePath = userImage.ImagePath
+                }).ToListAsync();
+                return View(viewmodel);
+            }
+            return View();
         }
         public IActionResult Delete()
         {
@@ -42,7 +56,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
             TempData["SuccessMessage"] = "User deleted succesfully";
             return RedirectToAction("Index");
         }
-        public async Task DeleteCommentAsync(int userId) 
+        public async Task DeleteCommentAsync(int userId)
         {
             var user = _context.UserEntities.Find(userId);
             if (user != null)
