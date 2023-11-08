@@ -21,30 +21,34 @@ namespace Ads.Web.Mvc.ViewComponents
             if (User.Identity.IsAuthenticated)
             {
                 var claimsPrincipal = User as ClaimsPrincipal;
-                var userId = int.TryParse(claimsPrincipal?.FindFirstValue(ClaimTypes.PrimarySid), out int result) ? result.ToString() : null;
-
-                var user = _db.UserEntities.FirstOrDefault(x => x.Id.ToString() == userId);
-                var userImage = _db.UserImageEntities.FirstOrDefault(x => x.UserId == user.Id);
-
-                var navbarList = new NavbarListViewModel
+                var userIdClaim = claimsPrincipal?.FindFirstValue(ClaimTypes.PrimarySid);
+                if (int.TryParse(userIdClaim, out int userId))
                 {
-                    Id = user.Id,
-                    Categories = _db.CategoryEntities.ToList(),
-                    Pages = _db.PageEntities.ToList(),
-                    Name = user.Name,
-                    UserImagePath = userImage?.ImagePath, // Profil resmi null olabilir
-                };
-                return View(navbarList);
+                    var user = _db.UserEntities.FirstOrDefault(x => x.Id == userId);
+                    if (user != null) // user nesnesi kontrol ediliyor
+                    {
+                        var userImage = _db.UserImageEntities.FirstOrDefault(x => x.UserId == user.Id);
+                        var navbarList = new NavbarListViewModel
+                        {
+                            Id = user.Id,
+                            Categories = _db.CategoryEntities.ToList(),
+                            Pages = _db.PageEntities.ToList(),
+                            Name = user.Name,
+                            UserImagePath = userImage?.ImagePath, // Profil resmi null olabilir
+                        };
+                        return View(navbarList);
+                    }
+                    // user null ise uygun bir işlem yapın veya hata döndürün
+                }
             }
-            else
+
+            // Eğer kullanıcı doğrulanmamışsa veya yukarıdaki if bloğu herhangi bir nedenle geçilmemişse
+            var navbarListFallback = new NavbarListViewModel
             {
-                var navbarList = new NavbarListViewModel
-                {
-                    Categories = _db.CategoryEntities.ToList(),
-                    Pages = _db.PageEntities.ToList(),
-                };
-                return View(navbarList);
-            }
+                Categories = _db.CategoryEntities.ToList(),
+                Pages = _db.PageEntities.ToList(),
+            };
+            return View(navbarListFallback);
         }
     }
 }

@@ -34,6 +34,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<TokenUsageService>();
 builder.Services.AddScoped<ISearchService, SearchService>();
+//builder.Services.AddAuthorization(options => ToDo:yetkilendirmelerde açılacak.
+//{
+//    options.AddPolicy("RequireAdministratorRole",
+//        policy => policy.RequireRole("Admin"));
+//});
 
 // Uygulama inşa edilirken hizmetlerin oluşturulmasını ve veritabanının oluşturulup doldurulmasını sağlayın.
 var app = builder.Build();
