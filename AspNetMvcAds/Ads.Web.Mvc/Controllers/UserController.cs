@@ -24,15 +24,13 @@ namespace Ads.Web.Mvc.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = int.TryParse(User.FindFirstValue(ClaimTypes.PrimarySid), out int result) ? result.ToString() : null;
-            var user = _context.UserEntities.FirstOrDefault(x => x.Id.ToString() == userId);
-
-
+            var user = await _context.UserEntities.FirstOrDefaultAsync(x => x.Id.ToString() == userId);
 
             if (user != null)
             {
-                var userImage = _context.UserImageEntities.FirstOrDefault(x => x.UserId == user.Id);
+                var userImage = await _context.UserImageEntities.FirstOrDefaultAsync(x => x.UserId == user.Id);
 
-                var imagePath = userImage != null ? userImage.ImagePath : "default_image_path.jpg"; // Varsayılan bir resim yolu ekleyin
+                var imagePath = userImage != null ? userImage.ImagePath : "default_image_path.jpg";
 
                 var viewmodel = new ProductViewModel
                 {
