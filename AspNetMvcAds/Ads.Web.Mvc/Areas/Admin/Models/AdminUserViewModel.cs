@@ -1,4 +1,6 @@
-﻿namespace Ads.Web.Mvc.Areas.Admin.Models
+﻿using Ads.Data.Entities;
+
+namespace Ads.Web.Mvc.Areas.Admin.Models
 {
     public class AdminUserViewModel
     {
@@ -10,5 +12,7 @@
         public string Address { get; set; } = string.Empty;
         public bool IsEmailConfirmed { get; set; }
         public string Roles { get; set; } = string.Empty;
+        public string UserImagePath { get; set; }
+
     }
 }
