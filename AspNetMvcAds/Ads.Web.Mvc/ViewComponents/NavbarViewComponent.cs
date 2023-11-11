@@ -1,4 +1,4 @@
-﻿using Ads.Data;
+using Ads.Data;
 using Ads.Web.Mvc.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;

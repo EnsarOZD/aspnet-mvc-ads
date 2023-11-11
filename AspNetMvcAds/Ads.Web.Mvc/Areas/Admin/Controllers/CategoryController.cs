@@ -52,7 +52,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 
                 _context.CategoryEntities.Add(newCategory);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return Redirect("/admin/category");
             }
 
             return View(category);
@@ -100,7 +100,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return Redirect("/admin/category");
             }
 
             return View(category);
@@ -131,7 +131,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 			var category = await _context.CategoryEntities.FindAsync(id);
 			_context.CategoryEntities.Remove(category);
 			await _context.SaveChangesAsync();
-			return RedirectToAction("Index");
+            return Redirect("/admin/category");
 			
 		}
 		private bool CategoryExists(int id)

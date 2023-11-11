@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Globalization;
+using Ads.Web.Mvc.Areas.Admin.Controllers;
 
 namespace Ads.Data
 {
@@ -24,6 +25,7 @@ namespace Ads.Data
            .RuleFor(u => u.Name, f => f.Name.FirstName())
            .RuleFor(u => u.Address, f => f.Address.FullAddress())
            .RuleFor(u => u.IsEmailConfirmed, f => f.Random.Bool())
+           .RuleFor(u=>u.Roles,f=>f.PickRandom<UserRoles>().ToString())
            .RuleFor(u => u.Phone, f =>
            {
                var phone = f.Phone.PhoneNumber();
