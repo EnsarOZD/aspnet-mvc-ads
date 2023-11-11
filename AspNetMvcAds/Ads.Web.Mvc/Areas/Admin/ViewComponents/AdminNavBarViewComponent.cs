@@ -5,17 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 
-namespace Ads.Web.Mvc.ViewComponents
+namespace Ads.Web.Mvc.Areas.Admin.ViewComponents
 {
-    public class NavbarViewComponent : ViewComponent
+    public class AdminNavBarViewComponent : ViewComponent
     {
         private readonly AppDbContext _db;
-
-        public NavbarViewComponent(AppDbContext db)
+        public AdminNavBarViewComponent(AppDbContext db)
         {
             _db = db;
         }
-
         public ViewViewComponentResult Invoke()
         {
             if (User.Identity.IsAuthenticated)
@@ -32,7 +30,7 @@ namespace Ads.Web.Mvc.ViewComponents
                     Categories = _db.CategoryEntities.ToList(),
                     Pages = _db.PageEntities.ToList(),
                     Name = user.Name,
-                    UserImagePath = userImage?.ImagePath, 
+                    UserImagePath = userImage?.ImagePath,
                 };
                 return View(navbarList);
             }
