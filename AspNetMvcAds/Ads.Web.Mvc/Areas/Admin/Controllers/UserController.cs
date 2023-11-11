@@ -18,15 +18,6 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var userId = int.TryParse(User.FindFirstValue(ClaimTypes.PrimarySid), out int result) ? result.ToString() : null;
-            var user = _context.UserEntities.FirstOrDefault(x => x.Id.ToString() == userId);
-            if (user is not null)
-            {
-                var userImage = _context.UserImageEntities.FirstOrDefault(x => x.UserId == user.Id);
-
-                var imagePath = userImage != null ? userImage.ImagePath : "default_image_path.jpg";
-
-
                 var viewmodel = await _context.UserEntities.Select(user => new AdminUserViewModel
                 {
                     Id = user.Id,
@@ -37,11 +28,10 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
                     IsEmailConfirmed = user.IsEmailConfirmed,
                     Address = user.Address,
                     CreatedAt = user.DeletedAt,
-                    UserImagePath = userImage.ImagePath
                 }).ToListAsync();
                 return View(viewmodel);
-            }
-            return View();
+            
+          
         }
         public IActionResult Delete()
         {
