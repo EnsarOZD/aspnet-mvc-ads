@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ads.Web.Mvc.Areas.Admin.Controllers
 {
+	  [Area("Admin")]
 
     public class AdvertCommentController : Controller
     {
@@ -15,7 +16,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
             _context = context;
         }
 
-        [Area("Admin")]
+
         public async Task<IActionResult> Index()
         {
             var comments = await _context.AdvertCommentEntities.Select(comment => new AdvertCommentsViewModel
@@ -27,16 +28,14 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
                 UpdatedAt = comment.UpdatedAt,
                 DeletedAt = comment.DeletedAt,
             }).ToListAsync();
+
             return View(comments);
         }
-
-        [Area("Admin")]
         public IActionResult Delete()
         {
 
             return View();
         }
-        [Area("Admin")]
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
@@ -52,7 +51,6 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
                 _context.AdvertCommentEntities.Remove(comment);
                 await _context.SaveChangesAsync();
             }
-
 
         }
 		[Area("Admin")]
@@ -97,7 +95,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 
 				comment.Comment = model.Comment;
 				comment.IsActive = model.IsActive;
-				comment.UpdatedAt = DateTime.UtcNow; // Güncelleme tarihi olarak şu anki UTC zamanı ayarlayın
+				comment.UpdatedAt = DateTime.UtcNow; 
 
 				try
 				{
@@ -120,7 +118,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			// Model doğrulanamazsa, düzenleme sayfasına geri dön
+			
 			return View(model);
 		}
 

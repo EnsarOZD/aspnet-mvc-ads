@@ -1,4 +1,4 @@
-﻿@model Ads.Web.Mvc.Areas.Admin.Models.AdminUserViewModel
+﻿@* @model Ads.Web.Mvc.Areas.Admin.Models.AdminUserViewModel *@
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,7 +34,8 @@
 
 			<!-- Main Content -->
 			<div id="content">
-				@await Html.PartialAsync("_TopbarPartial")
+				@* @await Html.PartialAsync("_TopbarPartial") *@
+				@await Component.InvokeAsync("AdminNavBar")
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 

@@ -20,6 +20,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         {
            
             var adverts = await _context.AdvertEntities
+          
                 .Select(advert => new AdvertViewModel
             {
                 Id = advert.Id,
@@ -29,7 +30,10 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
                 Title = advert.Title,
                 UserId = advert.UserId,
                 ImagePath= _context.AdvertImageEntities.First().ImagePath,
+               
                 }).ToListAsync();
+
+
             return View(adverts);
         }
 
