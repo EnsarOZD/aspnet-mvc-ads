@@ -7,79 +7,80 @@ namespace Ads.Services.Services.Concrete
 {
     public class FileService : IFileService
     {
-        private readonly string _rootPath;
-
-        public FileService(IConfiguration configuration)
-        {
-            Configuration = configuration;
-            _rootPath = Directory.GetCurrentDirectory(); // wwwroot içindeki dosyaları almak için mevcut çalışma dizini kullanıyoruz.
-        }
-
-        private IConfiguration Configuration { get; }
-
-        public async Task DeleteAsync(string fileName)
-        {
-            await Task.Run(() =>
-            {
-                var uploadFolder = GetUploadFolder();
-                var fullFilePath = Path.Combine(uploadFolder, fileName);
-                if (File.Exists(fullFilePath))
-                {
-                    File.Delete(fullFilePath);
-                }
-            });
-        }
-
-        public async Task<FileResponse?> DownloadFileAsync(string fileName)
-        {
-            var uploadFolder = GetUploadFolder();
-            var fullFilePath = Path.Combine(uploadFolder, fileName);
-            if (!File.Exists(fullFilePath))
-            {
-                return null;
-            }
-            var provider = new FileExtensionContentTypeProvider();
-            if (!provider.TryGetContentType(fullFilePath, out var contentType))
-            {
-                contentType = "application/octet-stream";
-            }
-
-            return new FileResponse
-            {
-                FileName = fileName,
-                ContentType = contentType,
-                FileContent = await File.ReadAllBytesAsync(fullFilePath)
-            };
-        }
+        private readonly string _uploadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
 
         public List<string> GetFiles()
         {
-            var uploadFolder = GetUploadFolder();
-            var files = Directory.GetFiles(uploadFolder);
-            return files.Select(f => Path.GetFileName(f)).ToList();
+            return Directory.GetFiles(_uploadDirectory).ToList();
         }
 
         public async Task UploadFileAsync(IFormFile formFile)
         {
-            var uploadFolder = GetUploadFolder();
-            var fullFilePath = Path.Combine(uploadFolder, formFile.FileName);
-            using var fileStream = new FileStream(fullFilePath, FileMode.Create);
-            await formFile.CopyToAsync(fileStream);
+            if (formFile == null || formFile.Length == 0)
+            {
+                throw new ArgumentNullException(nameof(formFile), "File is empty or null");
+            }
+
+            var filePath = Path.Combine(_uploadDirectory, formFile.FileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await formFile.CopyToAsync(stream);
+            }
         }
 
-        private string GetUploadFolder()
+        public async Task<FileResponse?> DownloadFileAsync(string fileName)
         {
-            var localUploadFolder = Configuration.GetValue<string>("FileUploadLocation");
-            if (string.IsNullOrWhiteSpace(localUploadFolder))
+            var filePath = Path.Combine(_uploadDirectory, fileName);
+
+            if (!File.Exists(filePath))
             {
-                throw new InvalidOperationException("FileUploadLocation is not configured.");
+                return null;
             }
-            var fullPath = Path.Combine(_rootPath, "wwwroot", localUploadFolder);
-            if (!Directory.Exists(fullPath))
+
+            var fileBytes = await File.ReadAllBytesAsync(filePath);
+
+            return new FileResponse
             {
-                Directory.CreateDirectory(fullPath);
-            }
-            return fullPath;
+                FileName = fileName,
+                ContentType = GetContentType(filePath),
+                FileContent = fileBytes
+            };
         }
+
+        public async Task DeleteAsync(string fileName)
+        {
+            var filePath = Path.Combine(_uploadDirectory, fileName);
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+        }
+
+        private string GetContentType(string path)
+        {
+            var types = GetMimeTypes();
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+            return types[ext];
+        }
+
+        private Dictionary<string, string> GetMimeTypes()
+        {
+            return new Dictionary<string, string>
+        {
+            {".txt", "text/plain"},
+            {".pdf", "application/pdf"},
+            {".doc", "application/vnd.ms-word"},
+            {".docx", "application/vnd.ms-word"},
+            {".png", "image/png"},
+            {".jpg", "image/jpeg"},
+            {".jpeg", "image/jpeg"},
+            {".gif", "image/gif"},
+            {".csv", "text/csv"}
+            // Diğer dosya türlerini ekleyebilirsiniz
+        };
+        }
+
     }
 }

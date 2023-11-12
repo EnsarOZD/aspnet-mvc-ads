@@ -121,23 +121,31 @@
                                                 <td class="product-category"><span class="categories">@category.Name</span></td>
                                                 <td class="action" data-title="Action">
                                                     <div class="">
-
                                                         <ul class="list-inline justify-content-center">
                                                             <li class="list-inline-item">
-                                                                <a data-toggle="tooltip" data-placement="top" title="" class="view" href="category.html" data-original-title="view">
+                                                                <a data-toggle="tooltip" data-placement="top" title="" class="view" asp-controller="User" asp-action="AdvertDetail" asp-route-id="@item.AdvertId" data-original-title="View">
                                                                     <i class="fa fa-eye"></i>
                                                                 </a>
                                                             </li>
                                                             <li class="list-inline-item">
-                                                                <a class="edit" data-toggle="tooltip" data-placement="top" title="" href="" data-original-title="Edit">
+                                                                <form asp-controller="User" asp-action="Delete" method="post" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                                                    <input type="hidden" name="id" value="@item.AdvertId" />
+                                                                    <button type="submit">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </li>
+
+
+                                                            <li class="list-inline-item">
+                                                                <a data-toggle="tooltip" data-placement="top" title="" class="edit"
+                                                                   asp-controller="User" asp-action="EditAdvert" asp-route-id="@item.AdvertId" data-original-title="Edit">
+
                                                                     <i class="fa fa-pencil"></i>
                                                                 </a>
                                                             </li>
-                                                            <li class="list-inline-item">
-                                                                <a class="delete" data-toggle="tooltip" data-placement="top" title="" href="" data-original-title="Delete">
-                                                                    <i class="fa fa-trash"></i>
-                                                                </a>
-                                                            </li>
+
+
                                                         </ul>
                                                     </div>
                                                 </td>

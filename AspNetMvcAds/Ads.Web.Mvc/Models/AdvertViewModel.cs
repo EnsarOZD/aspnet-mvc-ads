@@ -1,4 +1,6 @@
-﻿namespace Ads.Web.Mvc.Models
+﻿using Ads.Data.Entities;
+
+namespace Ads.Web.Mvc.Models
 {
     public class AdvertViewModel
     {
@@ -9,8 +11,11 @@
         public int? CategoryId { get; set; }
         public string? CategoryName { get; set; }
         public string ImagePath { get; set; }
-		public List<int> CategoryIds { get; set; } = new List<int>();
+        public decimal Price { get; set; }
+        public string AdFeature { get; set; } = string.Empty;
+        public string PaymentMethod { get; set; } = string.Empty;
+        public List<int> CategoryIds { get; set; } = new List<int>();
 		public List<string> CategoryNames { get; set; } = new List<string>();
 
-	}
+    }
 }
