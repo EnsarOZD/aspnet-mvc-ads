@@ -35,15 +35,19 @@ builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<TokenUsageService>();
 builder.Services.AddScoped<ISearchService, SearchService>();
 
-//builder.Services.AddAuthorization(options => ToDo:yetkilendirmelerde açılacak.
-//{
-//    options.AddPolicy("RequireAdministratorRole",
-//        policy => policy.RequireRole("Admin"));
-//});
+builder.Services.AddAuthorization(options => //TODO:yetkilendirmelerde açılacak.
+{
+    options.AddPolicy("RequireAdministratorRole",
+        policy => policy.RequireRole("Admin"));
+    options.AddPolicy("RequireModeratorRole",
+        policy => policy.RequireRole("Moderator"));
+    options.AddPolicy("RequireModeratorAndAdminRole",
+        policy => policy.RequireRole("Moderator","Admin"));
+});
 
-// Uygulama inşa edilirken hizmetlerin oluşturulmasını ve veritabanının oluşturulup doldurulmasını sağlayın.
+
 var app = builder.Build();
-
+ 
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;

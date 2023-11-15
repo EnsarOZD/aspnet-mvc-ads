@@ -1,6 +1,7 @@
 ﻿using Ads.Data;
 using Ads.Web.Mvc.Areas.Admin.Models;
 using Bogus.DataSets;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -8,6 +9,8 @@ using System.Security.Claims;
 namespace Ads.Web.Mvc.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Policy = "RequireAdministratorRole")]
+
     public class UserController : Controller
     {
         private readonly AppDbContext _context;

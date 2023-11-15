@@ -1,6 +1,7 @@
 ﻿using Ads.Data;
 using Ads.Web.Mvc.Areas.Admin.Models;
 using Ads.Web.Mvc.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -8,6 +9,7 @@ using System.Security.Claims;
 namespace Ads.Web.Mvc.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Policy = "RequireModeratorAndAdminRole")]
     public class HomeController : Controller
     {
         private readonly AppDbContext _context;
