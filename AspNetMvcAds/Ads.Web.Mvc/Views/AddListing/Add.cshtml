@@ -41,17 +41,7 @@
                     </div>
                     <div class="col-lg-6">
                         <h6 class="font-weight-bold pt-4 pb-1">Select Ad Category:</h6>
-                        @*     <select asp-for="CategoryId" class="w-100">
-                        <option value="0">Select category</option>
-                        @if (ViewData["Categories"] != null)
-                        {
-                        foreach (var category in (SelectList)ViewData["Categories"])
-                        {
-                        <option value="@category.Value">@category.Text</option>
-                        }
-                        }
-
-                        </select> *@
+                        
                         <select asp-for="CategoryId" class="w-100">
                             <option value="0">Select category</option>
                             @if (ViewData["Categories"] != null)

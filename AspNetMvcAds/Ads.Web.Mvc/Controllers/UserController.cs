@@ -7,8 +7,10 @@ using Ads.Web.Mvc.Areas.Admin.Models;
 using Ads.Web.Mvc.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using AdvertViewModel = Ads.Web.Mvc.Models.AdvertViewModel;
 
 namespace Ads.Web.Mvc.Controllers
 {
@@ -29,14 +31,18 @@ namespace Ads.Web.Mvc.Controllers
             if (user != null)
             {
                 var userImage = await _context.UserImageEntities.FirstOrDefaultAsync(x => x.UserId == user.Id);
+                var userAdverts = await _context.AdvertEntities
+     .Where(ai => ai.UserId.ToString() == userId)
+     .ToListAsync();
 
                 var imagePath = userImage != null ? userImage.ImagePath : "default_image_path.jpg";
-
                 var viewmodel = new ProductViewModel
                 {
                     Id = user.Id,
                     Name = user.Name,
                     ImagePath = imagePath,
+
+
                     AdvertEntities = _context.AdvertEntities
                         .Where(a => a.UserId == user.Id)
                         .ToList(),
@@ -53,6 +59,40 @@ namespace Ads.Web.Mvc.Controllers
                 return View(viewmodel);
             }
             return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> AdvertDetail(int id)
+        {
+            var userId = int.TryParse(User.FindFirstValue(ClaimTypes.PrimarySid), out int result) ? result.ToString() : null;
+            var userAdverts = await _context.AdvertEntities
+    .Where(ai => ai.UserId.ToString() == userId)
+    .ToListAsync();
+            var advert = _context.AdvertEntities.Find(id);
+            var advertImage = _context.AdvertImageEntities.Find(id);
+            var categoryAdvert = await _context.CategoryAdvertEntities
+                    .Include(ca => ca.Category)
+                    .FirstOrDefaultAsync(ca => ca.AdvertId == id);
+            var categoryName = await _context.CategoryEntities.FindAsync(categoryAdvert.Id);
+            if (advert == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new AdvertViewModel
+            {
+                Id = advert.Id,
+                Title = advert.Title,
+                Description = advert.Description,
+                CreatedAt = advert.CreatedAt,
+                ImagePath = advertImage.ImagePath,
+                AdFeature = advert.AdFeature,
+                PaymentMethod = advert.PaymentMethod,
+                Price = advert.Price,
+                CategoryName = categoryAdvert.Category.Name
+
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -181,10 +221,101 @@ namespace Ads.Web.Mvc.Controllers
                 };
                 _context.UserImageEntities.Add(userImage);
                 await _context.SaveChangesAsync();
-                TempData["UploadMessage"] = "Uploaded Successfully";
+                TempData["UploadMessage"] = "Ad Listed Successfully";
             }
             return RedirectToAction("Edit", "User", new { id = id });
         }
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await DeleteCommentAsync(id);
+            TempData["SuccessMessage"] = "Comment deleted succesfully";
+            return RedirectToAction("Index");
+        }
+        public async Task DeleteCommentAsync(int id)
+        {
+            var userId = int.TryParse(User.FindFirstValue(ClaimTypes.PrimarySid), out int result) ? result.ToString() : null;
+            var userAdverts = await _context.AdvertEntities
+    .Where(ai => ai.UserId.ToString() == userId)
+    .ToListAsync();
+            var advert = _context.AdvertEntities.Find(id);
+            if (advert != null)
+            {
+                _context.AdvertEntities.Remove(advert);
+                await _context.SaveChangesAsync();
+            }
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditAdvert(int id)
+        {
+            var userId = int.TryParse(User.FindFirstValue(ClaimTypes.PrimarySid), out int result) ? result.ToString() : null;
+            var userAdverts = await _context.AdvertEntities
+    .Where(ai => ai.UserId.ToString() == userId)
+    .ToListAsync();
+            var advert = _context.AdvertEntities.Find(id);
+            var categoryAdvertId = await _context.CategoryAdvertEntities.FirstOrDefaultAsync(ca => ca.AdvertId == id);
+            var categoryName = await _context.CategoryEntities.FindAsync(categoryAdvertId.Id);
+            var categories = _context.CategoryEntities.ToList();
+            ViewData["Categories"] = new SelectList(categories, nameof(CategoryEntity.Id), nameof(CategoryEntity.Name));
+
+
+
+            var viewModel = new AdvertViewModel
+            {
+                Id = advert.Id,
+                Title = advert.Title,
+                Description = advert.Description,
+                CreatedAt = advert.CreatedAt,
+                AdFeature = advert.AdFeature,
+                Price = advert.Price,
+                CategoryName = categoryName.Name,
+                PaymentMethod = advert.PaymentMethod,
+                CategoryId = categoryAdvertId?.CategoryId
+
+
+            };
+
+            return View(viewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditAdvert(int id, AdvertViewModel advertViewModel, [FromForm] IFormFile formFile)
+        {
+            var advert = await _context.AdvertEntities.FindAsync(id);
+
+
+            if (advert != null)
+            {
+                advert.Id = advertViewModel.Id;
+                advert.Title = advertViewModel.Title;
+                advert.Description = advertViewModel.Description;
+                advert.Price = advertViewModel.Price;
+                advert.AdFeature = advertViewModel.AdFeature;
+                advert.PaymentMethod = advertViewModel.PaymentMethod;
+
+                var categoryAdvertId = await _context.CategoryAdvertEntities.FirstOrDefaultAsync(ca => ca.AdvertId == id);
+                if (categoryAdvertId != null)
+                {
+                    categoryAdvertId.CategoryId = advertViewModel.CategoryId ?? 0;
+
+                }
+                ViewBag.SuccessMessage = "Your Advert Edited Successfully";
+            }
+            await _context.SaveChangesAsync();
+            var viewmodel = new AdvertViewModel
+            {
+                Id = id,
+                Title = advert.Title,
+                Description = advert.Description,
+                Price = advert.Price,
+                AdFeature = advert.AdFeature,
+                PaymentMethod = advert.PaymentMethod,
+            };
+            return View(viewmodel);
+
+        }
     }
 }
+
+
 

@@ -1,0 +1,31 @@
+﻿@model Ads.Web.Mvc.Models.AdvertViewModel
+
+<div class="container mt-5">
+    <h2>Advert Details</h2>
+    <ul class="list-group">
+        <li class="list-group-item"><strong>Title:</strong> @Model.Title</li>
+        <li class="list-group-item"><strong>Category:</strong> @Model.CategoryName</li>
+        <li class="list-group-item"><strong>Description:</strong> @Model.Description</li>
+        <li class="list-group-item"><strong>Created At:</strong> @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</li>
+        <li class="list-group-item"><strong>PaymentMethod :</strong> @Model.PaymentMethod</li>
+        <li class="list-group-item"><strong>Price :</strong> @Model.Price $</li>
+        <li class="list-group-item"><strong>AdFeature :</strong> @Model.AdFeature</li>
+
+
+        @if (!string.IsNullOrEmpty(Model.CategoryName))
+        {
+            <li class="list-group-item"><strong>Category:</strong> @Model.CategoryName</li>
+        }
+        @{
+            var imagePath = Url.Content(Model.ImagePath);
+        }
+
+        <li class="list-group-item d-flex justify-content-center">
+            <img src="@imagePath" alt="Advert Image" class="img-fluid " style="max-width: 400px; max-height: 400px;" />
+        </li>
+
+    </ul>
+
+    <a asp-action="Index" class="btn btn-primary mt-3">Back to Index</a>
+</div>
+
