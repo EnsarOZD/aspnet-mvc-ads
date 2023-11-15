@@ -68,7 +68,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 			TempData["SuccesMessage"] = deleteResult.Success ? "Advert deleted successfully" : deleteResult.ErrorMessage;
 			if (deleteResult.Success)
 			{
-				TempData["SuccessMessage"] = "İlan başarıyla silindi";
+				TempData["SuccessMessage"] = "Advert deleted successfully";
 			}
 			else
 			{
