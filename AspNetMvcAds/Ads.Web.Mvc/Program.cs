@@ -30,10 +30,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
         options.AccessDeniedPath = "/access-denied";
     });
-
+builder.Services.AddLogging();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<TokenUsageService>();
 builder.Services.AddScoped<ISearchService, SearchService>();
+
 //builder.Services.AddAuthorization(options => ToDo:yetkilendirmelerde açılacak.
 //{
 //    options.AddPolicy("RequireAdministratorRole",
@@ -42,6 +43,7 @@ builder.Services.AddScoped<ISearchService, SearchService>();
 
 // Uygulama inşa edilirken hizmetlerin oluşturulmasını ve veritabanının oluşturulup doldurulmasını sağlayın.
 var app = builder.Build();
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -66,6 +68,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseStaticFiles();
 //app.UseEndpoints(endpoints =>
 //{
 //    endpoints.MapControllerRoute(

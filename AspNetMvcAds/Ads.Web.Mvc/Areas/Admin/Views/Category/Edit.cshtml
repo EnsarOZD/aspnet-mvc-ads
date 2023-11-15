@@ -1,1 +1,25 @@
-﻿
+﻿@model Ads.Web.Mvc.Areas.Admin.Models.AdminCategoryViewModel
+
+<h2>Edit Category</h2>
+
+<form asp-action="Edit" method="post">
+	<input type="hidden" asp-for="Id" />
+
+	<div class="form-group">
+		<label asp-for="Name" class="control-label"></label>
+		<input asp-for="Name" class="form-control" />
+		<span asp-validation-for="Name" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Description" class="control-label"></label>
+		<textarea asp-for="Description" class="form-control"></textarea>
+		<span asp-validation-for="Description" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<input type="submit" value="Save" class="btn btn-primary" />
+	</div>
+</form>
+
+<a asp-action="Index">Back to List</a>

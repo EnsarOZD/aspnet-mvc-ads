@@ -6,16 +6,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Ads.Data.Services.Concrete
 {
     public class DataRepository<T> : IRepository<T> where T : class
     {
         private AppDbContext _dbContext;
+        private readonly ILogger<AppDbContext> _logger;
 
-        public DataRepository(AppDbContext dbContext) 
+		public DataRepository(AppDbContext dbContext,ILogger<AppDbContext> logger) 
         {
-            _dbContext = dbContext;       
+            _dbContext = dbContext;
+            _logger = logger;
         }
 
         public async Task<OperationResult<T>> Add(T entity)
@@ -73,8 +76,12 @@ namespace Ads.Data.Services.Concrete
             }
             catch (Exception ex)
             {
-
-                return OperationResult<T>.FailureResult("An error occurred while updating the entity");
+				_logger.LogError(ex, "Bir hata oluştu: {Message}", ex.Message);
+				if (ex.InnerException != null)
+				{
+					_logger.LogError("İç hata: {InnerException}", ex.InnerException);
+				}
+				return OperationResult<T>.FailureResult($"An error occurred while updating the entity:{ex.Message}");
             }
            
         }
