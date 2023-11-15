@@ -75,6 +75,7 @@ namespace Ads.Web.Mvc.Controllers
                     Phone = model.Phone,
                     Roles = "User",
                     IsEmailConfirmed = false,
+                    CreatedAt = DateTimeOffset.Now,
                     EmailConfirmationToken = Guid.NewGuid().ToString("n").Substring(0, 6).ToUpper()
                 };
 
