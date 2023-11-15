@@ -50,7 +50,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         public IActionResult Delete(int id)
         {
             _advertImageService.DeleteImage(id);
-            TempData["SuccessMessage"] = "Image deleted succesfully";
+            TempData["SuccessMessage"] = "Image deleted successfully";
 
             return RedirectToAction(nameof(Index));
         }

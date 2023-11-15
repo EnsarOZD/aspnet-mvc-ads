@@ -8,7 +8,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Models
         public int AdvertId { get; set; }
         public string AdvertTitle { get; set; } = string.Empty;
         public long? ImageSize { get; set; }
-        public string ImagePath { get; set; } = string.Empty;
+        public string? ImagePath { get; set; } = string.Empty;
         public IEnumerable<AdvertImageEntity> AdvertImages;
     }
 }

@@ -70,14 +70,15 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 				CreatedAt = comment.CreatedAt,
 				UpdatedAt = comment.UpdatedAt,
 				DeletedAt = comment.DeletedAt,
+				
 			};
 
 			return View(model);
 		}
 
-		[Area("Admin")]
+		//[Area("Admin")]
 		[HttpPost]
-		[ValidateAntiForgeryToken] // CSRF koruması için eklendi
+		//[ValidateAntiForgeryToken] // CSRF koruması için eklendi
 		public async Task<IActionResult> Edit(int id, AdvertCommentsViewModel model)
 		{
 			if (id != model.Id)
@@ -118,7 +119,12 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			
+			var errors=ModelState.Values.SelectMany(v=>v.Errors)
+										.Select(e=>e.ErrorMessage)
+										.ToList();
+			ViewBag.Errors = errors;
+
+
 			return View(model);
 		}
 
