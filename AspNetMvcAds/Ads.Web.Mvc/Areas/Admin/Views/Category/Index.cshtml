@@ -16,7 +16,7 @@
             <th> Description</th>
             <th> CreatedAt</th>
 	        <th>UpdatedAt</th>
-	       
+	        <th>Actions</th>
         </tr>
         
         @foreach (var category in Model)
@@ -26,14 +26,13 @@
                 <td>@category.Description</td>
                 <td>@category.CreatedAt</td>
                 <td>@category.UpdatedAt</td>
-	            <td>
+	            <td class="d-flex">
 
 		            <form asp-controller="Category" asp-area="Admin" asp-action="Delete" method="post">
 			            <input type="hidden" name="id" value="@category.Id"/>
 			            <button type="submit" class="d-block btn alert-danger btn-sm font-weight-bold  border-0 rounded" onclick="return confirm('Are you sure you want to delete this Category?');">Delete Category</button>
 		            </form>
-	            </td>
-	            <td>
+	        
 		            <a asp-action="Edit" asp-area="Admin" asp-route-id="@category.Id" asp-controller="Category" class="d-block btn alert-info btn-sm font-weight-bold  border-0 rounded">Edit Category</a>
 
 	            </td>

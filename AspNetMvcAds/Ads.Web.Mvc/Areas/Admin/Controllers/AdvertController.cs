@@ -141,6 +141,10 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 
 
 				advert.ImagePath = $"/uploads/{imageName}";
+				if (uploadedImage != null)
+				{
+					ModelState.Remove("File");
+				}
 
 			}
 			advert.Title = viewModel.Title;
@@ -152,11 +156,13 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 			var updateResult = await _advertReposityory.Update(advert);
 			if (updateResult.Success)
 			{
-				// İlişkili AdvertImageEntity'leri güncelle
-				var advertImage = _advertImageService.GetImageById(advert.Id);
-				advertImage.ImagePath = advert.ImagePath;
-				_advertImageService.UpdateImage(advertImage);
-
+				if (uploadedImage!=null)
+				{
+					var advertImage = _advertImageService.GetImageById(advert.Id);
+					advertImage.ImagePath = advert.ImagePath;
+					_advertImageService.UpdateImage(advertImage);
+				}
+				
 				TempData["SuccessMessage"] = "Advert and images updated successfully";
 			}
 			else

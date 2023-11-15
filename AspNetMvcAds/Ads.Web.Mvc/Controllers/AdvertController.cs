@@ -94,6 +94,8 @@ namespace Ads.Web.Mvc.Controllers
 					Id= userResult.Data.Id,
 					Name=userResult.Data.Name,
 					CreatedAt=userResult.Data.CreatedAt,
+					NewEmail = userResult.Data.Email,
+					Phone = userResult.Data.Phone
 				},
 				Price=advertEntiy.Price,
 				AdvertComments=comments
