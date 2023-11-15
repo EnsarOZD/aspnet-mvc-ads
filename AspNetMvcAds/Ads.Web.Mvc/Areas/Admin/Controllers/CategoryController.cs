@@ -59,53 +59,71 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var category = await _context.CategoryEntities.FindAsync(id);
-
+	        var category = await _context.CategoryEntities.FindAsync(id);
+			
             if (category == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            var adminCategoryViewModel = new AdminCategoryViewModel()
+            {
+                Id = category.Id,
+                Name = category.Name,
+                Description = category.Description,
+                CreatedAt = category.CreatedAt,
+                UpdatedAt = category.UpdatedAt
+                
+            };
+
+            return View(adminCategoryViewModel);
 
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Models.AdminCategoryViewModel category)
-        {
-            if (id != category.Id)
-            {
-                return NotFound();
-            }
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CategoryExists(category.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return Redirect("/admin/category");
-            }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Edit(int id, AdminCategoryViewModel adminCategoryViewModel)
+		{
+			if (id != adminCategoryViewModel.Id)
+			{
+				return NotFound();
+			}
 
-            return View(category);
-        }
-        public async Task<IActionResult> Delete(int? id)
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					var category = await _context.CategoryEntities.FindAsync(id);
+
+					if (category == null)
+					{
+						return NotFound();
+					}
+
+					category.Name = adminCategoryViewModel.Name;
+					category.Description = adminCategoryViewModel.Description;
+					category.UpdatedAt = DateTime.Now;
+
+					_context.Update(category);
+					await _context.SaveChangesAsync();
+
+					return RedirectToAction("Index", "Category", new { area = "Admin" });
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!CategoryExists(id))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
+			}
+
+			return View(adminCategoryViewModel);
+		}
+		public async Task<IActionResult> Delete(int? id)
 		{
 			if (id == null)
 			{

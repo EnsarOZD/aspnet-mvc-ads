@@ -92,9 +92,10 @@ namespace Ads.Web.Mvc.Controllers
             {
                 user.Name = userName.Name;
                 user.Id = userName.Id;
+                user.Address = userName.Address;
 
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Your name has changed successfully";
+                TempData["SuccessMessage"] = "Your personnel information has changed successfully";
 
             }
 

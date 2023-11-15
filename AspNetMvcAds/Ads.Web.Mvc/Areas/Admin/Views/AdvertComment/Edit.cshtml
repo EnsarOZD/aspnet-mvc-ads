@@ -4,6 +4,7 @@
     ViewData["Title"] = "Edit Comment";
 }
 
+
 <h2>Edit Comment</h2>
 
 <form asp-action="Edit">
@@ -27,7 +28,15 @@
         <a asp-action="Index" class="btn btn-secondary">Cancel</a>
     </div>
 </form>
-
+@if (ViewBag.Errors != null && ViewBag.Errors.Count > 0)
+{
+    <ul>
+        @foreach (var error in ViewBag.Errors)
+        {
+            <li>@error</li>
+        }
+    </ul>
+}
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

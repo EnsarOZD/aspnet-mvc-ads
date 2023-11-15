@@ -83,7 +83,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
             {
                 user.Name = userViewModel.Name;
                 user.Email = userViewModel.Email;
-                user.Address = userViewModel.Address;
+                user.Address = userViewModel.Address??null;
                 user.IsEmailConfirmed = userViewModel.IsEmailConfirmed;
                 user.Phone = userViewModel.Phone;
                 user.Roles = roles.ToString();

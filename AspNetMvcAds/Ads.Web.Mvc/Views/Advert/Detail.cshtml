@@ -154,6 +154,10 @@ else
 							<h4>@Model.User.Name</h4>
 							<p class="member-time">Member Since @Model.User.CreatedAt.ToString("dd-MM-yyyy")</p>
 						</div>
+						<div class="widget user contact-center">
+							<p class="E-mail"><b>E-mail: </b> @Model.User.NewEmail</p>
+							<p class="fa-blender-phone"><b>Phone Number: </b> @Model.User.Phone</p>
+						</div>
 						<!-- Map Widget -->
 						<div class="widget map">
 							<div class="map">

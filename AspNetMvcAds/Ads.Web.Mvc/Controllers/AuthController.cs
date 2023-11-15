@@ -183,6 +183,10 @@ namespace Ads.Web.Mvc.Controllers
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
                 IsPersistent = login.RememberMe
             };
+            if (login.RememberMe)
+            {
+	            authProperties.ExpiresUtc=DateTimeOffset.UtcNow.AddMinutes(10);
+            }
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 claimsPrincipal,

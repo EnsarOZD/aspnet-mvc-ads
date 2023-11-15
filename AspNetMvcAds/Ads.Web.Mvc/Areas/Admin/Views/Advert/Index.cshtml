@@ -1,47 +1,61 @@
 ﻿@model List<Ads.Web.Mvc.Areas.Admin.Models.AdvertViewModel>
 @{
+    ViewData["Title"] = "Advertisement Details";
     var successMessage = TempData["SuccessMessage"] as string;
 }
 
 @if (!string.IsNullOrEmpty(successMessage))
 {
-    <div class="alert alert-success">@successMessage</div>
+    <h5 class="alert alert-success d-flex justify-content-center">@successMessage</h5>
 }
 
 <h1>Advertisement Details</h1>
-   <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="post" asp-area="Admin" asp-action="Index" asp-controller="AdvertSearch">
-        <div class="input-group">
-            <input type="text" class="form-control bg-light border-0 small" name="searchContent" placeholder="Search for advert"
-                   aria-label="Search" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-primary ml-4" type="submit" >
-                    <i class="fas fa-search fa-sm" ></i>
-                </button>
-            </div>
-        </div>
-    </form>
 
-<div class="row">
-    @foreach (var advert in Model)
-    {
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <img src="@advert.ImagePath" alt="Advert Image" class="card-img-top">
-                <div class="card-body">
-                    <h5 class="card-title">@advert.Title</h5>
-                    <p class="card-text">@advert.Description</p>
-                    <p class="card-text"><strong>Price:</strong> @advert.Price €</p>
-                    <p class="card-text"><strong>Click Count:</strong> @advert.AdvertClickCount</p>
-                    <p class="card-text"><strong>User ID:</strong> @advert.UserId</p>
-                </div>
-                <div class="card-footer">
-                    <form asp-controller="Advert" asp-area="Admin" asp-action="Delete" method="post">
-                        <input type="hidden" name="id" value="@advert.Id" />
-                        <button type="submit" class="btn btn-danger btn-block" onclick="return confirm('Are you sure you want to delete this Ad Listing?');">Delete this advert</button>
-                    </form>
-                </div>
-            </div>
+<!-- Topbar Search -->
+<form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="post" asp-area="Admin" asp-action="Index" asp-controller="Advert">
+    <div class="input-group">
+        <input type="text" class="form-control bg-light border-0 small" name="searchContent" placeholder="Search for advert"
+               aria-label="Search" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-primary ml-4" type="submit">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
         </div>
-    }
-</div>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Click Count</th>
+            <th>User ID</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var advert in Model)
+        {
+            <tr>
+                <td><img src="@advert.ImagePath" alt="Advert Image" width="100"></td>
+                <td>@advert.Title</td>
+                <td>@advert.Description</td>
+                <td>@advert.Price €</td>
+                <td>@advert.AdvertClickCount</td>
+                <td>@advert.UserId</td>
+                <td class="d-flex">
+	                <a asp-action="Edit" asp-route-id="@advert.Id" class="btn btn-primary">Edit</a>
+                    <form asp-controller="Advert" asp-area="Admin" asp-action="Delete" method="post">
+	                    <input type="hidden" name="id" value="@advert.Id" />
+	                    <button type="submit" class="btn btn-danger d-block ml-3" onclick="return confirm('Are you sure you want to delete this Ad Listing?');">Delete this advert</button>
+                    </form>
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 

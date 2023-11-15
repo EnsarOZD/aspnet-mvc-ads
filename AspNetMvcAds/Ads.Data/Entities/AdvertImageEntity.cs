@@ -15,7 +15,7 @@ namespace Ads.Data.Entities
         public int Id { get; set; }
 
         [Required, MaxLength(200)]
-        public string ImagePath { get; set; } = string.Empty;
+        public string? ImagePath { get; set; } = string.Empty;
         public int AdvertId { get; set; }
         public int CoverImageInt { get; set; }
 		public long? ImageSize { get; set; }
