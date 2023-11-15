@@ -27,7 +27,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
                     Roles = user.Roles,
                     IsEmailConfirmed = user.IsEmailConfirmed,
                     Address = user.Address,
-                    CreatedAt = user.DeletedAt,
+                    CreatedAt = user.CreatedAt,
                 }).ToListAsync();
                 return View(viewmodel);
             
