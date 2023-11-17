@@ -140,7 +140,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 				
 
 
-				advert.ImagePath = $"/uploads/{imageName}";
+				advert.ImagePath = $"/uploads/{imageName}"; //TODO: Tilde silindi
 				if (uploadedImage != null)
 				{
 					ModelState.Remove("File");

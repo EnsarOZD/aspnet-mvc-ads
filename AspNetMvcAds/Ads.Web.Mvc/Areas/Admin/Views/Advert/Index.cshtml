@@ -42,8 +42,9 @@
 		<tbody>
 			@foreach (var advert in Model)
 			{
+				var advertImagePath = Url.Content(advert.ImagePath);
 				<tr>
-					<td><img src="@advert.ImagePath" alt="Advert Image" width="100"></td>
+					<td><img src="@advertImagePath" alt="Advert Image" width="100"></td>
 					<td>@advert.Title</td>
 					<td>@advert.Description</td>
 					<td>@advert.Price €</td>
@@ -53,7 +54,7 @@
 						<a asp-action="Edit" asp-route-id="@advert.Id" class="d-block btn alert-info btn-sm font-weight-bold  border-0 rounded">Edit</a>
 						<form asp-controller="Advert" asp-area="Admin" asp-action="Delete" method="post">
 							<input type="hidden" name="id" value="@advert.Id" />
-							<button type="submit" class="d-block btn alert-danger btn-sm font-weight-bold  border-0 rounded" onclick="return confirm('Are you sure you want to delete this Ad Listing?');">Delete this advert</button>
+							<button type="submit" class="d-block btn alert-danger btn-sm font-weight-bold  border-0 rounded mx-4" onclick="return confirm('Are you sure you want to delete this Ad Listing?');">Delete this advert</button>
 						</form>
 
 					</td>
