@@ -15,8 +15,8 @@ namespace Ads.Web.Mvc.Areas.Admin.Models
         [Display(Name = "Upload Image")]
         public IFormFile UploadedImage { get; set; }
 
-		public decimal Price { get; set; }
-
+        public decimal Price { get; set; }
+        public List<string> ImagePaths { get; set; }
         public int AdvertClickCount { get; set; }
 
         public int UserId { get; set; }
@@ -24,7 +24,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Models
         public List<AdvertImageEntity>? AdvertImageEntities { get; set; }
         public List<CategoryEntity>? Categories { get; set; }
         public List<CategoryAdvertEntity>? CategoryAdvertEntities { get; set; }
-       
+
 
     }
 }

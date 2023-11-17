@@ -29,7 +29,8 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 		public async Task<IActionResult> Index(string searchContent)
 		{
 			var adverts = await _advertReposityory.GetAll().ToListAsync();
-			var advertViewModels=new List<AdvertViewModel>();
+            var advertImages = _advertImageService.GetAllImages().ToList();
+            var advertViewModels=new List<AdvertViewModel>();
 
 			foreach (var advert in adverts)
 			{
@@ -41,8 +42,11 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 					Price = advert.Price,
 					AdvertClickCount = advert.AdvertClickCount,
 					UserId = advert.UserId,
-					ImagePath = advert.ImagePath
-				};
+                    ImagePaths = advertImages
+                    .Where(img => img.AdvertId == advert.Id)
+                    .Select(img => img.ImagePath)
+                    .ToList(),
+                };
 				advertViewModels.Add(viewModel);
 			}
 
