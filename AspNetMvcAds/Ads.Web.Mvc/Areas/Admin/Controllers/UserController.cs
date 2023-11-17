@@ -1,10 +1,12 @@
 ﻿using Ads.Data;
 using Ads.Web.Mvc.Areas.Admin.Models;
+using Ads.Web.Mvc.Models;
 using Bogus.DataSets;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using X.PagedList;
 
 namespace Ads.Web.Mvc.Areas.Admin.Controllers
 {
@@ -18,10 +20,12 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
 
-                var viewmodel = await _context.UserEntities.Select(user => new AdminUserViewModel
+            int pageSize = 10;
+            var userViewModels = new List<AdminUserViewModel>();
+            var viewmodel = await _context.UserEntities.Select(user => new AdminUserViewModel
                 {
                     Id = user.Id,
                     Name = user.Name,
@@ -32,9 +36,12 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
                     Address = user.Address,
                     CreatedAt = user.CreatedAt,
                 }).ToListAsync();
-                return View(viewmodel);
-            
-          
+            userViewModels.AddRange(viewmodel);
+            int pageIndex = page ?? 1;
+            var pagedUsers = userViewModels.ToPagedList(pageIndex, pageSize);
+            return View(pagedUsers);
+
+
         }
         public IActionResult Delete()
         {
