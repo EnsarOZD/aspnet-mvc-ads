@@ -201,7 +201,7 @@ namespace Ads.Web.Mvc.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        
+        [HttpGet("logout")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -291,8 +291,8 @@ namespace Ads.Web.Mvc.Controllers
             if (request.NewPassword == request.ConfirmNewPassword)
             {
 
-                user.PasswordHash = passwordHash;
-                user.PasswordSalt = passwordSalt;
+                //user.PasswordHash = passwordHash;
+                //user.PasswordSalt = passwordSalt;
                 user.Password = request.NewPassword;
                 user.PasswordResetToken = null;
                 user.ResetTokenExpires = null;

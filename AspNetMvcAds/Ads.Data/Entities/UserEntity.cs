@@ -19,8 +19,8 @@ namespace Ads.Data.Entities
 
         [Required, DataType(DataType.Password), MaxLength(100)]
         public string Password { get; set; } = string.Empty;
-        public byte[] PasswordHash { get; set; } = new byte[32];
-        public byte[] PasswordSalt { get; set; } = new byte[32];
+        //public byte[] PasswordHash { get; set; } = new byte[32];
+        //public byte[] PasswordSalt { get; set; } = new byte[32];
         public DateTimeOffset? ResetTokenExpires { get; set; }
 
         [Required, MaxLength(100)]
