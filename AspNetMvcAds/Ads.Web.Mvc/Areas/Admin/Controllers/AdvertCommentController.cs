@@ -2,6 +2,7 @@
 using Ads.Web.Mvc.Areas.Admin.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList;
 
 namespace Ads.Web.Mvc.Areas.Admin.Controllers
 {
@@ -17,21 +18,28 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
-        {
-            var comments = await _context.AdvertCommentEntities.Select(comment => new AdvertCommentsViewModel
-            {
-                Id = comment.Id,
-                Comment = comment.Comment.Substring(0, 40) + "...",
-                IsActive = comment.IsActive,
-                CreatedAt = comment.CreatedAt,
-                UpdatedAt = comment.UpdatedAt,
-                DeletedAt = comment.DeletedAt,
-            }).ToListAsync();
+		public async Task<IActionResult> Index(int? page)
+		{
+			int pageSize = 10;
+			var comments = await _context.AdvertCommentEntities
+				.Select(comment => new AdvertCommentsViewModel
+				{
+					Id = comment.Id,
+					Comment = comment.Comment.Substring(0, 40) + "...",
+					IsActive = comment.IsActive,
+					CreatedAt = comment.CreatedAt,
+					UpdatedAt = comment.UpdatedAt,
+					DeletedAt = comment.DeletedAt,
+				})
+				.ToListAsync();
 
-            return View(comments);
-        }
-        public IActionResult Delete()
+			int pageIndex = page ?? 1;
+			var paginatedComments = comments.ToPagedList(pageIndex, pageSize);
+
+			return View(paginatedComments);
+		}
+
+		public IActionResult Delete()
         {
 
             return View();
@@ -134,4 +142,41 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
 		}
 
 	}
+    public class PaginatedList<T> : List<T>
+    {
+        public int PageIndex { get; private set; }
+        public int TotalPages { get; private set; }
+
+        public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
+        {
+            PageIndex = pageIndex;
+            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+
+            this.AddRange(items);
+        }
+
+        public bool HasPreviousPage
+        {
+            get
+            {
+                return (PageIndex > 1);
+            }
+        }
+
+        public bool HasNextPage
+        {
+            get
+            {
+                return (PageIndex < TotalPages);
+            }
+        }
+
+        public static PaginatedList<T> Create(List<T> source, int pageIndex, int pageSize)
+        {
+            int count = source.Count;
+            List<T> items = source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            return new PaginatedList<T>(items, count, pageIndex, pageSize);
+        }
+    }
+
 }
