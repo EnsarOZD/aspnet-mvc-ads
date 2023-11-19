@@ -16,29 +16,38 @@
                             <li class="nav-item active">
                                 <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
-                            <li class="nav-item active">
-                                <a class="nav-link" asp-controller="Page" asp-action="about-us">About Us</a>
-                            </li>
-                            <li class="nav-item active">
-                                <a class="nav-link" asp-controller="Page" asp-action="contact-us">Contact Us</a>
+
+                            <li class="nav-item dropdown dropdown-slide">
+                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Pages <span><i class="fa fa-angle-down"></i></span>
+                                </a>
+                                <!-- Dropdown list -->
+                                <div class="dropdown-menu">
+
+                                    @foreach (var pages in Model.Pages)
+                                    {
+                                        <a class="dropdown-item" asp-controller="Page" asp-action="@pages.Slug">@pages.Title</a>
+                                    }
+
+                                </div>
                             </li>
                             <li class="nav-item dropdown dropdown-slide">
                                 <a class="nav-link dropdown-toggle" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Categories <span><i class="fa fa-angle-down"></i></span>
                                 </a>
                                 <!-- Dropdown list -->
-                                <div class=" dropdown-menu">
+                                <div class="dropdown-menu">
 
                                     @foreach (var categories in Model.Categories)
                                     {
-                                        <a class="dropdown-item " asp-controller="Category" asp-action="Index" asp-route-id="@categories.Id">@categories.Name</a>
+                                        <a class="dropdown-item" asp-controller="Category" asp-action="Index" asp-route-id="@categories.Id">@categories.Name</a>
                                     }
 
                                 </div>
                             </li>
                         </ul>
                         <ul class="navbar-nav ml-auto mt-10">
-
+                            
                             @if (!User.Identity.IsAuthenticated)
                             {
                                 <li class="nav-item">
@@ -59,9 +68,9 @@
                         </ul>
                         @if (User.Identity.IsAuthenticated)
                         {
-
+                            
                             var userImagePath = Url.Content(Model.UserImagePath);
-
+                        
                             <ul>
                                 <li class="nav-item dropdown no-arrow">
                                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"

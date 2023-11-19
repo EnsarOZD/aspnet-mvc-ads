@@ -8,7 +8,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Globalization;
 using Ads.Web.Mvc.Areas.Admin.Controllers;
-using Microsoft.EntityFrameworkCore;
 
 namespace Ads.Data
 {
@@ -53,27 +52,9 @@ namespace Ads.Data
 			var users = fakeuser.Generate(100);
 			dbcontext.UserEntities.AddRange(users);
 			dbcontext.SaveChanges();
-            
-                var user = new UserEntity
-                {
-                    Email = "admin@admin.com",
-                    Password = "0123", 
-                    Name = "Siliconmade",
-                    Address = "Siliconmade",
-                    IsEmailConfirmed = true,
-                    Roles = "Admin",
-                    CreatedAt = DateTimeOffset.UtcNow,
-                    UpdatedAt = DateTimeOffset.UtcNow,
-                    DeletedAt = DateTimeOffset.MinValue, 
-                    Phone = "1234567890",
-                    UserImagePath = "~/wwwroot/images/user/baris.jpg" 
-                };
 
-                dbcontext.UserEntities.Add(user);
-                dbcontext.SaveChanges();
-            
 
-            var pageTitles = new string[]
+			var pageTitles = new string[]
 			{
 				"About Us",
 				"Contact Us",
