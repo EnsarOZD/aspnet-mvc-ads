@@ -36,7 +36,6 @@
                 <th>Description</th>
                 <th>Price</th>
                 <th>Click Count</th>
-                <th>User ID</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -58,7 +57,6 @@
                         <td>@advert.Description</td>
                         <td style="width:50px; white-space: nowrap;">@advert.Price €</td>
                         <td>@advert.AdvertClickCount</td>
-                        <td>@advert.UserId</td>
                         <td class="d-flex">
                             <a asp-action="Edit" asp-route-id="@advert.Id" class="d-block btn alert-info btn-sm font-weight-bold border-0 rounded">Edit</a>
                             <form asp-controller="Advert" asp-area="Admin" asp-action="Delete" method="post">
