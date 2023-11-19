@@ -60,23 +60,7 @@ namespace Ads.Web.Mvc.Controllers
             }
             return View();
         }
-        //TODO  : User silmece
-        //[HttpPost] 
-        //public async Task<IActionResult> UserDeleteAccountAsync(int id)
-        //{
-        //    var userId = int.TryParse(User.FindFirstValue(ClaimTypes.PrimarySid), out int result) ? result.ToString() : null;
-          
-        //    var user = _context.UserEntities.Find(id);
-        //    if (user != null)
-        //    {
-        //        _context.UserEntities.Remove(user);
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    return RedirectToAction("Index");
-        //}
-
-
-[HttpGet]
+        [HttpGet]
         public async Task<IActionResult> AdvertDetail(int id)
         {
             var userId = int.TryParse(User.FindFirstValue(ClaimTypes.PrimarySid), out int result) ? result.ToString() : null;
@@ -232,7 +216,7 @@ namespace Ads.Web.Mvc.Controllers
                 {
                     CreatedAt = DateTime.Now,
                     Id = id,
-                    ImagePath = $"/uploads/{imageName}", //TODO : değiştirildi
+                    ImagePath = $"~/uploads/{imageName}",
                     UserId = user.Id
                 };
                 _context.UserImageEntities.Add(userImage);

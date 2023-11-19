@@ -193,10 +193,6 @@ namespace Ads.Web.Mvc.Controllers
                 claimsPrincipal,
                 authProperties);
 
-            if (user.Roles=="Admin")
-            {
-                return RedirectToAction("Index", "Home", new { area = "Admin" });
-            }
             if (returnUrl is not null)
             {
                 return LocalRedirect(returnUrl);
@@ -271,6 +267,12 @@ namespace Ads.Web.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel request, [FromRoute] string id)
         {
+            //if (!ModelState.IsValid)
+            //{
+            //    ViewBag.Error = "Please fill required input sections!";
+            //    return View();
+            //}
+            //request.Token = TempData["PasswordResetTokenforPostMethod"] as string;
 
             var user = await DbContext.UserEntities.FirstOrDefaultAsync(u => u.PasswordResetToken == id);
             if (user == null || user.ResetTokenExpires < DateTimeOffset.Now || user.PasswordResetToken != id)
