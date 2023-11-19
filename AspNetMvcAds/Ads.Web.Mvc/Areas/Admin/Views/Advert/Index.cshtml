@@ -43,12 +43,17 @@
         <tbody>
             @foreach (var advert in Model)
             {
-                var advertImagePaths = advert.ImagePaths.Select(path => Url.Content(path));
+                var advertImagePaths = advert.ImagePaths.Select(path => Url.Content(path)).ToList();
 
                 foreach (var imagePath in advertImagePaths)
                 {
                     <tr>
-                        <td><img src="@imagePath" alt="Advert Image" width="100"></td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(imagePath))
+                            {
+                                <img src="@imagePath" alt="Advert Image" width="100">
+                            }
+                        </td>
                         <td>@advert.Title</td>
                         <td>@advert.Description</td>
                         <td style="width:50px; white-space: nowrap;">@advert.Price €</td>
@@ -64,6 +69,7 @@
                     </tr>
                 }
             }
+
         </tbody>
     </table>
     @* Pagination *@
