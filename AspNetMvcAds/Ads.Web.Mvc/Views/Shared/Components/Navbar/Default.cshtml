@@ -16,20 +16,11 @@
                             <li class="nav-item active">
                                 <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
-
-                            <li class="nav-item dropdown dropdown-slide">
-                                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Pages <span><i class="fa fa-angle-down"></i></span>
-                                </a>
-                                <!-- Dropdown list -->
-                                <div class="dropdown-menu">
-
-                                    @foreach (var pages in Model.Pages)
-                                    {
-                                        <a class="dropdown-item" asp-controller="Page" asp-action="@pages.Slug">@pages.Title</a>
-                                    }
-
-                                </div>
+                            <li class="nav-item active">
+                                <a class="nav-link" asp-controller="Page" asp-action="about-us">About us</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" asp-controller="Page" asp-action="contact-us">Contact us</a>
                             </li>
                             <li class="nav-item dropdown dropdown-slide">
                                 <a class="nav-link dropdown-toggle" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

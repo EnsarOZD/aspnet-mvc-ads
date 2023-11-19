@@ -2,6 +2,7 @@
 using Ads.Data.Entities;
 using Ads.Services.Services.Abstract;
 using Ads.Web.Mvc.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using System.Security.Claims;
 
 namespace Ads.Web.Mvc.Controllers
 {
+    [Authorize]
     public class AddListingController : Controller
     {
         private readonly AppDbContext _context;
