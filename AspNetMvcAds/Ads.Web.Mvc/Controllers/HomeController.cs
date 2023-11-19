@@ -31,22 +31,6 @@ namespace Ads.Web.Mvc.Controllers
 			};
 			return View(model);
 		}
-        
-
-        //public async Task<IActionResult> Search(string searchQuery)
-        //{
-        //    var articles = _context.AdvertEntities.AsQueryable();
-
-        //    if (!string.IsNullOrEmpty(searchQuery))
-        //    {
-        //        articles = articles.Where(a => a.Title.Contains(searchQuery));
-        //    }
-
-        //    return View(articles.ToList());
-
-
-        //}
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()

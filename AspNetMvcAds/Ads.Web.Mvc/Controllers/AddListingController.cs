@@ -2,6 +2,7 @@
 using Ads.Data.Entities;
 using Ads.Services.Services.Abstract;
 using Ads.Web.Mvc.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,8 +10,10 @@ using System.Security.Claims;
 
 namespace Ads.Web.Mvc.Controllers
 {
+    [Authorize]
     public class AddListingController : Controller
     {
+        
         private readonly AppDbContext _context;
         private readonly IFileService _fileService;
         public AddListingController(IFileService fileService, AppDbContext context)
@@ -85,7 +88,7 @@ namespace Ads.Web.Mvc.Controllers
             _context.AdvertEntities.Add(newAdvert);
             await _context.SaveChangesAsync();
             string imageName = formFile.FileName;
-            string imagePath = $"~/uploads/{imageName}";
+            string imagePath = $"/uploads/{imageName}"; //TODO: değiştirildi 
             long imageSize = formFile.Length;
             AdvertImageEntity advImage = new()
             {
