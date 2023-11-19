@@ -1,10 +1,14 @@
-﻿using Ads.Data.Entities;
+﻿using Ads.Data;
+using Ads.Data.Entities;
 using Ads.Data.Services.Abstract;
 using Ads.Services.Services.Abstract;
 using Ads.Web.Mvc.Areas.Admin.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using X.PagedList;
 
 namespace Ads.Web.Mvc.Areas.Admin.Controllers
@@ -12,46 +16,41 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
     [Area("Admin")]
     public class AdvertController : Controller
     {
-        private readonly IRepository<AdvertEntity> _advertReposityory;
+        private readonly IRepository<AdvertEntity> _advertRepository;
         private readonly IAdvertImageService _advertImageService;
-        private readonly ISearchService _searchService;
         private readonly IFileService _fileService;
+        private readonly AppDbContext _context;
 
-        public AdvertController(IRepository<AdvertEntity> advertReposityory,
-                                IAdvertImageService advertImageService,
-                                ISearchService searchService,
-                                IFileService fileService)
+        public AdvertController(
+            IRepository<AdvertEntity> advertRepository,
+            IAdvertImageService advertImageService,
+            IFileService fileService,
+            AppDbContext context)
         {
-            _advertReposityory = advertReposityory;
+            _advertRepository = advertRepository;
             _advertImageService = advertImageService;
-            _searchService = searchService;
             _fileService = fileService;
+            _context = context;
         }
 
         public async Task<IActionResult> Index(string searchContent, int? page)
         {
             int pageSize = 10;
-            var adverts = await _advertReposityory.GetAll().ToListAsync();
+            var adverts = await _advertRepository.GetAll().ToListAsync();
             var advertImages = _advertImageService.GetAllImages().ToList();
-            var advertViewModels = new List<AdvertViewModel>();
-
-            foreach (var advert in adverts)
+            var advertViewModels = adverts.Select(advert => new AdvertViewModel
             {
-                var viewModel = new AdvertViewModel
-                {
-                    Id = advert.Id,
-                    Title = advert.Title,
-                    Description = advert.Description,
-                    Price = advert.Price,
-                    AdvertClickCount = advert.AdvertClickCount,
-                    UserId = advert.UserId,
-                    ImagePaths = advertImages
-                        .Where(img => img.AdvertId == advert.Id)
-                        .Select(img => img.ImagePath)
-                        .ToList(),
-                };
-                advertViewModels.Add(viewModel);
-            }
+                Id = advert.Id,
+                Title = advert.Title,
+                Description = advert.Description,
+                Price = advert.Price,
+                AdvertClickCount = advert.AdvertClickCount,
+                UserId = advert.UserId,
+                ImagePaths = advertImages
+                    .Where(img => img.AdvertId == advert.Id)
+                    .Select(img => img.ImagePath)
+                    .ToList(),
+            }).ToList();
 
             if (!string.IsNullOrEmpty(searchContent))
             {
@@ -66,38 +65,30 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            var operationsResult = await _advertReposityory.GetById(id);
-            if (!operationsResult.Success || operationsResult.Data == null)
+            var operationResult = await _advertRepository.GetById(id);
+            if (!operationResult.Success || operationResult.Data == null)
             {
-                TempData["ErrorMessage"] = operationsResult.ErrorMessage ?? "Advert not found";
+                TempData["ErrorMessage"] = operationResult.ErrorMessage ?? "Advert not found";
                 return RedirectToAction("Index");
             }
 
-            var deleteResult = await _advertReposityory.Delete(operationsResult.Data);
+            var deleteResult = await _advertRepository.Delete(operationResult.Data);
 
-            TempData["SuccesMessage"] = deleteResult.Success ? "Advert deleted successfully" : deleteResult.ErrorMessage;
-            if (deleteResult.Success)
-            {
-                TempData["SuccessMessage"] = "Advert deleted successfully";
-            }
-            else
-            {
-                TempData["ErrorMessage"] = deleteResult.ErrorMessage;
-            }
+            TempData["SuccessMessage"] = deleteResult.Success ? "Advert deleted successfully" : deleteResult.ErrorMessage;
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var operaationResult = await _advertReposityory.GetById(id);
-            if (!operaationResult.Success || operaationResult.Data == null)
+            var operationResult = await _advertRepository.GetById(id);
+            if (!operationResult.Success || operationResult.Data == null)
             {
                 TempData["ErrorMessage"] = "Advert not found";
                 return RedirectToAction("Index");
             }
 
-            var advert = operaationResult.Data;
+            var advert = operationResult.Data;
             var viewModel = new AdvertViewModel
             {
                 Id = advert.Id,
@@ -105,83 +96,88 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
                 Description = advert.Description,
                 Price = advert.Price,
                 AdvertClickCount = advert.AdvertClickCount,
-                //UserId = advert.UserId,
                 ImagePath = advert.ImagePath
-
             };
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(AdvertViewModel viewModel, int id, IFormFile? uploadedImage)
+        public async Task<IActionResult> Edit(AdvertViewModel viewModel, IFormFile? uploadedImage)
         {
-
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
             }
 
-            var operationResult = await _advertReposityory.GetById(viewModel.Id);
+            var operationResult = await _advertRepository.GetById(viewModel.Id);
             if (!operationResult.Success || operationResult.Data == null)
             {
                 TempData["ErrorMessage"] = "Advert not found";
                 return RedirectToAction("Index");
             }
+
             var advert = operationResult.Data;
+
+            // Eski resimleri sil
+            var oldImages = _advertImageService.GetAllImagesQueryable().Where(img => img.AdvertId == advert.Id).ToList();
+            foreach (var oldImage in oldImages)
+            {
+                _advertImageService.DeleteImage(oldImage.Id);
+            }
 
             if (uploadedImage != null && uploadedImage.Length > 0)
             {
                 if (uploadedImage.Length > 2 * 1024 * 1024)
                 {
-                    ModelState.AddModelError("File", "Dosya boyutu 2 MB'dan büyük olamaz.");
+                    ModelState.AddModelError("UploadedImage", "Dosya boyutu 2 MB'dan büyük olamaz.");
                     return View(viewModel);
-
                 }
 
                 if (Path.GetExtension(uploadedImage.FileName).ToLower() != ".jpg")
                 {
-                    ModelState.AddModelError("File", "Sadece .jpg uzanıtılı dosyaları yükleyebilirsiniz.");
+                    ModelState.AddModelError("UploadedImage", "Sadece .jpg uzantılı dosyaları yükleyebilirsiniz.");
                     return View(viewModel);
                 }
 
                 await _fileService.UploadFileAsync(uploadedImage);
                 string imageName = uploadedImage.FileName;
 
+                string imagePath = $"~/uploads/{imageName}";
+                advert.ImagePath = imagePath;
 
-
-                advert.ImagePath = $"/uploads/{imageName}"; //TODO: Tilde silindi
-                if (uploadedImage != null)
-                {
-                    ModelState.Remove("File");
-                }
-
+                ModelState.Remove("UploadedImage");
             }
+
             advert.Title = viewModel.Title;
             advert.Description = viewModel.Description;
             advert.Price = viewModel.Price;
             advert.AdvertClickCount = viewModel.AdvertClickCount;
-            //advert.UserId=viewModel.UserId;
 
-            var updateResult = await _advertReposityory.Update(advert);
+            var updateResult = await _advertRepository.Update(advert);
             if (updateResult.Success)
             {
+                TempData["SuccessMessage"] = "Advert updated successfully";
+
+                // Yeni resimleri ekle
                 if (uploadedImage != null)
                 {
-                    var advertImage = _advertImageService.GetImageById(advert.Id);
-                    advertImage.ImagePath = advert.ImagePath;
-                    _advertImageService.UpdateImage(advertImage);
-                }
+                    var newAdvertImage = new AdvertImageEntity
+                    {
+                        AdvertId = advert.Id,
+                        ImagePath = advert.ImagePath
+                    };
 
-                TempData["SuccessMessage"] = "Advert and images updated successfully";
+                    _advertImageService.AddImage(newAdvertImage);
+                }
             }
             else
             {
                 TempData["ErrorMessage"] = updateResult.ErrorMessage;
             }
 
-
             return RedirectToAction("Index");
         }
+
     }
 }
