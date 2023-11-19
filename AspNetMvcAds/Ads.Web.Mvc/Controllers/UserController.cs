@@ -216,7 +216,7 @@ namespace Ads.Web.Mvc.Controllers
                 {
                     CreatedAt = DateTime.Now,
                     Id = id,
-                    ImagePath = $"~/uploads/{imageName}",
+                    ImagePath = $"/uploads/{imageName}",
                     UserId = user.Id
                 };
                 _context.UserImageEntities.Add(userImage);
