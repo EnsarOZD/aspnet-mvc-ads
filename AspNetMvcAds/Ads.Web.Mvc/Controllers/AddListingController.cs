@@ -85,7 +85,7 @@ namespace Ads.Web.Mvc.Controllers
             _context.AdvertEntities.Add(newAdvert);
             await _context.SaveChangesAsync();
             string imageName = formFile.FileName;
-            string imagePath = $"~/uploads/{imageName}";
+            string imagePath = $"/uploads/{imageName}";
             long imageSize = formFile.Length;
             AdvertImageEntity advImage = new()
             {

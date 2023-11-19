@@ -143,7 +143,7 @@ namespace Ads.Web.Mvc.Areas.Admin.Controllers
                 await _fileService.UploadFileAsync(uploadedImage);
                 string imageName = uploadedImage.FileName;
 
-                string imagePath = $"~/uploads/{imageName}";
+                string imagePath = $"/uploads/{imageName}";
                 advert.ImagePath = imagePath;
 
                 ModelState.Remove("UploadedImage");
